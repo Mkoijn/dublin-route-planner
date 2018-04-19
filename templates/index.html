@@ -1,0 +1,57 @@
+{% extends "bootstrap/base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+
+{% block styles %}
+{{super()}}
+<link rel="stylesheet" href="{{url_for('.static', filename='css/signin.css')}}">
+{% endblock %}
+
+{% if current_user.is_authenticated %}
+    {% include 'navbar_logged_in.html' %}
+  {% else %}
+    {% include 'navbar_logged_out.html' %}
+{% endif %}
+
+{% block content %}
+<body style="background-image: url(static/images/new1.v1.jpg);">
+    <br>
+    <br>
+    <div class="container">
+
+          <!-- <form method="POST" action="/map">
+          <div class="form-group">
+            <label for="formGroupExampleInput">&nbsp;Where are you?</label>
+            <input type="text" name="start_address" class="form-control" id="search_start" placeholder="Search...">
+          </div>
+          <div class="form-group">
+            <label for="formGroupExampleInput2">&nbsp;Where are you going?</label>
+            <input type="text" name="finish_address" class="form-control" id="search_finish" placeholder="Search...">
+          </div>
+
+          <button type="submit" style="color:#333333" class="btn btn-md btn-default">Let's Go</button>
+
+          </form> -->
+          <form class="form-signin", method="POST" action="/map">
+            {{ form.hidden_tag() }}
+            {{ wtf.form_field(form.start, id="search_start") }}
+            {{ wtf.form_field(form.finish, id="search_finish") }}
+            <button class="btn btn-md btn-primary" type="submit">Let's Go</button>
+          </form>
+
+    </div><!-- /.container -->
+
+</body>
+<script>
+  function activatePlacesSearch(){
+    var input_start = document.getElementById('search_start');
+    var autocomplete_start = new google.maps.places.Autocomplete(input_start);
+    var input_finish = document.getElementById('search_finish');
+    var autocomplete_finish = new google.maps.places.Autocomplete(input_finish);
+  }
+</script>
+<script src="https://maps.googleapis.com/maps/api/js?sensor=false&libraries=places&key=AIzaSyDurjDSQgGtayGxdxt-D_09C24T65NSAc8&callback=activatePlacesSearch"></script>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+{% endblock %}

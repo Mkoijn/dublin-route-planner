@@ -1,0 +1,48 @@
+#map {
+  height: 100%;
+}
+
+html, body {
+    height: 100%;
+    margin: 0;
+    padding-top: 0px;
+}
+#info {
+  font-family: Roboto;
+  padding-top: 50px !important;
+  padding-bottom: 20px !important;
+}
+
+#walk1 {
+    border-radius: 25px;
+    margin-top: 5px;
+    border-style: solid;
+    border-color: #00B2BC;
+    border-width: 2px;
+    padding-top: 5px;
+    padding-right: 12px;
+    padding-left: 12px;
+    padding-bottom: 10px;
+}
+#bike {
+    border-radius: 25px;
+    margin-top: 5px;
+    border-style: solid;
+    border-color: #E2790C;
+    border-width: 2px;
+    padding-top: 5px;
+    padding-right: 12px;
+    padding-left: 12px;
+    padding-bottom: 10px;
+}
+#walk2 {
+    border-radius: 25px;
+    margin-top: 5px;
+    border-style: solid;
+    border-color: #00B2BC;
+    border-width: 2px;
+    padding-top: 5px;
+    padding-right: 12px;
+    padding-left: 12px;
+    padding-bottom: 10px;
+}
