@@ -12,13 +12,13 @@ In this application the following plugins already configured:
 
 ## Requirements
 
-Python 2.5+, python-pip, virtualenv
+Python 2.5+, python-pip
 
 ## Installation
 
 First, clone this repository.
 
-    $ git clone http://github.com/berlotto/flask-app-template
+    $ git clone http://github.com/mkoijn/dublin-route-planner
     $ cd 'Dublin Route Planner'
 
 Create a virtualenv, and activate this:
