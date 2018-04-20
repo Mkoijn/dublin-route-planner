@@ -14,7 +14,7 @@ In this application the following plugins already configured:
 
 Python 2.5+, python-pip, virtualenv
 
-## Instalation
+## Installation
 
 First, clone this repository.
 
