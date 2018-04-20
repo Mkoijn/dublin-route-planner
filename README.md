@@ -12,7 +12,7 @@ In this application the following plugins already configured:
 
 ## Requirements
 
-Python 2.5+, python-pip
+Python 3+, python-pip
 
 ## Installation
 
