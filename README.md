@@ -21,12 +21,8 @@ First, clone this repository.
     $ git clone http://github.com/mkoijn/dublin-route-planner
     $ cd 'Dublin Route Planner'
 
-Create a virtualenv, and activate this:
 
-    $ virtualenv env
-    $ source env/bin/activate
-
-After, install all necessary to run:
+After, install all necessary requirements:
 
     $ pip install -r requirements.txt
 
