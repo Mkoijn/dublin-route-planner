@@ -1,16 +1,11 @@
-from app import app
+from app import app, login_manager
 from models import User
 from forms import AddressForm, LoginForm, RegisterForm
 from flask import render_template, redirect, url_for, request
 from helpers.bike_locations import closest_station, get_coordinates
 from werkzeug.security import generate_password_hash, check_password_hash
-from flask_login import LoginManager, login_user, login_required, logout_user, current_user
+from flask_login import login_user, login_required, logout_user, current_user
 from models import db
-
-
-login_manager = LoginManager()
-login_manager.init_app(app)
-login_manager.login_view = 'login'
 
 
 @login_manager.user_loader
