@@ -6,7 +6,6 @@ In this application the following plugins already configured:
 
 * **Flask-Login** - Flask-Login provides user session management for Flask.
 * **Flask-Bootstrap** - Ready-to-use Twitter-bootstrap for use in Flask.
-* **Flask-Restless** - Flask-Restless provides simple generation of ReSTful APIs for database models defined using Flask-SQLAlchemy.
 * **Flask-SQLAlchemy** - Adds SQLAlchemy support to Flask. Quick and easy.
 * **Flask-WTF** - Using Flask-WTF, we can define the form fields in our Python script and render them using an HTML template. It is also possible to apply validation to the WTF field.
 
