@@ -15,7 +15,8 @@ def distance(lat1, lon1, lat2, lon2):
 
 def closest(data, v):
     '''
-    Returns closest station from to given coordinates
+    Returns closest station to given coordinates
+    from list of stations
     '''
     return min(data, key=lambda p: distance(v['lat'],
                                             v['lng'],

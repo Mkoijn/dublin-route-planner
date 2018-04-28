@@ -15,14 +15,14 @@ class BikeStation:
         self.status = status
 
 
-# Bike data
+# Bike data URL API
 url = 'https://api.jcdecaux.com/vls/v1/stations?contract=Dublin&apiKey=7453c07d7cf230540911a81515a937d8963cbdfe'
 
 req = Request(url, None, {'User-agent': 'Mozilla/5.0 (Windows; U; Windows\
                         NT 5.1; de; rv:1.9.1.5) Gecko/20091102 Firefox/3.5.5'})
 bike_data = loads(urlopen(req).read().decode("utf-8"))
 
-# get coords of stations to calculate distances
+# get coords of stations from bike data to calculate distances
 for item in bike_data:
     item['lat'] = item['position']['lat']
     item['lng'] = item['position']['lng']
@@ -31,6 +31,7 @@ for item in bike_data:
 
 def closest_station(address):
     coords = get_coordinates(address)
+    # Use Haversine Formula to return closest station to address
     closest_station = hav.closest(bike_data, coords)
     station = BikeStation(closest_station['number'], closest_station['name'], closest_station['lat'], closest_station['lng'],
                           closest_station['available_bike_stands'], closest_station['available_bikes'], closest_station['status'])
@@ -38,6 +39,7 @@ def closest_station(address):
 
 
 def get_coordinates(address):
+    # Using googles api translate address to coordinates
     key = 'AIzaSyAU7Pri5R8KaF3ZXZpsTgtVyQJd57dQctw'
     add = 'https://maps.googleapis.com/maps/api/geocode/json?address=' + address.replace(' ', '+') + '&key=' + key
     add2 = add.replace(',', '')
