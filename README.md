@@ -17,7 +17,7 @@ Python 3+, python-pip
 
 First, clone this repository.
 
-    $ git clone http://github.com/mkoijn/dublin-route-planner
+    $ git clone https://Mkoijn@bitbucket.org/Mkoijn/dublin-route-planner.git
     $ cd 'Dublin Route Planner'
 
 
