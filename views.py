@@ -1,3 +1,8 @@
+"""
+Dublin Route Planner Prototype
+Author: Mkoijn
+"""
+
 from app import app, login_manager
 from models import User
 from forms import AddressForm, LoginForm, RegisterForm
@@ -46,7 +51,6 @@ def login():
                 return redirect(url_for('index'))
 
         return '<h1>Invalid username or password</h1>'
-        # return '<h1>' + form.username.data + ' ' + form.password.data + '</h1>'
 
     return render_template('login.html', form=form)
 
