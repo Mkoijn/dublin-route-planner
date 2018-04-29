@@ -1,6 +1,6 @@
 """
 Dublin Route Planner Prototype
-Author: Mkoijn
+Author: Paul Durack
 """
 
 from flask_wtf import FlaskForm

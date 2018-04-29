@@ -1,6 +1,6 @@
 """
 Dublin Route Planner Prototype
-Author: Mkoijn
+Author: Paul Durack
 """
 
 from app import app, login_manager
