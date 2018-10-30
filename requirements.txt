@@ -5,7 +5,6 @@ flask_bootstrap
 flask_sqlalchemy
 flask_login
 werkzeug
-forms
 uwsgi
 flask_wtf
 wtforms
