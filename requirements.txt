@@ -6,3 +6,4 @@ flask_login
 werkzeug
 models
 forms
+uwsgi
