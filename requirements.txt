@@ -1,4 +1,5 @@
 flask
+base
 requests
 flask_bootstrap
 flask_sqlalchemy
