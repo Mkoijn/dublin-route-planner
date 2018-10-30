@@ -8,3 +8,5 @@ werkzeug
 models
 forms
 uwsgi
+flask_wtf
+wtforms
