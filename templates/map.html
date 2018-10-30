@@ -4,190 +4,355 @@
     {% include 'navbar_logged_out.html' %}
 {% endif %}
 {% block content %}
+<script src="{{ url_for('static', filename='renderDirections.js') }}"></script>
+<script src="{{ url_for('static', filename='displayRouteTimes.js') }}"></script>
+
+<!-- Left Column Travel Details  -->
     <div class="col-sm-3" id="info">
-      <h3>&nbsp;Dublinbikes Route</h3>
-      <div id="time">
+
+      <div class="panel-group" id="accordion">
+
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h4 class="panel-title">
+              <a data-toggle="collapse" data-parent="#accordion" href="#collapse1">
+                <button id="biking_button" type="button" class="btn btn-secondary btn-lg btn-block">
+                  <h4 style="display:inline"><strong>&nbsp;Dublin Bikes</strong></h4>
+                  <p style="display:inline" id="time"></p>
+                </button>
+              </a>
+            </h4>
+          </div>
+          <div id="collapse1" class="panel-collapse collapse">
+            <div class="panel-body">
+              <div id="walk1">
+                <h5>&nbsp;&bull;  WALK
+                </h5>
+              </div>
+              <div id="bike">
+                <h5>&nbsp;&bull;  CYCLE
+                </h5>
+              </div>
+              <div id="walk2">
+                <h5>&nbsp;&bull;  WALK
+                </h5>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h4 class="panel-title">
+              <a data-toggle="collapse" data-parent="#accordion" href="#collapse2">
+                <button id="walking_button" type="button" class="btn btn-secondary btn-lg btn-block">
+                  <h4 style="display:inline"><strong>&nbsp;Walking</strong></h4>
+                  <p style="display:inline" id="time2"></p>
+                </button>
+              </a>
+            </h4>
+          </div>
+          <div id="collapse2" class="panel-collapse collapse">
+            <div class="panel-body">
+              <div id="walk3">
+                <h5>&nbsp;&bull;  WALK</h5>
+              </div>
+            </div>
+          </div>
+        </div>
+
       </div>
-      <div id="walk1">
-        <h5>&nbsp;1 - WALK</h5>
-      </div>
-      <div id="bike">
-        <h5>&nbsp;2 - CYCLE</h5>
-      </div>
-      <div id="walk2">
-        <h5>&nbsp;3 - WALK</h5>
-      </div>
+
     </div>
+
+    <!-- Right Column Map. -->
     <div class="col-sm-9" id="map"></div>
 
     <script>
+
       function initMap() {
         var start = {lat: {{start_coordinates.lat}}, lng: {{start_coordinates.lng}}};
         var start_station = {lat: {{start_station.lat}}, lng: {{start_station.lng}}};
         var finish_station = {lat: {{finish_station.lat}}, lng: {{finish_station.lng}}};
         var finish = {lat: {{finish_coordinates.lat}}, lng: {{finish_coordinates.lng}}};
-        var total_time = 0;
-        var directionsService = new google.maps.DirectionsService();
+
+        // Create a renderer for directions
         var directionsDisplay = new google.maps.DirectionsRenderer();
+        // Create a map and center it on Start point.
         var mapOptions = {
-                          zoom: 14,
+                          zoom: 15,
                           center: start
-                         }
+                        };
         var map = new google.maps.Map(document.getElementById('map'), mapOptions);
         directionsDisplay.setMap(map);
 
-        var marker = new google.maps.Marker({
+        var start_marker = new google.maps.Marker({
           position: start,
           map: map,
-          label: 'YOU'
+          icon: {
+                  path: google.maps.SymbolPath.CIRCLE,
+                  scale: 5,
+                  labelOrigin: new google.maps.Point(-6,0)
+                },
+          label: {
+            text: 'Start',
+            fontSize: "16px",
+            fontWeight: "bold"
+          }
         });
 
-        var marker2 = new google.maps.Marker({
+        var bike1_marker = new google.maps.Marker({
           position: start_station,
           map: map,
           title: '{{start_station.name}}' + '\n Available Stands: '
                   + '{{start_station.stands}}' + '\n Available Bikes: '
                   + '{{start_station.bikes}}',
-          label: 'BIKES'
+          label: {
+            text: 'DB',
+            fontSize: "16px",
+            fontWeight: "bold"
+          }
         });
 
-        var marker3 = new google.maps.Marker({
+        var bike2_marker = new google.maps.Marker({
           position: finish_station,
           map: map,
           title: '{{finish_station.name}}' + '\n Available Stands: '
                   + '{{finish_station.stands}}' + '\n Available Bikes: '
                   + '{{finish_station.bikes}}',
-          label: 'BIKES'
+          label: {
+            text: 'DB',
+            fontSize: "16px",
+            fontWeight: "bold"
+            }
         });
 
-        var marker4 = new google.maps.Marker({
+        var finish_marker = new google.maps.Marker({
           position: finish,
           map: map,
-          label: 'TARGET'
+          icon: {
+                  path: google.maps.SymbolPath.CIRCLE,
+                  scale: 5,
+                  labelOrigin: new google.maps.Point(7,0)
+                },
+          label: {
+            text: 'Finish',
+            fontSize: "16px",
+            fontWeight: "bold"
+          }
         });
+        var markers = [start_marker, bike1_marker, bike2_marker, finish_marker];
+        markers[1].setVisible(false);
+        markers[2].setVisible(false);
+
+        // Instantiate 4 directions services.
+        var directionsService1 = new google.maps.DirectionsService();
+        var directionsService2 = new google.maps.DirectionsService();
+        var directionsService3 = new google.maps.DirectionsService();
+        var directionsService4 = new google.maps.DirectionsService();
+
+        // var directionsServices = [directionsService1, directionsService2, directionsService3, directionsService4];
+
+        // Instantiate 4 directions services.
+        var poly1 = new google.maps.DirectionsRenderer({suppressMarkers: true,
+                                                                     suppressBicyclingLayer: true,
+                                                                     polylineOptions: {
+                                                                       strokeColor: '#00B2BC'
+                                                                     }
+                                                                   });poly1;
+        var poly2 = new google.maps.DirectionsRenderer({suppressMarkers: true,
+                                                                     suppressBicyclingLayer: true,
+                                                                     polylineOptions: {
+                                                                       strokeColor:'#E2790C'
+                                                                     }
+                                                                   });
+        var poly3 = new google.maps.DirectionsRenderer({suppressMarkers: true,
+                                                                     suppressBicyclingLayer: true,
+                                                                     polylineOptions: {
+                                                                       strokeColor: '#00B2BC'
+                                                                     }
+                                                                   });
+        var poly4 = new google.maps.DirectionsRenderer({suppressMarkers: true,
+                                                                     suppressBicyclingLayer: true,
+                                                                     polylineOptions: {
+                                                                       strokeColor: '#00B2BC'
+                                                                     }
+                                                                   });
 
 
-        function renderDirections(result, color) {
-          var directionsRenderer = new google.maps.DirectionsRenderer({suppressMarkers: true,
-                                                                       suppressBicyclingLayer: true,
-                                                                       polylineOptions: {
-                                                                         strokeColor: color
-                                                                       }
-                                                                     });
-          directionsRenderer.setMap(map);
-          directionsRenderer.setDirections(result);
-          directionsRenderer.setOptions({ preserveViewport: true });
-        }
+        // Draw Bikes on Map after Click
+        document.getElementById("biking_button").addEventListener("click", renderBikes);
+        function renderBikes() {
+          poly4.setMap(null);
+          markers[1].setVisible(true);
+          markers[2].setVisible(true);
+          requestDirections(start, start_station, 'WALKING', map, poly1 ,directionsService1);
+          requestDirections(start_station, finish_station,'BICYCLING', map, poly2, directionsService2);
+          requestDirections(finish, finish_station, 'WALKING', map, poly3, directionsService3);
+        };
 
-        function requestDirections(start, end, mode, color) {
-          directionsService.route({
-            origin: start,
-            destination: end,
-            travelMode: mode
-          }, function(result) {
-            renderDirections(result, color);
+        // Draw Walking on Map after Click
+        document.getElementById("walking_button").addEventListener("click", renderWalk);
+        function renderWalk() {
+          poly1.setMap(null);
+          poly2.setMap(null);
+          poly3.setMap(null);
+          markers[1].setVisible(false);
+          markers[2].setVisible(false);
+          requestDirections(start, finish, 'WALKING', map, poly4, directionsService4);
+        };
+
+        var total_time = 0;
+
+        // Output Results to left column
+        function one(start, start_station){
+          var time1 = 0;
+          var service = new google.maps.DistanceMatrixService;
+          service.getDistanceMatrix({
+            origins: [start],
+            destinations: [start_station],
+            travelMode: 'WALKING',
+            unitSystem: google.maps.UnitSystem.METRIC,
+            avoidHighways: false,
+            avoidTolls: false
+          }, function(response, status) {
+              if (status !== 'OK')
+              {
+                alert('Error was: ' + status);
+              }
+                else
+              {
+                var originList = response.originAddresses;
+                var shortOr = originList[0].split(',')[0];
+                // console.log(shortOr);
+                var destinationList = response.destinationAddresses;
+                var shortDe = destinationList[0].split(',')[0];
+
+                var outputDiv = document.getElementById('walk1');
+                var results = response.rows[0].elements;
+                // console.log(results);
+                outputDiv.innerHTML += shortOr + ' to ' + shortDe +
+                                  ': ' + '<strong>' + results[0].distance.text + ' in ' +
+                                  results[0].duration.text + '</strong><br>';
+
+                time1 = results[0].duration.value;
+                total_time += time1;
+                two(start_station, finish_station);
+
+            }
           });
         }
-        requestDirections(finish_station, finish, 'WALKING', '#00B2BC');
-        requestDirections(start_station, finish_station,'BICYCLING', '#E2790C');
-        requestDirections(start, start_station, 'WALKING', '#00B2BC');
 
         // Output Results
-        function one(){
-        var service = new google.maps.DistanceMatrixService;
-        service.getDistanceMatrix({
-          origins: [start],
-          destinations: [start_station],
-          travelMode: 'WALKING',
-          unitSystem: google.maps.UnitSystem.METRIC,
-          avoidHighways: false,
-          avoidTolls: false
-        }, function(response, status) {
-          if (status !== 'OK') {
-            alert('Error was: ' + status);
-          } else {
-            var originList = response.originAddresses;
-            var destinationList = response.destinationAddresses;
-            var outputDiv = document.getElementById('walk1');
-            var results = response.rows[0].elements;
-            outputDiv.innerHTML += originList[0] + ' to ' + destinationList[0] +
+        function two(start_station, finish_station){
+          var time2 = 0;
+          var service2 = new google.maps.DistanceMatrixService;
+          service2.getDistanceMatrix({
+            origins: [start_station],
+            destinations: [finish_station],
+            travelMode: 'BICYCLING',
+            unitSystem: google.maps.UnitSystem.METRIC,
+            avoidHighways: false,
+            avoidTolls: false
+          },
+          function(response, status) {
+            if (status !== 'OK') {
+              alert('Error was: ' + status);
+            } else {
+              var originList = response.originAddresses;
+              var shortOr = originList[0].split(',')[0];
+              var destinationList = response.destinationAddresses;
+              var shortDe = destinationList[0].split(',')[0];
+              var outputDiv = document.getElementById('bike');
+              var results = response.rows[0].elements;
+              outputDiv.innerHTML += shortOr + ' to ' + shortDe +
                                 ': ' + '<strong>' + results[0].distance.text + ' in ' +
                                 results[0].duration.text + '</strong><br>';
 
-            var time = results[0].duration.value;
-            total_time = total_time + time;
-          }
-        });
-      }
-        // Output Results
-        function two(){
-        var service2 = new google.maps.DistanceMatrixService;
-        service2.getDistanceMatrix({
-          origins: [start_station],
-          destinations: [finish_station],
-          travelMode: 'BICYCLING',
-          unitSystem: google.maps.UnitSystem.METRIC,
-          avoidHighways: false,
-          avoidTolls: false
-        }, function(response, status) {
-          if (status !== 'OK') {
-            alert('Error was: ' + status);
-          } else {
-            var originList = response.originAddresses;
-            var destinationList = response.destinationAddresses;
-            var outputDiv = document.getElementById('bike');
-            var results = response.rows[0].elements;
-            outputDiv.innerHTML += originList[0] + ' to ' + destinationList[0] +
-                                ': ' + '<strong>' + results[0].distance.text + ' in ' +
-                                results[0].duration.text + '</strong><br>';
-
-            outputDiv.innerHTML += '<br>' + 'Bike Pick Up: ' + '{{start_station.name}}' + '<br>'
+              outputDiv.innerHTML += '<br>' + 'Bike Pick Up: ' + '{{start_station.name}}' + '<br>'
                                     + 'Available bikes: ' + '{{start_station.bikes}}' + '<br>';
-            outputDiv.innerHTML += 'Bike Return: ' + '{{finish_station.name}}' + '<br>'
+              outputDiv.innerHTML += 'Bike Return: ' + '{{finish_station.name}}' + '<br>'
                                     + 'Available spaces: ' + '{{finish_station.stands}}' + '<br>';
 
-            var time = results[0].duration.value;
-            total_time = total_time + time;
-          }
-        });
-      }
+              time2 = results[0].duration.value;
+              total_time += time2;
+              three(finish_station, finish);
+
+            }
+          });
+        }
         // Output Results
-        function three(){
-        var service3 = new google.maps.DistanceMatrixService;
-        service3.getDistanceMatrix({
-          origins: [finish_station],
-          destinations: [finish],
-          travelMode: 'WALKING',
-          unitSystem: google.maps.UnitSystem.METRIC,
-          avoidHighways: false,
-          avoidTolls: false
-        }, function(response, status) {
-          if (status !== 'OK') {
-            alert('Error was: ' + status);
-          } else {
-            var originList = response.originAddresses;
-            var destinationList = response.destinationAddresses;
-            var outputDiv = document.getElementById('walk2');
-            var results = response.rows[0].elements;
-            outputDiv.innerHTML += originList[0] + ' to ' + destinationList[0] +
+        function three(finish_station, finish){
+          var time3 = 0;
+          var service3 = new google.maps.DistanceMatrixService;
+          service3.getDistanceMatrix({
+            origins: [finish_station],
+            destinations: [finish],
+            travelMode: 'WALKING',
+            unitSystem: google.maps.UnitSystem.METRIC,
+            avoidHighways: false,
+            avoidTolls: false
+          },
+          function(response, status) {
+            if (status !== 'OK') {
+              alert('Error was: ' + status);
+            } else {
+              var originList = response.originAddresses;
+              var shortOr = originList[0].split(',')[0];
+              var destinationList = response.destinationAddresses;
+              var shortDe = destinationList[0].split(',')[0];
+              var outputDiv = document.getElementById('walk2');
+              var results = response.rows[0].elements;
+              outputDiv.innerHTML += shortOr + ' to ' + shortDe +
                                 ': ' + '<strong>' + results[0].distance.text + ' in ' +
                                 results[0].duration.text + '</strong><br>';
 
-            var time = results[0].duration.value;
-            total_time = total_time + time;
-            var outputDiv2 = document.getElementById('time');
-            outputDiv2.innerHTML = '<strong>' + '&nbsp;&nbsp;Total Time: ' + Math.ceil(total_time/60) + ' ' + 'minutes' + '</strong>';
-          }
-        });
-      }
-      one();
-      two();
-      setTimeout(function() {
-        three();
-        }, 500);
-  }
+              time3 = results[0].duration.value;
+              total_time += time3;
+              var outputDiv2 = document.getElementById('time');
+              outputDiv2.innerHTML = '&nbsp;&nbsp;' + Math.ceil(total_time/60) + ' ' + 'minutes';
+            }
+          });
+
+        }
+        one(start, start_station);
+
+        // Output Walking Results
+        function five(start, finish){
+          var service4 = new google.maps.DistanceMatrixService;
+          service4.getDistanceMatrix({
+            origins: [start],
+            destinations: [finish],
+            travelMode: 'WALKING',
+            unitSystem: google.maps.UnitSystem.METRIC,
+            avoidHighways: false,
+            avoidTolls: false
+          },
+          function(response, status) {
+            if (status !== 'OK') {
+              alert('Error was: ' + status);
+            } else {
+              var originList = response.originAddresses;
+              var shortOr = originList[0].split(',')[0];
+              var destinationList = response.destinationAddresses;
+              var shortDe = destinationList[0].split(',')[0];
+              var outputDiv = document.getElementById('walk3');
+              var results = response.rows[0].elements;
+              outputDiv.innerHTML += shortOr + ' to ' + shortDe +
+                                ': ' + '<strong>' + results[0].distance.text + ' in ' +
+                                results[0].duration.text + '</strong><br>';
+
+              time4 = results[0].duration.value;
+              var outputDiv2 = document.getElementById('time2');
+              outputDiv2.innerHTML = '&nbsp;&nbsp;' + Math.ceil(time4/60) + ' ' + 'minutes';
+            }
+          });
+
+        }
+        five(start, finish);
+}
 </script>
 <script async defer
-src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAjcMcBWBEQdE7ScWDxNeCnoSoh68bvuew&callback=initMap">
+src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCbLnsQQH5RbYWL1mn1co79q5ov7TRjjU0&callback=initMap">
 </script>
 {% endblock %}

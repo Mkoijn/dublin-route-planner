@@ -40,12 +40,13 @@ def closest_station(address):
 
 def get_coordinates(address):
     # Using googles api translate address to coordinates
-    key = 'AIzaSyAU7Pri5R8KaF3ZXZpsTgtVyQJd57dQctw'
+    key = 'AIzaSyDbgLgWR25egCX278y1OGq5qFiJs9QQLzc'
+    # print(address)
     add = 'https://maps.googleapis.com/maps/api/geocode/json?address=' + address.replace(' ', '+') + '&key=' + key
-    add2 = add.replace(',', '')
-    response = requests.get(add2)
-    # print(add2)
+    response = requests.get(add)
+    # print(add)
     resp_json_payload = response.json()
+    # print(resp_json_payload)
     # print(resp_json_payload['results'][0]['geometry']['location']['lat'])
     lat = resp_json_payload['results'][0]['geometry']['location']['lat']
     lng = resp_json_payload['results'][0]['geometry']['location']['lng']

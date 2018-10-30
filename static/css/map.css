@@ -8,22 +8,12 @@ html, body {
     padding-top: 0px;
 }
 #info {
-  font-family: Roboto;
   padding-top: 50px !important;
-  padding-bottom: 20px !important;
+  padding-bottom: 0px !important;
+  padding-left: 0px;
+  padding-right: 0px;
 }
 
-#walk1 {
-    border-radius: 25px;
-    margin-top: 5px;
-    border-style: solid;
-    border-color: #00B2BC;
-    border-width: 2px;
-    padding-top: 5px;
-    padding-right: 12px;
-    padding-left: 12px;
-    padding-bottom: 10px;
-}
 #bike {
     border-radius: 25px;
     margin-top: 5px;
@@ -33,9 +23,9 @@ html, body {
     padding-top: 5px;
     padding-right: 12px;
     padding-left: 12px;
-    padding-bottom: 10px;
+    padding-bottom: 5px;
 }
-#walk2 {
+#walk1, #walk2, #walk3 {
     border-radius: 25px;
     margin-top: 5px;
     border-style: solid;
@@ -45,4 +35,34 @@ html, body {
     padding-right: 12px;
     padding-left: 12px;
     padding-bottom: 10px;
+}
+
+.panel-body{
+  padding-top: 5px;
+  padding-bottom: 10px;
+}
+.btn{
+ border:1px solid transparent; /* this was 1px earlier */
+ border-radius:10px;
+ border-color: black;
+
+}
+.btn:focus,.btn:active {
+   outline: none !important;
+   box-shadow: none;
+}
+a:link {
+    text-decoration: none;
+}
+
+a:visited {
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: none;
+}
+
+a:active {
+    text-decoration: none;
 }
