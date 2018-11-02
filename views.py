@@ -8,6 +8,7 @@ from models import User
 from forms import AddressForm, LoginForm, RegisterForm
 from flask import render_template, redirect, url_for, request
 from helpers.bike_locations import closest_station, get_coordinates
+from helpers.bisecting_addresses import middle_lat_lon
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, login_required, logout_user, current_user
 from models import db
@@ -29,12 +30,14 @@ def map():
     if request.method == 'POST':
         start_address = request.form['start']
         start_coordinates = get_coordinates(start_address)
+        print(start_coordinates)
         start_station = closest_station(start_address)
         finish_address = request.form['finish']
         finish_coordinates = get_coordinates(finish_address)
         finish_station = closest_station(finish_address)
+        middle_address = middle_lat_lon(start_coordinates.get('lat'), start_coordinates.get('lng'), finish_coordinates.get('lat'), finish_coordinates.get('lng'))
         return render_template('map.html', start_station=start_station, finish_station=finish_station,
-                               start_coordinates=start_coordinates, finish_coordinates=finish_coordinates)
+                               start_coordinates=start_coordinates, finish_coordinates=finish_coordinates, middle_address=middle_address)
 
     return render_template('index.html')
 

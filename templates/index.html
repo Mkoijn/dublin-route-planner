@@ -32,8 +32,12 @@
   function activatePlacesSearch(){
     var input_start = document.getElementById('search_start');
     var autocomplete_start = new google.maps.places.Autocomplete(input_start);
+    autocomplete_start.setComponentRestrictions(
+            {'country': ['ie']});
     var input_finish = document.getElementById('search_finish');
     var autocomplete_finish = new google.maps.places.Autocomplete(input_finish);
+    autocomplete_finish.setComponentRestrictions(
+            {'country': ['ie']});
   }
 </script>
 <script src="https://maps.googleapis.com/maps/api/js?sensor=false&libraries=places&key=AIzaSyCbLnsQQH5RbYWL1mn1co79q5ov7TRjjU0&callback=activatePlacesSearch"></script>
