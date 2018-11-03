@@ -30,7 +30,7 @@ def map():
     if request.method == 'POST':
         start_address = request.form['start']
         start_coordinates = get_coordinates(start_address)
-        print(start_coordinates)
+        # print(start_coordinates)
         start_station = closest_station(start_address)
         finish_address = request.form['finish']
         finish_coordinates = get_coordinates(finish_address)

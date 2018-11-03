@@ -5,10 +5,10 @@
 {% endif %}
 {% block content %}
 <script src="{{ url_for('static', filename='renderDirections.js') }}"></script>
-<script src="{{ url_for('static', filename='displayRouteTimes.js') }}"></script>
 
 <!-- Left Column Travel Details  -->
-    <div class="col-sm-3" id="info">
+
+    <div class="col-md-3" id="info">
 
       <div class="panel-group" id="accordion">
 
@@ -61,12 +61,42 @@
           </div>
         </div>
 
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h4 class="panel-title">
+              <a data-toggle="collapse" data-parent="#accordion" href="#collapse3">
+                <button id="transit_button" type="button" class="btn btn-secondary btn-lg btn-block">
+                  <h4 style="display:inline"><strong>&nbsp;Public Transport</strong></h4>
+                  <p style="display:inline" id="time3"></p>
+                </button>
+              </a>
+            </h4>
+          </div>
+          <div id="collapse3" class="panel-collapse collapse">
+            <div class="panel-body">
+              <div id="walk4">
+                <h5>&nbsp;&bull;  WALK
+                </h5>
+              </div>
+              <div id="transit">
+                <h5>&nbsp;&bull;  TRANSIT
+                </h5>
+              </div>
+              <div id="walk5">
+                <h5>&nbsp;&bull;  WALK
+                </h5>
+              </div>
+            </div>
+          </div>
+        </div>
+
       </div>
 
     </div>
 
     <!-- Right Column Map. -->
-    <div class="col-sm-9" id="map"></div>
+    <div class="col-md-9" id="map">
+    </div>
 
     <script>
 
@@ -148,14 +178,10 @@
         markers[2].setVisible(false);
 
         // Instantiate 4 directions services.
-        var directionsService1 = new google.maps.DirectionsService();
-        var directionsService2 = new google.maps.DirectionsService();
-        var directionsService3 = new google.maps.DirectionsService();
-        var directionsService4 = new google.maps.DirectionsService();
+        var directionsService = new google.maps.DirectionsService();
 
-        // var directionsServices = [directionsService1, directionsService2, directionsService3, directionsService4];
 
-        // Instantiate 4 directions services.
+        // Instantiate 4 directions renderers.
         var poly1 = new google.maps.DirectionsRenderer({suppressMarkers: true,
                                                                      suppressBicyclingLayer: true,
                                                                      polylineOptions: {
@@ -181,16 +207,25 @@
                                                                      }
                                                                    });
 
+        var poly5 = new google.maps.DirectionsRenderer({suppressMarkers: true,
+                                                        suppressBicyclingLayer: true,
+                                                        polylineOptions: {
+                                                        strokeColor: ' #009900'
+                                                                    }
+                                                      });
+
+
 
         // Draw Bikes on Map after Click
         document.getElementById("biking_button").addEventListener("click", renderBikes);
         function renderBikes() {
           poly4.setMap(null);
+          poly5.setMap(null);
           markers[1].setVisible(true);
           markers[2].setVisible(true);
-          requestDirections(start, start_station, 'WALKING', map, poly1 ,directionsService1);
-          requestDirections(start_station, finish_station,'BICYCLING', map, poly2, directionsService2);
-          requestDirections(finish, finish_station, 'WALKING', map, poly3, directionsService3);
+          requestDirections(start, start_station, 'WALKING', map, poly1 ,directionsService);
+          requestDirections(start_station, finish_station,'BICYCLING', map, poly2, directionsService);
+          requestDirections(finish, finish_station, 'WALKING', map, poly3, directionsService);
         };
 
         // Draw Walking on Map after Click
@@ -199,15 +234,33 @@
           poly1.setMap(null);
           poly2.setMap(null);
           poly3.setMap(null);
+          poly5.setMap(null);
           markers[1].setVisible(false);
           markers[2].setVisible(false);
-          requestDirections(start, finish, 'WALKING', map, poly4, directionsService4);
+          requestDirections(start, finish, 'WALKING', map, poly4, directionsService);
         };
 
-        var total_time = 0;
+
+        // Draw Transit on Map after Click and get DistanceMatrixService
+        document.getElementById("transit_button").addEventListener("click", renderTransit);
+        function renderTransit() {
+          poly1.setMap(null);
+          poly2.setMap(null);
+          poly3.setMap(null);
+          poly4.setMap(null);
+          markers[1].setVisible(false);
+          markers[2].setVisible(false);
+          requestDirections(start, finish, 'TRANSIT', map, poly5, directionsService);
+        }
+
+
+
 
         // Output Results to left column
-        function one(start, start_station){
+        // First for Dublin Bikes Widget, then Walking
+        var total_time = 0;
+        // First calculate walk time from start to bike station
+        function walkToBikeStation(start, start_station){
           var time1 = 0;
           var service = new google.maps.DistanceMatrixService;
           service.getDistanceMatrix({
@@ -239,14 +292,14 @@
 
                 time1 = results[0].duration.value;
                 total_time += time1;
-                two(start_station, finish_station);
-
+                // Calculate time on bike
+                bikeToBikeStation(start_station, finish_station);
             }
           });
         }
 
-        // Output Results
-        function two(start_station, finish_station){
+        // Calculate time on bike
+        function bikeToBikeStation(start_station, finish_station){
           var time2 = 0;
           var service2 = new google.maps.DistanceMatrixService;
           service2.getDistanceMatrix({
@@ -278,13 +331,13 @@
 
               time2 = results[0].duration.value;
               total_time += time2;
-              three(finish_station, finish);
-
+              // Time from bike station to finish
+              bikeStationToFinish(finish_station, finish);
             }
           });
         }
-        // Output Results
-        function three(finish_station, finish){
+        // Calculate last DB journey walk
+        function bikeStationToFinish(finish_station, finish){
           var time3 = 0;
           var service3 = new google.maps.DistanceMatrixService;
           service3.getDistanceMatrix({
@@ -315,12 +368,12 @@
               outputDiv2.innerHTML = '&nbsp;&nbsp;' + Math.ceil(total_time/60) + ' ' + 'minutes';
             }
           });
-
         }
-        one(start, start_station);
+        // Call walk to bike station function (which then calls 2 more functions)
+        walkToBikeStation(start, start_station);
 
         // Output Walking Results
-        function five(start, finish){
+        function onlyWalking(start, finish){
           var service4 = new google.maps.DistanceMatrixService;
           service4.getDistanceMatrix({
             origins: [start],
@@ -351,7 +404,30 @@
           });
 
         }
-        five(start, finish);
+        onlyWalking(start, finish);
+
+        // Output Transit to left Column
+        function calcTransit(start, finish){
+
+          var request = {
+            origin: start,
+            destination: finish,
+            travelMode: google.maps.DirectionsTravelMode.TRANSIT,
+          };
+
+          directionsService.route(request, function(response, status) {
+            time4 = response.routes[0].legs[0].duration.value;
+            var outputDiv2 = document.getElementById('time3');
+            outputDiv2.innerHTML = '&nbsp;&nbsp;' + Math.ceil(time4/60) + ' ' + 'minutes';
+
+            if (status == google.maps.DirectionsStatus.OK) {
+              // Write directions steps
+              console.log(response.routes[0].legs[0].steps);
+            }
+          });
+
+        }
+        calcTransit(start, finish);
 }
 </script>
 <script async defer
