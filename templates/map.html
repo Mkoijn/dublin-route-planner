@@ -74,16 +74,8 @@
           </div>
           <div id="collapse3" class="panel-collapse collapse">
             <div class="panel-body">
-              <div id="walk4">
-                <h5>&nbsp;&bull;  WALK
-                </h5>
-              </div>
               <div id="transit">
                 <h5>&nbsp;&bull;  TRANSIT
-                </h5>
-              </div>
-              <div id="walk5">
-                <h5>&nbsp;&bull;  WALK
                 </h5>
               </div>
             </div>
@@ -287,7 +279,7 @@
                 var results = response.rows[0].elements;
                 // console.log(results);
                 outputDiv.innerHTML += shortOr + ' to ' + shortDe +
-                                  ': ' + '<strong>' + results[0].distance.text + ' in ' +
+                                  '<br>&nbsp;&nbsp;' + '<strong>' + results[0].distance.text + ' in ' +
                                   results[0].duration.text + '</strong><br>';
 
                 time1 = results[0].duration.value;
@@ -321,13 +313,13 @@
               var outputDiv = document.getElementById('bike');
               var results = response.rows[0].elements;
               outputDiv.innerHTML += shortOr + ' to ' + shortDe +
-                                ': ' + '<strong>' + results[0].distance.text + ' in ' +
+                                '<br>&nbsp;&nbsp;' + '<strong>' + results[0].distance.text + ' in ' +
                                 results[0].duration.text + '</strong><br>';
 
               outputDiv.innerHTML += '<br>' + 'Bike Pick Up: ' + '{{start_station.name}}' + '<br>'
-                                    + 'Available bikes: ' + '{{start_station.bikes}}' + '<br>';
+                                    + '&nbsp;&nbsp;Available bikes: ' + '{{start_station.bikes}}' + '<br>';
               outputDiv.innerHTML += 'Bike Return: ' + '{{finish_station.name}}' + '<br>'
-                                    + 'Available spaces: ' + '{{finish_station.stands}}' + '<br>';
+                                    + '&nbsp;&nbsp;Available spaces: ' + '{{finish_station.stands}}' + '<br>';
 
               time2 = results[0].duration.value;
               total_time += time2;
@@ -359,7 +351,7 @@
               var outputDiv = document.getElementById('walk2');
               var results = response.rows[0].elements;
               outputDiv.innerHTML += shortOr + ' to ' + shortDe +
-                                ': ' + '<strong>' + results[0].distance.text + ' in ' +
+                                '<br>&nbsp;&nbsp;' + '<strong>' + results[0].distance.text + ' in ' +
                                 results[0].duration.text + '</strong><br>';
 
               time3 = results[0].duration.value;
@@ -394,7 +386,7 @@
               var outputDiv = document.getElementById('walk3');
               var results = response.rows[0].elements;
               outputDiv.innerHTML += shortOr + ' to ' + shortDe +
-                                ': ' + '<strong>' + results[0].distance.text + ' in ' +
+                                '<br>&nbsp;&nbsp;' + '<strong>' + results[0].distance.text + ' in ' +
                                 results[0].duration.text + '</strong><br>';
 
               time4 = results[0].duration.value;
@@ -422,7 +414,21 @@
 
             if (status == google.maps.DirectionsStatus.OK) {
               // Write directions steps
-              console.log(response.routes[0].legs[0].steps);
+              //console.log(response.routes[0].legs[0].steps);
+              stepLen = response.routes[0].legs[0].steps.length;
+              //console.log(stepLen)
+              for (i = 0; i < stepLen; i++) {
+                //console.log(response.routes[0].legs[0].steps[i].distance.text);
+                //console.log(response.routes[0].legs[0].steps[i].duration.text);
+                //console.log(response.routes[0].legs[0].steps[i].instructions);
+                var outputDiv = document.getElementById('transit');
+                outputDiv.innerHTML += response.routes[0].legs[0].steps[i].instructions +
+                                      '<br>' +
+                                      '&nbsp;&nbsp;<strong>'
+                                      + response.routes[0].legs[0].steps[i].distance.text +
+                                      ' in ' + response.routes[0].legs[0].steps[i].duration.text +
+                                      '</strong><br><br>';
+              }
             }
           });
 

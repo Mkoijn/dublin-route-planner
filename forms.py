@@ -9,8 +9,8 @@ from wtforms.validators import InputRequired, Email, Length
 
 
 class AddressForm(FlaskForm):
-    start = StringField('&nbsp;Where are you?', validators=[InputRequired()])
-    finish = StringField('&nbsp;Where are you going?', validators=[InputRequired()])
+    start = StringField('', validators=[InputRequired()])
+    finish = StringField('', validators=[InputRequired()])
 
 
 class LoginForm(FlaskForm):
