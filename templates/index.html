@@ -20,8 +20,9 @@
 
           <form class="form-signin" method="POST" action="/map">
             {{ form.hidden_tag() }}
-            {{ wtf.form_field(form.start, id="search_start", placeholder="Where are you?" )}}
-            {{ wtf.form_field(form.finish, id="search_finish", placeholder="Where are you going?" )}}
+            {{ wtf.form_field(form.start, id="search_start", placeholder="Where are you?",
+                              onClick="this.select();") }}
+            {{ wtf.form_field(form.finish, id="search_finish", placeholder="Where are you going?") }}
             <button class="btn btn-md btn-primary" type="submit">Let's Go</button>
           </form>
 
@@ -29,18 +30,60 @@
 
 </body>
 <script>
+
   function activatePlacesSearch(){
+
     var input_start = document.getElementById('search_start');
-    var autocomplete_start = new google.maps.places.Autocomplete(input_start);
-    autocomplete_start.setComponentRestrictions(
-            {'country': ['ie']});
+    var current_lat = 0;
+    var current_lng = 0;
+    var formatted_ad = '';
+
+    function getLocation() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(showPosition);
+        } else {
+            input_start.innerHTML = "Geolocation is not supported by this browser.";
+        }
+    }
+
+    function showPosition(position) {
+      console.log(position.coords.latitude);
+      current_lat = position.coords.latitude;
+      current_lng = position.coords.longitude;
+      // Convert to address
+      var geocoder = new google.maps.Geocoder;
+      var latlng = {lat: parseFloat(current_lat), lng: parseFloat(current_lng)};
+      geocoder.geocode({'location': latlng}, function(results, status) {
+          if (status === 'OK') {
+            if (results[0]) {
+              console.log(results[0].formatted_address);
+              var formatted_ad = results[0].formatted_address;
+              document.getElementById('search_start').value = formatted_ad;
+            } else {
+              window.alert('No results found');
+            }
+          } else {
+            window.alert('Geocoder failed due to: ' + status);
+          }
+        });
+    }
+    getLocation();
+    if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+      getLocation();
+  	} else {
+      var input_start = document.getElementById('search_start');
+      var autocomplete_start = new google.maps.places.Autocomplete(input_start);
+      autocomplete_start.setComponentRestrictions(
+              {'country': ['ie']});
+    }
+
     var input_finish = document.getElementById('search_finish');
     var autocomplete_finish = new google.maps.places.Autocomplete(input_finish);
     autocomplete_finish.setComponentRestrictions(
             {'country': ['ie']});
   }
 </script>
-<script src="https://maps.googleapis.com/maps/api/js?sensor=false&libraries=places&key=AIzaSyCbLnsQQH5RbYWL1mn1co79q5ov7TRjjU0&callback=activatePlacesSearch"></script>
+<script src="https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyCbLnsQQH5RbYWL1mn1co79q5ov7TRjjU0&callback=activatePlacesSearch"></script>
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
