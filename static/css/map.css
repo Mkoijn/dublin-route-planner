@@ -1,16 +1,5 @@
-#map {
-  height: 100%;
-  padding-top: 0px;
-  padding-right: 0px;
-  padding-left: 0px;
-  padding-bottom: 0px;
-}
-
-
 html, body {
     height: 100%;
-    margin: 0;
-    padding-top: 0px;
 }
 #info {
   padding-top: 50px;
@@ -19,19 +8,24 @@ html, body {
   padding-right: 0px;
 }
 
-#bike {
+#map {
+  height: 100%;
+  margin-top: -20px;
+}
+
+#bikeLeg2 {
     border-radius: 25px;
     margin-top: 5px;
     margin-bottom: 5px;
     border-style: solid;
     border-color: #E2790C;
     border-width: 2px;
-    padding-top: 5px !important;
+    padding-top: 5px;
     padding-right: 12px;
     padding-left: 12px;
     padding-bottom: 5px;
 }
-#walk1, #walk2, #walk3, #walk4, #walk5 {
+#bikeLeg1, #bikeLeg3, #walkLeg {
     border-radius: 25px;
     margin-top: 5px;
     border-style: solid;
@@ -42,7 +36,7 @@ html, body {
     padding-left: 12px;
     padding-bottom: 10px;
 }
-#transit {
+#transitLeg {
     border-radius: 25px;
     margin-top: 5px;
     border-style: solid;
@@ -61,10 +55,9 @@ html, body {
   padding-bottom: 10px;
 }
 .btn{
- border:1px solid transparent; /* this was 1px earlier */
+ border:1px solid transparent;
  border-radius:10px;
  border-color: black;
-
 }
 .btn:focus,.btn:active {
    outline: none !important;
