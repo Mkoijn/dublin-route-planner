@@ -47,7 +47,7 @@
     }
 
     function showPosition(position) {
-      console.log(position.coords.latitude);
+      // console.log(position.coords.latitude);
       current_lat = position.coords.latitude;
       current_lng = position.coords.longitude;
       // Convert to address
@@ -56,7 +56,7 @@
       geocoder.geocode({'location': latlng}, function(results, status) {
           if (status === 'OK') {
             if (results[0]) {
-              console.log(results[0].formatted_address);
+              // console.log(results[0].formatted_address);
               var formatted_ad = results[0].formatted_address;
               document.getElementById('search_start').value = formatted_ad;
             } else {
@@ -67,7 +67,7 @@
           }
         });
     }
-    getLocation();
+
     if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
       getLocation();
   	} else {
