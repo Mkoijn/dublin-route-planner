@@ -38,15 +38,8 @@
     var current_lng = 0;
     var formatted_ad = '';
 
-    function getLocation() {
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(showPosition);
-        } else {
-            input_start.innerHTML = "Geolocation is not supported by this browser.";
-        }
-    }
-
     function showPosition(position) {
+      console.log('B');
       // console.log(position.coords.latitude);
       current_lat = position.coords.latitude;
       current_lng = position.coords.longitude;
@@ -59,8 +52,10 @@
               // console.log(results[0].formatted_address);
               var formatted_ad = results[0].formatted_address;
               document.getElementById('search_start').value = formatted_ad;
+              console.log(formatted_ad);
             } else {
               window.alert('No results found');
+              console.log(formatted_ad);
             }
           } else {
             window.alert('Geocoder failed due to: ' + status);
@@ -68,13 +63,28 @@
         });
     }
 
+    function errorHandler(err) {
+            if(err.code == 1) {
+               alert("Error: Access is denied!");
+            }
+            else if( err.code == 2) {
+               alert("Error: Position is unavailable!");
+            }
+         }
+
+    function getLocation() {
+      console.log('A');
+        if (navigator.geolocation) {
+            var options = {timeout:60000};
+            navigator.geolocation.getCurrentPosition(showPosition,  errorHandler, options);
+        } else {
+            input_start.innerHTML = "Geolocation is not supported by this browser.";
+        }
+    }
+
     function detectmob() {
       if( navigator.userAgent.match(/Android/i)
-      || navigator.userAgent.match(/webOS/i)
       || navigator.userAgent.match(/iPhone/i)
-      || navigator.userAgent.match(/iPad/i)
-      || navigator.userAgent.match(/iPod/i)
-      || navigator.userAgent.match(/BlackBerry/i)
       || navigator.userAgent.match(/Windows Phone/i)
       ){
         return true;
