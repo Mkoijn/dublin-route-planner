@@ -38,6 +38,7 @@
             if (results[0]) {
               var formatted_ad = results[0].formatted_address;
               document.getElementById('search_start').value = formatted_ad;
+              start_autocomplete();
               // console.log(formatted_ad);
             } else {
               // window.alert('No results found');
@@ -71,8 +72,7 @@
       // console.log('step1 - getLocation');
         if (navigator.geolocation) {
             var options = {timeout:5000,
-                           maximumAge: 0,
-                           enableHighAccuracy: false
+                           enableHighAccuracy: true
                           };
             navigator.geolocation.getCurrentPosition(getLatLng, errorHandler, options);
         } else {
