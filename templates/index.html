@@ -14,104 +14,107 @@
 
 {% block content %}
 <body style="background-image: url(static/images/new1.v1.jpg);">
-    <br>
-    <br>
-    <div class="container">
+<br>
+<br>
+<div class="container">
 
-          <form class="form-signin" method="POST" action="/map">
-            {{ form.hidden_tag() }}
-            {{ wtf.form_field(form.start, id="search_start", placeholder="Where are you?",
-                              onClick="this.select();") }}
-            {{ wtf.form_field(form.finish, id="search_finish", placeholder="Where are you going?") }}
-            <button class="btn btn-md btn-primary" type="submit">Let's Go</button>
-          </form>
+      <form class="form-signin" method="POST" action="/map">
+        {{ form.hidden_tag() }}
+        {{ wtf.form_field(form.start, id="search_start", placeholder="Where are you?",
+                          onClick="this.select();") }}
+        {{ wtf.form_field(form.finish, id="search_finish", placeholder="Where are you going?") }}
+        <button class="btn btn-md btn-primary" type="submit">Let's Go</button>
+      </form>
+</div>
 
-    </div>
-    <script>
-    function convertLatLngToAddress(lat, lng){
-      // Convert to address
-      // console.log('step3 - covert and show')
-      var geocoder = new google.maps.Geocoder;
-      var latlng = {lat: parseFloat(lat), lng: parseFloat(lng)};
-      geocoder.geocode({'location': latlng}, function(results, status) {
-          if (status === 'OK') {
-            if (results[0]) {
-              var formatted_ad = results[0].formatted_address;
-              document.getElementById('search_start').value = formatted_ad;
-              start_autocomplete();
-              // console.log(formatted_ad);
-            } else {
-              // window.alert('No results found');
-            }
-          } else {
-            // window.alert('Geocoder failed due to: ' + status);
-          }
-        });
-    }
-
-    function getLatLng(position) {
-      // console.log('step2 - getLatLng');
-      // console.log(position.coords.latitude);
-      var current_lat = position.coords.latitude;
-      var current_lng = position.coords.longitude;
-      convertLatLngToAddress(current_lat, current_lng);
-    }
-
-    function errorHandler(err) {
-            if(err.code == 1) {
-               start_autocomplete();
-               //alert("Error: Access is denied!");
-            }
-            else if( err.code == 2) {
-               start_autocomplete();
-               //alert("Error: Position is unavailable!");
-            }
-         }
-
-    function getLocation() {
-      // console.log('step1 - getLocation');
-        if (navigator.geolocation) {
-            var options = {timeout:5000,
-                           enableHighAccuracy: true
-                          };
-            navigator.geolocation.getCurrentPosition(getLatLng, errorHandler, options);
+<script>
+function convertLatLngToAddress(lat, lng){
+  // Convert to address
+  // console.log('step3 - covert and show')
+  var geocoder = new google.maps.Geocoder;
+  var latlng = {lat: parseFloat(lat), lng: parseFloat(lng)};
+  geocoder.geocode({'location': latlng}, function(results, status) {
+      if (status === 'OK') {
+        if (results[0]) {
+          var formatted_ad = results[0].formatted_address;
+          document.getElementById('search_start').value = formatted_ad;
+          start_autocomplete();
+          // console.log(formatted_ad);
         } else {
-            alert("Geolocation is not supported by this browser.");
+          // window.alert('No results found');
         }
-    }
-
-    function detectmob() {
-      if( navigator.userAgent.match(/Android/i)
-      || navigator.userAgent.match(/iPhone/i)
-      || navigator.userAgent.match(/Windows Phone/i)
-      ){
-        return true;
+      } else {
+        // window.alert('Geocoder failed due to: ' + status);
       }
-      else {
-        return false;
-      }
-    }
+    });
+}
 
-    function start_autocomplete(){
-      var input_start = document.getElementById('search_start');
-      var autocomplete_start = new google.maps.places.Autocomplete(input_start);
-      autocomplete_start.setComponentRestrictions(
-              {'country': ['ie']});
-    }
+function getLatLng(position) {
+  //console.log(' start getLatLng');
+  var current_lat = position.coords.latitude;
+  var current_lng = position.coords.longitude;
+  convertLatLngToAddress(current_lat, current_lng);
+}
 
-    function activatePlacesSearch(){
-      if( detectmob() ) {
-        getLocation();
-    	} else {
-        start_autocomplete();
-      }
+function errorHandler(err) {
+        if(err.code == 1) {
+           start_autocomplete();
+           //alert("Error: Access is denied!");
+        }
+        else if( err.code == 2) {
+           start_autocomplete();
+           //alert("Error: Position is unavailable!");
+        }
+     }
 
-      var input_finish = document.getElementById('search_finish');
-      var autocomplete_finish = new google.maps.places.Autocomplete(input_finish);
-      autocomplete_finish.setComponentRestrictions(
-              {'country': ['ie']});
+function getLocation() {
+  //console.log('start geoLoc');
+    if (navigator.geolocation) {
+        var options = {timeout:5000,
+                       enableHighAccuracy: true
+                      };
+        //console.log('after checking geolocation works');
+        navigator.geolocation.getCurrentPosition(getLatLng, errorHandler, options);
+        //console.log('after calling getCurrentPosition');
+    } else {
+        alert("Geolocation is not supported by this browser.");
     }
-    </script>
+}
+
+function detectmob() {
+  if( navigator.userAgent.match(/Android/i)
+       || navigator.userAgent.match(/webOS/i)
+       || navigator.userAgent.match(/iPhone/i)
+       || navigator.userAgent.match(/iPad/i)
+       || navigator.userAgent.match(/iPod/i)
+       || navigator.userAgent.match(/BlackBerry/i)
+       || navigator.userAgent.match(/Windows Phone/i)) {
+    return true;
+  }
+  else {
+    return false;
+  }
+}
+
+function start_autocomplete(){
+  var input_start = document.getElementById('search_start');
+  var autocomplete_start = new google.maps.places.Autocomplete(input_start);
+  autocomplete_start.setComponentRestrictions(
+          {'country': ['ie']});
+}
+
+function activatePlacesSearch(){
+  if( detectmob() ) {
+    getLocation();
+	} else {
+    start_autocomplete();
+  }
+  var input_finish = document.getElementById('search_finish');
+  var autocomplete_finish = new google.maps.places.Autocomplete(input_finish);
+  autocomplete_finish.setComponentRestrictions(
+          {'country': ['ie']});
+}
+</script>
 </body>
 
 <script src="https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyCbLnsQQH5RbYWL1mn1co79q5ov7TRjjU0&callback=activatePlacesSearch"></script>
