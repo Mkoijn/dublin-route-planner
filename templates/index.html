@@ -21,8 +21,9 @@
       <form class="form-signin" method="POST" action="/map">
         {{ form.hidden_tag() }}
         {{ wtf.form_field(form.start, id="search_start", placeholder="Where are you?",
-                          onClick="this.select();") }}
-        {{ wtf.form_field(form.finish, id="search_finish", placeholder="Where are you going?") }}
+                          onClick="this.setSelectionRange(0, this.value.length);") }}
+        {{ wtf.form_field(form.finish, id="search_finish", placeholder="Where are you going?",
+                          onClick="this.setSelectionRange(0, this.value.length);") }}
         <button class="btn btn-md btn-primary" type="submit">Let's Go</button>
       </form>
 </div>
@@ -59,11 +60,15 @@ function getLatLng(position) {
 function errorHandler(err) {
         if(err.code == 1) {
            start_autocomplete();
+           ipLookUp();
+           start_autocomplete();
            //alert("Error: Access is denied!");
         }
         else if( err.code == 2) {
+           console.log('oops');
+           ipLookUp();
            start_autocomplete();
-           //alert("Error: Position is unavailable!");
+           // alert("Error: Position is unavailable!");
         }
      }
 
@@ -108,6 +113,23 @@ function activatePlacesSearch(){
   autocomplete_finish.setComponentRestrictions(
           {'country': ['ie']});
 }
+
+function ipLookUp() {
+  $.ajax('http://ip-api.com/json').then(
+      function success(response) {
+          // console.log('User\'s Location Data is ', response);
+          // console.log('User\'s Country', response.country);
+          convertLatLngToAddress(response.lat, response.lon)
+},
+
+      function fail(data, status) {
+          console.log('Request failed.  Returned status of',
+                      status);
+      }
+  );
+}
+
+
 </script>
 </body>
 
