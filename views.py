@@ -7,11 +7,11 @@ from app import app, login_manager
 from models import User
 from forms import AddressForm, LoginForm, RegisterForm
 from flask import render_template, redirect, url_for, request
-from helpers.bike_locations import closest_station, get_coordinates
-from helpers.bisecting_addresses import middle_lat_lon
+from helpers.bike_locations import closest_stations, get_coordinates
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, login_required, logout_user, current_user
 from models import db
+import json
 
 
 @login_manager.user_loader
@@ -31,13 +31,18 @@ def map():
         start_address = request.form['start']
         start_coordinates = get_coordinates(start_address)
         # print(start_coordinates)
-        start_station = closest_station(start_address)
+        start_stations = json.dumps(closest_stations(start_address))
+        # start_station = start_stations[0]
+        print(start_stations[0])
         finish_address = request.form['finish']
         finish_coordinates = get_coordinates(finish_address)
-        finish_station = closest_station(finish_address)
-        middle_address = middle_lat_lon(start_coordinates.get('lat'), start_coordinates.get('lng'), finish_coordinates.get('lat'), finish_coordinates.get('lng'))
-        return render_template('map.html', start_station=start_station, finish_station=finish_station,
-                               start_coordinates=start_coordinates, finish_coordinates=finish_coordinates, middle_address=middle_address)
+        finish_stations = json.dumps(closest_stations(finish_address))
+        print(finish_stations[0])
+        # finish_station = finish_stations[0]
+        return render_template('map.html', start_coordinates=start_coordinates,
+                                           finish_coordinates=finish_coordinates,
+                                           starting_stations=start_stations,
+                                           finishing_stations=finish_stations,)
 
     return render_template('index.html')
 

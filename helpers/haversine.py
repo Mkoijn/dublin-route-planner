@@ -18,7 +18,15 @@ def closest(data, v):
     Returns closest station to given coordinates (v)
     from list of stations (data)
     '''
-    return min(data, key=lambda p: distance(v['lat'],
-                                            v['lng'],
-                                            p['lat'],
-                                            p['lng']))
+    # return min(data, key=lambda p: distance(v['lat'],
+    #                                        v['lng'],
+    #                                        p['lat'],
+    #                                        p['lng']))
+    for station in data:
+        interspace = distance(v['lat'], v['lng'], station['lat'], station['lng'])
+        # print(interspace)
+        station.update({'interspace': interspace})
+
+    # sorted_stations = sorted(data, key=lambda k: k['interspace'])
+    print(data)
+    return data

@@ -25,16 +25,10 @@
       <div id="collapse1" class="panel-collapse collapse">
         <div class="panel-body">
           <div id="bikeLeg1">
-            <h5>&nbsp;&bull;  WALK
-            </h5>
           </div>
           <div id="bikeLeg2">
-            <h5>&nbsp;&bull;  CYCLE
-            </h5>
           </div>
           <div id="bikeLeg3">
-            <h5>&nbsp;&bull;  WALK
-            </h5>
           </div>
         </div>
       </div>
@@ -86,20 +80,62 @@
 </div>
 
 <!-- Right Column Map. -->
-<div class="col-sm-9 no-gutters" id="map">
+<div class="col-sm-9" id="map">
 </div>
 
+<script>
+var start_stations = {{ starting_stations|safe }};
+start_stations.sort(function(a, b) {
+  return a.interspace - b.interspace;
+});
+//console.log(start_stations);
 
+var finish_stations = {{ finishing_stations|safe }};
+finish_stations.sort(function(c, d) {
+  return c.interspace - d.interspace;
+});
+//console.log(finish_stations);
 
-    <script>
-
+function getNewStartStation(){
+  document.getElementById('bikeLeg1').innerHTML = "";
+  document.getElementById('bikeLeg2').innerHTML = "";
+  document.getElementById('bikeLeg3').innerHTML = "";
+  document.getElementById('walkLeg').innerHTML = "";
+  document.getElementById('transitLeg').innerHTML = "";
+  // console.log(start_stations[0]);
+  start_stations.shift();
+  // console.log(start_stations[0]);
+  initMap();
+}
+function getNewFinishStation(){
+  document.getElementById('bikeLeg1').innerHTML = "";
+  document.getElementById('bikeLeg2').innerHTML = "";
+  document.getElementById('bikeLeg3').innerHTML = "";
+  document.getElementById('walkLeg').innerHTML = "";
+  document.getElementById('transitLeg').innerHTML = "";
+  // console.log(finish_stations[0]);
+  finish_stations.shift();
+  // console.log(finish_stations[0]);
+  initMap();
+}
+$(document.getElementById('bikeLeg2')).click(function(e) {
+	if (!$(e.target).is('.panel-heading')) {
+    	$('.collapse').collapse('hide');
+    }
+});
 function initMap() {
+  //console.log({{ starting_stations|safe }});
+  //console.log({{ finishing_stations|safe }});
+  var map = null;
   var start = {lat: {{start_coordinates.lat}}, lng: {{start_coordinates.lng}}};
-  var start_station = {lat: {{start_station.lat}}, lng: {{start_station.lng}}};
-  var finish_station = {lat: {{finish_station.lat}}, lng: {{finish_station.lng}}};
   var finish = {lat: {{finish_coordinates.lat}}, lng: {{finish_coordinates.lng}}};
-
-  // var center = {lat: {{middle_address[0]}}, lng: {{middle_address[1]}}}
+  var start_station = start_stations[0];
+  console.log(start_station);
+  var finish_station = finish_stations[0];
+  var start_station_coords = {lat: start_station.lat, lng: start_station.lng};
+  // console.log(start_station_coords);
+  var finish_station_coords = {lat: finish_station.lat, lng: finish_station.lng};
+  // console.log(finish_station_coords);
 
   // Create a renderer for directions
   var directionsDisplay = new google.maps.DirectionsRenderer();
@@ -108,8 +144,11 @@ function initMap() {
                     zoom: 14,
                     center: start
                    };
-  var map = new google.maps.Map(document.getElementById('map'), mapOptions);
+  map = new google.maps.Map(document.getElementById('map'), mapOptions);
   directionsDisplay.setMap(map);
+
+
+
 
   var start_marker = new google.maps.Marker({
     position: start,
@@ -127,11 +166,11 @@ function initMap() {
   });
 
   var bike1_marker = new google.maps.Marker({
-    position: start_station,
+    position: start_station_coords,
     map: map,
-    title: '{{start_station.name}}' + '\n Available Stands: '
-            + '{{start_station.stands}}' + '\n Available Bikes: '
-            + '{{start_station.bikes}}',
+    title: start_station.name + '\n Available Stands: '
+            + start_station.available_bike_stands + '\n Available Bikes: '
+            + start_station.available_bikes,
     label: {
             text: 'DB',
             fontSize: "16px",
@@ -140,11 +179,11 @@ function initMap() {
   });
 
   var bike2_marker = new google.maps.Marker({
-    position: finish_station,
+    position: finish_station_coords,
     map: map,
-    title: '{{finish_station.name}}' + '\n Available Stands: '
-            + '{{finish_station.stands}}' + '\n Available Bikes: '
-            + '{{finish_station.bikes}}',
+    title: finish_station.name + '\n Available Stands: '
+            + finish_station.available_bike_stands + '\n Available Bikes: '
+            + finish_station.available_bikes,
     label: {
             text: 'DB',
             fontSize: "16px",
@@ -211,18 +250,24 @@ function initMap() {
   // Draw Bikes on Map after Click
   document.getElementById("biking_button").addEventListener("click", renderBikes);
   function renderBikes() {
+    document.getElementById("biking_button").removeEventListener("click", renderBikes);
+    document.getElementById("transit_button").addEventListener("click", renderTransit);
+    document.getElementById("walking_button").addEventListener("click", renderWalk);
     polyWalk.setMap(null);
     polyTransit.setMap(null);
     markers[1].setVisible(true);
     markers[2].setVisible(true);
-    requestDirections(start, start_station, 'WALKING', map, polyBike1 ,directionsService);
-    requestDirections(start_station, finish_station,'BICYCLING', map, polyBike2, directionsService);
-    requestDirections(finish, finish_station, 'WALKING', map, polyBike3, directionsService);
+    requestDirections(start, start_station_coords, 'WALKING', map, polyBike1 ,directionsService);
+    requestDirections(start_station_coords, finish_station_coords,'BICYCLING', map, polyBike2, directionsService);
+    requestDirections(finish, finish_station_coords, 'WALKING', map, polyBike3, directionsService);
   };
 
   // Draw Walking on Map after Click
   document.getElementById("walking_button").addEventListener("click", renderWalk);
   function renderWalk() {
+    document.getElementById("walking_button").removeEventListener("click", renderWalk);
+    document.getElementById("biking_button").addEventListener("click", renderBikes);
+    document.getElementById("transit_button").addEventListener("click", renderTransit);
     polyBike1.setMap(null);
     polyBike2.setMap(null);
     polyBike3.setMap(null);
@@ -236,6 +281,9 @@ function initMap() {
   // Draw Transit on Map after Click and get DistanceMatrixService
   document.getElementById("transit_button").addEventListener("click", renderTransit);
   function renderTransit() {
+    document.getElementById("transit_button").removeEventListener("click", renderTransit);
+    document.getElementById("biking_button").addEventListener("click", renderBikes);
+    document.getElementById("walking_button").addEventListener("click", renderWalk);
     polyBike1.setMap(null);
     polyBike2.setMap(null);
     polyBike3.setMap(null);
@@ -249,12 +297,12 @@ function initMap() {
   // First for Dublin Bikes Widget, then Walking
   var total_time = 0;
   // First calculate walk time from start to bike station
-  function walkToBikeStation(start, start_station){
+  function walkToBikeStation(start, start_station_coords){
     var time1 = 0;
     var service = new google.maps.DistanceMatrixService;
     service.getDistanceMatrix({
       origins: [start],
-      destinations: [start_station],
+      destinations: [start_station_coords],
       travelMode: 'WALKING',
       unitSystem: google.maps.UnitSystem.METRIC,
       avoidHighways: false,
@@ -275,25 +323,26 @@ function initMap() {
           var outputDiv = document.getElementById('bikeLeg1');
           var results = response.rows[0].elements;
           // console.log(results);
-          outputDiv.innerHTML += shortOr + ' to ' + shortDe +
-                            '<br>&nbsp;&nbsp;' + '<strong>' + results[0].distance.text + ' in ' +
-                            results[0].duration.text + '</strong><br>';
+          outputDiv.innerHTML += '<h5>&nbsp;&bull;  WALK</h5>' + shortOr +
+                                 ' to ' + shortDe + '<br>&nbsp;&nbsp;' +
+                                 '<strong>' + results[0].distance.text +
+                                 ' in ' +
+                                 results[0].duration.text + '</strong><br>';
 
           time1 = results[0].duration.value;
           total_time += time1;
           // Calculate time on bike
-          bikeToBikeStation(start_station, finish_station);
+          bikeToBikeStation(start_station_coords, finish_station_coords);
       }
     });
   }
-
   // Calculate time on bike
-  function bikeToBikeStation(start_station, finish_station){
+  function bikeToBikeStation(start_station_coords, finish_station_coords){
     var time2 = 0;
     var service = new google.maps.DistanceMatrixService;
     service.getDistanceMatrix({
-      origins: [start_station],
-      destinations: [finish_station],
+      origins: [start_station_coords],
+      destinations: [finish_station_coords],
       travelMode: 'BICYCLING',
       unitSystem: google.maps.UnitSystem.METRIC,
       avoidHighways: false,
@@ -309,28 +358,36 @@ function initMap() {
         var shortDe = destinationList[0].split(',')[0];
         var outputDiv = document.getElementById('bikeLeg2');
         var results = response.rows[0].elements;
-        outputDiv.innerHTML += shortOr + ' to ' + shortDe +
-                          '<br>&nbsp;&nbsp;' + '<strong>' + results[0].distance.text + ' in ' +
-                          results[0].duration.text + '</strong><br>';
+        outputDiv.innerHTML += '<h5>&nbsp;&bull;  CYCLE</h5>' + shortOr +
+                               ' to ' + shortDe + '<br>&nbsp;&nbsp;' +
+                               '<strong>' + results[0].distance.text + ' in ' +
+                               results[0].duration.text + '</strong><br>';
 
-        outputDiv.innerHTML += '<br>' + 'Bike Pick Up: ' + '{{start_station.name}}' + '<br>'
-                              + '&nbsp;&nbsp;Available bikes: ' + '{{start_station.bikes}}' + '<br>';
-        outputDiv.innerHTML += 'Bike Return: ' + '{{finish_station.name}}' + '<br>'
-                              + '&nbsp;&nbsp;Available spaces: ' + '{{finish_station.stands}}' + '<br>';
+        outputDiv.innerHTML += '<br>' + 'Bike Pick Up: ' + start_station.name + '<br>'
+                              + '&nbsp;&nbsp;Available bikes: ' + start_station.available_bikes;
+        if(start_station.available_bikes == 0) {
+          outputDiv.innerHTML += '&nbsp;&nbsp;<button onclick="getNewStartStation()" type="button" class="btn btn-xs btn-dark">Change Station</button><br>';
+        }
+        console.log(start_station.available_bikes);
+        outputDiv.innerHTML += '<br>Bike Return: ' + finish_station.name + '<br>'
+                              + '&nbsp;&nbsp;Available spaces: ' + finish_station.available_bike_stands;
+        if(finish_station.available_bike_stands == 0) {
+          outputDiv.innerHTML += '&nbsp;&nbsp;<button onclick="getNewFinishStation()" type="button" class="btn btn-xs btn-dark">Change Station</button><br>';
+        }
 
         time2 = results[0].duration.value;
         total_time += time2;
         // Time from bike station to finish
-        bikeStationToFinish(finish_station, finish);
+        bikeStationToFinish(finish_station_coords, finish);
       }
     });
   }
   // Calculate last DB journey walk
-  function bikeStationToFinish(finish_station, finish){
+  function bikeStationToFinish(finish_station_coords, finish){
     var time3 = 0;
     var service = new google.maps.DistanceMatrixService;
     service.getDistanceMatrix({
-      origins: [finish_station],
+      origins: [finish_station_coords],
       destinations: [finish],
       travelMode: 'WALKING',
       unitSystem: google.maps.UnitSystem.METRIC,
@@ -347,9 +404,10 @@ function initMap() {
         var shortDe = destinationList[0].split(',')[0];
         var outputDiv = document.getElementById('bikeLeg3');
         var results = response.rows[0].elements;
-        outputDiv.innerHTML += shortOr + ' to ' + shortDe +
-                          '<br>&nbsp;&nbsp;' + '<strong>' + results[0].distance.text + ' in ' +
-                          results[0].duration.text + '</strong><br>';
+        outputDiv.innerHTML += '<h5>&nbsp;&bull;  WALK</h5>' + shortOr +
+                               ' to ' + shortDe + '<br>&nbsp;&nbsp;' +
+                               '<strong>' + results[0].distance.text + ' in ' +
+                               results[0].duration.text + '</strong><br>';
 
         time3 = results[0].duration.value;
         total_time += time3;
@@ -359,7 +417,7 @@ function initMap() {
     });
   }
   // Call walk to bike station function (which then calls 2 more functions)
-  walkToBikeStation(start, start_station);
+  walkToBikeStation(start, start_station_coords);
 
   // Output Walking Results
   function onlyWalking(start, finish){
@@ -428,9 +486,9 @@ function initMap() {
       }
     });
   }
-
   calcTransit(start, finish);
 }
+
 </script>
 <script async defer
 src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCbLnsQQH5RbYWL1mn1co79q5ov7TRjjU0&callback=initMap">

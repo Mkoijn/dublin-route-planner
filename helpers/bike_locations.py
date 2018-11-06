@@ -1,18 +1,18 @@
 from urllib.request import Request, urlopen
 from json import loads
-import helpers.haversine as hav
+import helpers.haversine as haver
 import requests
 
 
-class BikeStation:
-    def __init__(self, key, name, lat, lng, stands, bikes, status):
-        self.key = key
-        self.name = name
-        self.lat = lat
-        self.lng = lng
-        self.stands = stands
-        self.bikes = bikes
-        self.status = status
+# class BikeStation:
+#     def __init__(self, key, name, lat, lng, stands, bikes, status):
+#         self.key = key
+#         self.name = name
+#         self.lat = lat
+#         self.lng = lng
+#         self.stands = stands
+#         self.bikes = bikes
+#         self.status = status
 
 
 # Bike data URL API
@@ -24,18 +24,26 @@ bike_data = loads(urlopen(req).read().decode("utf-8"))
 
 # get coords of stations from bike data to calculate distances
 for item in bike_data:
+    # print(item)
     item['lat'] = item['position']['lat']
     item['lng'] = item['position']['lng']
-    item.pop('position', None)
+    item.pop('position', None)  # extract lat and lng
+    # print(item)
 
 
-def closest_station(address):
+def closest_stations(address):
+    # Covert address from User to Lat and Lng
     coords = get_coordinates(address)
     # Use Haversine Formula to return closest station to address
-    closest_station = hav.closest(bike_data, coords)
-    station = BikeStation(closest_station['number'], closest_station['name'], closest_station['lat'], closest_station['lng'],
-                          closest_station['available_bike_stands'], closest_station['available_bikes'], closest_station['status'])
-    return station
+    closest_stations = haver.closest(bike_data, coords)
+
+    # for station in closest_stations:
+    #     station_object = BikeStation(station['number'], station['name'], station['lat'], station['lng'],
+    #                                  station['available_bike_stands'], station['available_bikes'], station['status'])
+    #     sorted_stations.append(station_object)
+    # print(sorted_stations)
+    # print(closest_stations)
+    return closest_stations
 
 
 def get_coordinates(address):
