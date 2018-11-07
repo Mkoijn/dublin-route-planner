@@ -1,4 +1,5 @@
 from math import cos, asin, sqrt
+import pprint
 
 
 def distance(lat1, lon1, lat2, lon2):
@@ -28,5 +29,6 @@ def closest(data, v):
         station.update({'interspace': interspace})
 
     # sorted_stations = sorted(data, key=lambda k: k['interspace'])
-    print(data)
+    # sorting now done in template
+    pprint.pprint(data, width=1)
     return data

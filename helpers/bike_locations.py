@@ -1,5 +1,3 @@
-from urllib.request import Request, urlopen
-from json import loads
 import helpers.haversine as haver
 import requests
 
@@ -14,24 +12,7 @@ import requests
 #         self.bikes = bikes
 #         self.status = status
 
-
-# Bike data URL API
-url = 'https://api.jcdecaux.com/vls/v1/stations?contract=Dublin&apiKey=7453c07d7cf230540911a81515a937d8963cbdfe'
-
-req = Request(url, None, {'User-agent': 'Mozilla/5.0 (Windows; U; Windows\
-                        NT 5.1; de; rv:1.9.1.5) Gecko/20091102 Firefox/3.5.5'})
-bike_data = loads(urlopen(req).read().decode("utf-8"))
-
-# get coords of stations from bike data to calculate distances
-for item in bike_data:
-    # print(item)
-    item['lat'] = item['position']['lat']
-    item['lng'] = item['position']['lng']
-    item.pop('position', None)  # extract lat and lng
-    # print(item)
-
-
-def closest_stations(address):
+def closest_stations(address, bike_data):
     # Covert address from User to Lat and Lng
     coords = get_coordinates(address)
     # Use Haversine Formula to return closest station to address
