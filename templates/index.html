@@ -16,7 +16,6 @@
 <body style="background-image: url(static/images/new1.v1.jpg);">
 <br>
 <br>
-<button onclick="getLocation()">Current Location</button>
 <div class="container">
 
       <form class="form-signin" method="POST" action="/map">
@@ -27,8 +26,8 @@
                           onClick="this.setSelectionRange(0, this.value.length);") }}
         <button class="btn btn-md btn-primary" type="submit">Let's Go</button>
       </form>
-
 </div>
+
 <script>
 function convertLatLngToAddress(lat, lng){
   // Convert to address
@@ -116,7 +115,7 @@ function activatePlacesSearch(){
 }
 
 // function ipLookUp() {
-//   $.ajax('https://ip-api.com/json').then(
+//   $.ajax('http://ip-api.com/json').then(
 //       function success(response) {
 //           // console.log('User\'s Location Data is ', response);
 //           // console.log('User\'s Country', response.country);
