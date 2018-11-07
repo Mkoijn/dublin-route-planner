@@ -97,8 +97,12 @@ var originalStartStation = start_stations[0];
 var originalFinishStation = finish_stations[0];
 
 // console.log(originalFinishStation);
-
-
+// Check that stations are open"
+var isOpen = true;
+if(originalStartStation.status !== "OPEN"){
+  isOpen = false;
+}
+console.log(isOpen);
 function getNewStartStation(){
   document.getElementById("collapse1").collapse;
   document.getElementById('bikeLeg1').innerHTML = "";
@@ -255,16 +259,18 @@ function initMap() {
   }
 
   function renderBikes() {
-    document.getElementById("biking_button").removeEventListener("click", renderBikes);
-    document.getElementById("transit_button").addEventListener("click", renderTransit);
-    document.getElementById("walking_button").addEventListener("click", renderWalk);
-    polyWalk.setMap(null);
-    polyTransit.setMap(null);
-    markers[1].setVisible(true);
-    markers[2].setVisible(true);
-    requestDirections(start, start_station_coords, 'WALKING', map, polyBike1 ,directionsService);
-    requestDirections(start_station_coords, finish_station_coords,'BICYCLING', map, polyBike2, directionsService);
-    requestDirections(finish, finish_station_coords, 'WALKING', map, polyBike3, directionsService);
+    if(isOpen){
+        document.getElementById("biking_button").removeEventListener("click", renderBikes);
+        document.getElementById("transit_button").addEventListener("click", renderTransit);
+        document.getElementById("walking_button").addEventListener("click", renderWalk);
+        polyWalk.setMap(null);
+        polyTransit.setMap(null);
+        markers[1].setVisible(true);
+        markers[2].setVisible(true);
+        requestDirections(start, start_station_coords, 'WALKING', map, polyBike1 ,directionsService);
+        requestDirections(start_station_coords, finish_station_coords,'BICYCLING', map, polyBike2, directionsService);
+        requestDirections(finish, finish_station_coords, 'WALKING', map, polyBike3, directionsService);
+    }
   };
 
   // Draw Walking on Map after Click
@@ -369,14 +375,14 @@ function initMap() {
 
         outputDiv.innerHTML += '<br>' + 'Bike Pick Up: ' + start_station.name + '<br>'
                               + '&nbsp;&nbsp;Available Bikes: ' + start_station.available_bikes;
-        if(start_station.available_bikes < 1) {
+        if(start_station.available_bikes < 4) {
 
           outputDiv.innerHTML += '&nbsp;&nbsp;<button onclick="getNewStartStation()" type="button" class="btn btn-xs btn-dark">Change Station</button><br>';
         }
 
         outputDiv.innerHTML += '<br>Bike Return: ' + finish_station.name + '<br>'
                               + '&nbsp;&nbsp;Available Spaces: ' + finish_station.available_bike_stands;
-        if(finish_station.available_bike_stands < 1) {
+        if(finish_station.available_bike_stands < 4) {
           outputDiv.innerHTML += '&nbsp;&nbsp;<button onclick="getNewFinishStation()" type="button" class="btn btn-xs btn-dark">Change Station</button><br>';
         }
 
@@ -422,7 +428,15 @@ function initMap() {
     });
   }
   // Call walk to bike station function (which then calls 2 more functions)
-  walkToBikeStation(start, start_station_coords);
+  if(isOpen){
+    walkToBikeStation(start, start_station_coords);
+  } else {
+    var outputDiv = document.getElementById('biking_button');
+    outputDiv.innerHTML += '<h5><strong>CLOSED</strong> between 12:30 and 05:00</h5>'
+    document.getElementById('bikeLeg1').remove();
+    document.getElementById('bikeLeg2').remove();
+    document.getElementById('bikeLeg3').remove();
+  }
 
   // Output Walking Results
   function onlyWalking(start, finish){
@@ -474,7 +488,7 @@ function initMap() {
       outputDiv.innerHTML += '<h5>&nbsp;&bull;  TRANSIT</h5>'
       if (status == google.maps.DirectionsStatus.OK) {
         // Write directions steps
-        //console.log(response.routes[0].legs[0].steps);
+        console.log(response.routes[0].legs[0].steps);
         stepLen = response.routes[0].legs[0].steps.length;
         //console.log(stepLen)
         for (i = 0; i < stepLen; i++) {
