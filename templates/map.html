@@ -93,9 +93,9 @@ finish_stations.sort(function(c, d) {
 //console.log(finish_stations);
 var originalStartStation = start_stations[0];
 // console.log(originalStartStation);
-var changedStartStation;
+
 var originalFinishStation = finish_stations[0];
-var changedFinishStation;
+
 // console.log(originalFinishStation);
 
 
@@ -250,7 +250,7 @@ function initMap() {
   document.getElementById("walking_button").addEventListener("click", renderWalk);
   document.getElementById("transit_button").addEventListener("click", renderTransit);
 
-  if((originalStartStation !== changedStartStation) || (originalFinishStation !== changedFinishStation)){
+  if((originalStartStation !== start_station) || (originalFinishStation !== finish_station)){
     renderBikes();
   }
 
