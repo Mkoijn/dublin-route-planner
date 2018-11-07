@@ -103,7 +103,7 @@ function start_autocomplete(){
 }
 
 function activatePlacesSearch(){
-  if( !detectmob() ) {
+  if( detectmob() ) {
     getLocation();
 	} else {
     start_autocomplete();
