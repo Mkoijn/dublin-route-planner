@@ -31,6 +31,6 @@ Then, run the application:
 
 To see your application, access this url in your browser:
 
-	http://localhost:5000
+
 
 All configuration is in: `config.py`

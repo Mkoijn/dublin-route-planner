@@ -103,7 +103,7 @@ function start_autocomplete(){
 }
 
 function activatePlacesSearch(){
-  if( detectmob() ) {
+  if( !detectmob() ) {
     getLocation();
 	} else {
     start_autocomplete();
@@ -115,7 +115,7 @@ function activatePlacesSearch(){
 }
 
 // function ipLookUp() {
-//   $.ajax('http://ip-api.com/json').then(
+//   $.ajax('https://ip-api.com/json').then(
 //       function success(response) {
 //           // console.log('User\'s Location Data is ', response);
 //           // console.log('User\'s Country', response.country);

@@ -36,7 +36,7 @@ def map():
                             NT 5.1; de; rv:1.9.1.5) Gecko/20091102 Firefox/3.5.5'})
     bike_data = loads(urlopen(req).read().decode("utf-8"))
 
-    # clean the 
+    # clean the
     for item in bike_data:
         # print(item)
         item['lat'] = item['position']['lat']
@@ -111,4 +111,5 @@ def set_response_headers(response):
     response.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate'
     response.headers['Pragma'] = 'no-cache'
     response.headers['Expires'] = '0'
+    response.headers.add('Access-Control-Allow-Origin', '*')
     return response
