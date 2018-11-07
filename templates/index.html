@@ -60,13 +60,13 @@ function getLatLng(position) {
 function errorHandler(err) {
         if(err.code == 1) {
            start_autocomplete();
-           // ipLookUp();
-           start_autocomplete();
+           //ipLookUp();
+           //start_autocomplete();
            //alert("Error: Access is denied!");
         }
         else if( err.code == 2) {
-           console.log('oops');
-           // ipLookUp();
+           //console.log('oops');
+           //ipLookUp();
            start_autocomplete();
            // alert("Error: Position is unavailable!");
         }
@@ -75,7 +75,7 @@ function errorHandler(err) {
 function getLocation() {
   //console.log('start geoLoc');
     if (navigator.geolocation) {
-        var options = {timeout:10000,
+        var options = {timeout:7000,
                        enableHighAccuracy: true
                       };
         //console.log('after checking geolocation works');
@@ -121,13 +121,13 @@ function activatePlacesSearch(){
 //           // console.log('User\'s Country', response.country);
 //           convertLatLngToAddress(response.lat, response.lon)
 // },
-
-      function fail(data, status) {
-          console.log('Request failed.  Returned status of',
-                      status);
-      }
-  );
-}
+//
+//       function fail(data, status) {
+//           console.log('Request failed.  Returned status of',
+//                       status);
+//       }
+//   );
+// }
 
 
 </script>
