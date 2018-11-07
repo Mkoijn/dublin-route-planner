@@ -16,6 +16,7 @@
 <body style="background-image: url(static/images/new1.v1.jpg);">
 <br>
 <br>
+<button onclick="getLocation()">Current Location</button>
 <div class="container">
 
       <form class="form-signin" method="POST" action="/map">
@@ -26,8 +27,8 @@
                           onClick="this.setSelectionRange(0, this.value.length);") }}
         <button class="btn btn-md btn-primary" type="submit">Let's Go</button>
       </form>
-</div>
 
+</div>
 <script>
 function convertLatLngToAddress(lat, lng){
   // Convert to address
