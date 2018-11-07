@@ -495,18 +495,24 @@ function initMap() {
           //console.log(response.routes[0].legs[0].steps[i].distance.text);
           //console.log(response.routes[0].legs[0].steps[i].duration.text);
           //console.log(response.routes[0].legs[0].steps[i].instructions);
+          if(response.routes[0].legs[0].steps[i].transit){
+            outputDiv.innerHTML += '<strong>' + response.routes[0].legs[0].steps[i].transit.departure_time.text + '&nbsp;&nbsp;' +
+                                    response.routes[0].legs[0].steps[i].transit.line.agencies[0].name +
+                                      '&nbsp;&nbsp;&nbsp;' + response.routes[0].legs[0].steps[i].transit.line.short_name + '</strong><br>';
+          }
+
           outputDiv.innerHTML += response.routes[0].legs[0].steps[i].instructions +
-                                  '<br>' + '&nbsp;&nbsp;<strong>'
-                                  + response.routes[0].legs[0].steps[i].distance.text +
+                                  '&nbsp;&nbsp;'
+                                  + '(' + response.routes[0].legs[0].steps[i].distance.text +
                                   ' in ' + response.routes[0].legs[0].steps[i].duration.text +
-                                  '</strong><br>';
+                                  ')<br><br>';
+
         }
       }
     });
   }
   calcTransit(start, finish);
 }
-
 </script>
 <script async defer
 src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCbLnsQQH5RbYWL1mn1co79q5ov7TRjjU0&callback=initMap">
