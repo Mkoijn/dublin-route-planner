@@ -40,11 +40,11 @@ html, body {
     border-radius: 25px;
     margin-top: 5px;
     border-style: solid;
-    border-color: #009900;
+    border-color: #E2790C;
     border-width: 2px;
-    padding-top: 5px;
+    padding-top: 10px;
     padding-right: 12px;
-    padding-left: 12px;
+    padding-left: 15px;
     padding-bottom: 10px;
 }
 
@@ -75,4 +75,26 @@ a:hover {
 
 a:active {
     text-decoration: none;
+}
+#transitWalk{
+  border-left-style: solid;
+  border-left-color: #00B2BC;
+  border-left-width: 5px;
+  padding-left: 12px;
+  margin-left: 4px;
+  padding-top:5px;
+  padding-bottom:5px;
+  margin-top:5px;
+  margin-bottom:5px;
+}
+#transitJourney{
+  border-left-style: solid;
+  border-left-color: #E2790C;
+  border-left-width: 5px;
+  padding-left: 12px;
+  margin-left: 4px;
+  padding-top:5px;
+  padding-bottom:5px;
+  margin-top:5px;
+  margin-bottom:5px;
 }
