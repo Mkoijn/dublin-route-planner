@@ -12,32 +12,7 @@ html, body {
   height: 100%;
   margin-top: -20px;
 }
-
-#bikeLegs {
-    border-radius: 25px;
-    margin-top: 5px;
-    margin-bottom: 5px;
-    border-style: solid;
-    border-color: #E2790C;
-    border-width: 2px;
-    padding-top: 9px;
-    padding-right: 5px;
-    padding-left: 12px;
-    padding-bottom: 9px;
-}
-#transitLeg {
-  border-radius: 25px;
-  margin-top: 5px;
-  margin-bottom: 5px;
-  border-style: solid;
-  border-color: #E2790C;
-  border-width: 2px;
-  padding-top: 9px;
-  padding-right: 5px;
-  padding-left: 12px;
-  padding-bottom: 9px;
-}
-#walkLeg {
+#walkLeg, #transitLeg, #bikeLegs {
     border-radius: 25px;
     margin-top: 5px;
     border-style: solid;

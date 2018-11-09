@@ -30,5 +30,5 @@ def closest(data, v):
 
     # sorted_stations = sorted(data, key=lambda k: k['interspace'])
     # sorting now done in template
-    pprint.pprint(data, width=1)
+    # pprint.pprint(data, width=1)
     return data
