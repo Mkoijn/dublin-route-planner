@@ -13,7 +13,7 @@ html, body {
   margin-top: -20px;
 }
 
-#bikeLeg2 {
+#bikeLegs {
     border-radius: 25px;
     margin-top: 5px;
     margin-bottom: 5px;
@@ -25,7 +25,19 @@ html, body {
     padding-left: 12px;
     padding-bottom: 15px;
 }
-#bikeLeg1, #bikeLeg3, #walkLeg {
+#transitLeg {
+  border-radius: 25px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  border-style: solid;
+  border-color: #E2790C;
+  border-width: 2px;
+  padding-top: 5px;
+  padding-right: 12px;
+  padding-left: 12px;
+  padding-bottom: 15px;
+}
+#walkLeg {
     border-radius: 25px;
     margin-top: 5px;
     border-style: solid;
@@ -34,17 +46,6 @@ html, body {
     padding-top: 5px;
     padding-right: 12px;
     padding-left: 12px;
-    padding-bottom: 10px;
-}
-#transitLeg {
-    border-radius: 25px;
-    margin-top: 5px;
-    border-style: solid;
-    border-color: #E2790C;
-    border-width: 2px;
-    padding-top: 10px;
-    padding-right: 12px;
-    padding-left: 15px;
     padding-bottom: 10px;
 }
 
@@ -81,7 +82,7 @@ a:active {
   border-left-color: #00B2BC;
   border-left-width: 5px;
   padding-left: 12px;
-  margin-left: 4px;
+  margin-left: 6px;
   padding-top:5px;
   padding-bottom:5px;
   margin-top:5px;
@@ -92,7 +93,14 @@ a:active {
   border-left-color: #E2790C;
   border-left-width: 5px;
   padding-left: 12px;
-  margin-left: 4px;
+  margin-left: 6px;
+  padding-top:5px;
+  padding-bottom:5px;
+  margin-top:5px;
+  margin-bottom:5px;
+}
+#station_name{
+  margin-left: 6px;
   padding-top:5px;
   padding-bottom:5px;
   margin-top:5px;
