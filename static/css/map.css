@@ -20,10 +20,10 @@ html, body {
     border-style: solid;
     border-color: #E2790C;
     border-width: 2px;
-    padding-top: 5px;
-    padding-right: 12px;
+    padding-top: 9px;
+    padding-right: 5px;
     padding-left: 12px;
-    padding-bottom: 15px;
+    padding-bottom: 9px;
 }
 #transitLeg {
   border-radius: 25px;
@@ -32,10 +32,10 @@ html, body {
   border-style: solid;
   border-color: #E2790C;
   border-width: 2px;
-  padding-top: 5px;
-  padding-right: 12px;
+  padding-top: 9px;
+  padding-right: 5px;
   padding-left: 12px;
-  padding-bottom: 15px;
+  padding-bottom: 9px;
 }
 #walkLeg {
     border-radius: 25px;
@@ -43,10 +43,10 @@ html, body {
     border-style: solid;
     border-color: #00B2BC;
     border-width: 2px;
-    padding-top: 5px;
-    padding-right: 12px;
+    padding-top: 9px;
+    padding-right: 5px;
     padding-left: 12px;
-    padding-bottom: 10px;
+    padding-bottom: 9px;
 }
 
 .panel-body{
@@ -101,8 +101,4 @@ a:active {
 }
 #station_name{
   margin-left: 6px;
-  padding-top:5px;
-  padding-bottom:5px;
-  margin-top:5px;
-  margin-bottom:5px;
 }

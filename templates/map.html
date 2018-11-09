@@ -414,6 +414,7 @@ function initMap() {
     });
   }
   onlyWalking(start, finish);
+
   // Output Transit to left Column
   function calcTransit(start, finish){
     var request = {
@@ -458,7 +459,7 @@ function initMap() {
                                     +  response.routes[0].legs[0].steps[i].transit.departure_stop.name + '</strong>'
                                     + '<div id="transitJourney">' + response.routes[0].legs[0].steps[i].transit.departure_time.text
                                     + '&nbsp;&nbsp;' + response.routes[0].legs[0].steps[i].transit.line.agencies[0].name
-                                    +  '&nbsp;&nbsp;' + duration + '(' + response.routes[0].legs[0].steps[i].transit.num_stops + ' stops)'
+                                    +  '&nbsp;&nbsp;' + duration + ' (' + response.routes[0].legs[0].steps[i].transit.num_stops + ' stops)'
                                     + '<br>' + trans_name + ' towards ' + response.routes[0].legs[0].steps[i].transit.headsign + '</div>';
 
               outputDiv.innerHTML += '<strong id="station_name">&bull;&nbsp;&nbsp;'
