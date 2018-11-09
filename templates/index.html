@@ -49,14 +49,12 @@ function convertLatLngToAddress(lat, lng){
       }
     });
 }
-
 function getLatLng(position) {
   //console.log(' start getLatLng');
   var current_lat = position.coords.latitude;
   var current_lng = position.coords.longitude;
   convertLatLngToAddress(current_lat, current_lng);
 }
-
 function errorHandler(err) {
         if(err.code == 1) {
            start_autocomplete();
@@ -71,7 +69,6 @@ function errorHandler(err) {
            // alert("Error: Position is unavailable!");
         }
      }
-
 function getLocation() {
   //console.log('start geoLoc');
     if (navigator.geolocation) {
@@ -85,7 +82,6 @@ function getLocation() {
         alert("Geolocation is not supported by this browser.");
     }
 }
-
 function detectmob() {
   if((typeof window.orientation !== "undefined") || (navigator.userAgent.indexOf('IEMobile') !== -1)) {
     return true;
@@ -94,14 +90,12 @@ function detectmob() {
     return false;
   }
 }
-
 function start_autocomplete(){
   var input_start = document.getElementById('search_start');
   var autocomplete_start = new google.maps.places.Autocomplete(input_start);
   autocomplete_start.setComponentRestrictions(
           {'country': ['ie']});
 }
-
 function activatePlacesSearch(){
   if( detectmob() ) {
     getLocation();
@@ -113,7 +107,6 @@ function activatePlacesSearch(){
   autocomplete_finish.setComponentRestrictions(
           {'country': ['ie']});
 }
-
 // function ipLookUp() {
 //   $.ajax('http://ip-api.com/json').then(
 //       function success(response) {
@@ -128,8 +121,6 @@ function activatePlacesSearch(){
 //       }
 //   );
 // }
-
-
 </script>
 </body>
 </html>

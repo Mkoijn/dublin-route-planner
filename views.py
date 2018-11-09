@@ -58,7 +58,9 @@ def map():
         return render_template('map.html', start_coordinates=start_coordinates,
                                            finish_coordinates=finish_coordinates,
                                            starting_stations=start_stations,
-                                           finishing_stations=finish_stations,)
+                                           finishing_stations=finish_stations,
+                                           start_address=start_address,
+                                           finish_address=finish_address)
 
     return render_template('index.html')
 
