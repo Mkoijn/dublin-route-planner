@@ -82,7 +82,7 @@ a:active {
   border-left-color: #00B2BC;
   border-left-width: 5px;
   padding-left: 12px;
-  margin-left: 6px;
+  margin-left: 7px;
   padding-top:5px;
   padding-bottom:5px;
   margin-top:5px;
@@ -93,12 +93,12 @@ a:active {
   border-left-color: #E2790C;
   border-left-width: 5px;
   padding-left: 12px;
-  margin-left: 6px;
+  margin-left: 7px;
   padding-top:5px;
   padding-bottom:5px;
   margin-top:5px;
   margin-bottom:5px;
 }
 #station_name{
-  margin-left: 6px;
+  margin-left: 7px;
 }
