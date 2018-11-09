@@ -35,9 +35,13 @@ def get_coordinates(address):
     response = requests.get(add)
     # print(add)
     resp_json_payload = response.json()
-    # print(resp_json_payload)
+    print(resp_json_payload)
     # print(resp_json_payload['results'][0]['geometry']['location']['lat'])
-    lat = resp_json_payload['results'][0]['geometry']['location']['lat']
-    lng = resp_json_payload['results'][0]['geometry']['location']['lng']
+    # Check that there is a result else reload index page
+    if resp_json_payload.get('status') != 'ZERO_RESULTS':
+        lat = resp_json_payload['results'][0]['geometry']['location']['lat']
+        lng = resp_json_payload['results'][0]['geometry']['location']['lng']
+    else:
+        return
     coords = {'lat': lat, 'lng': lng}
     return coords

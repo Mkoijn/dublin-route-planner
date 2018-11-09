@@ -46,13 +46,17 @@ def map():
     if request.method == 'POST':
         start_address = request.form['start']
         start_coordinates = get_coordinates(start_address)
+        finish_address = request.form['finish']
+        finish_coordinates = get_coordinates(finish_address)
+
+        if (start_coordinates is None) or (finish_coordinates is None):
+            return redirect(url_for('index'))
         # print(start_coordinates)
         start_stations = json.dumps(closest_stations(start_address, bike_data))
         # start_station = start_stations[0]
         # print(start_stations[0])
-        finish_address = request.form['finish']
-        finish_coordinates = get_coordinates(finish_address)
         finish_stations = json.dumps(closest_stations(finish_address, bike_data))
+        start_stations = json.dumps(closest_stations(start_address, bike_data))
         # print(finish_stations[0])
         # finish_station = finish_stations[0]
         return render_template('map.html', start_coordinates=start_coordinates,

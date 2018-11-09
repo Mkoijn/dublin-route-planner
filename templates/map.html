@@ -329,8 +329,8 @@ function initMap() {
       } else {
         var outputDiv = document.getElementById('bikeLeg2');
         var results = response.rows[0].elements;
-        outputDiv.innerHTML += '<strong id="station_name">&bull;&nbsp;&nbsp;'
-                              + start_station.name + '</strong><br>'
+        outputDiv.innerHTML += '<ul><li><strong>'
+                              + start_station.name + '</strong></li></ul>'
                                 + '&emsp;&emsp;Available Bikes: ' + start_station.available_bikes;
         if(start_station.available_bikes < 4) {
           outputDiv.innerHTML += '&nbsp;&nbsp;<button onclick="getNewStartStation()" type="button" class="btn btn-xs btn-dark">Change Station</button><br>';
@@ -338,8 +338,8 @@ function initMap() {
         outputDiv.innerHTML += '<div id="transitJourney">' +
                               'CYCLE About ' + results[0].duration.text + ' (' + results[0].distance.text + ')<br></div>'
 
-        outputDiv.innerHTML += '<strong id="station_name">&bull;&nbsp;&nbsp;'
-                                + finish_station.name + '</strong><br>'
+        outputDiv.innerHTML += '<ul><li><strong>'
+                                + finish_station.name + '</strong></li></ul>'
                                   + '&emsp;&emsp;Available Spaces: ' + start_station.available_bike_stands;
         if(finish_station.available_bike_stands < 4) {
               outputDiv.innerHTML += '&nbsp;&nbsp;<button onclick="getNewFinishStation()" type="button" class="btn btn-xs btn-dark">Change Station</button><br>';
@@ -455,15 +455,15 @@ function initMap() {
               var trans_name = response.routes[0].legs[0].steps[i].transit.line.name;
             }
 
-            outputDiv.innerHTML += '<strong id="station_name">&bull;&nbsp;&nbsp;'
-                                    +  response.routes[0].legs[0].steps[i].transit.departure_stop.name + '</strong>'
+            outputDiv.innerHTML += '<ul><li><strong>'
+                                  + response.routes[0].legs[0].steps[i].transit.departure_stop.name + '</strong></li></ul>'
                                     + '<div id="transitJourney">' + response.routes[0].legs[0].steps[i].transit.departure_time.text
                                     + '&nbsp;&nbsp;' + response.routes[0].legs[0].steps[i].transit.line.agencies[0].name
                                     +  '&nbsp;' + duration + ' (' + response.routes[0].legs[0].steps[i].transit.num_stops + ' stops)'
                                     + '<br>' + trans_name + ' towards ' + response.routes[0].legs[0].steps[i].transit.headsign + '</div>';
 
-              outputDiv.innerHTML += '<strong id="station_name">&bull;&nbsp;&nbsp;'
-                                    + response.routes[0].legs[0].steps[i].transit.arrival_stop.name + '</strong><br>';
+              outputDiv.innerHTML += '<ul><li><strong>'
+                                    + response.routes[0].legs[0].steps[i].transit.arrival_stop.name + '</strong></li></ul>';
           }
         }
         outputDiv.innerHTML += '<strong>&#9899;&nbsp;&nbsp;' + finish_add + '</strong><br>'
