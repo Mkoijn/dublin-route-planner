@@ -1,5 +1,6 @@
 html, body {
     height: 100%;
+
 }
 #info {
   padding-top: 50px;
@@ -32,6 +33,7 @@ html, body {
  border:1px solid transparent;
  border-radius:10px;
  border-color: black;
+
 }
 .btn:focus,.btn:active {
    outline: none !important;
@@ -82,3 +84,15 @@ ul {
     margin-bottom: 0px;
     padding-bottom:0px;
 }​
+.collapsing {
+position: relative;
+height: 0;
+overflow: hidden;
+-webkit-transition: height .35s ease;
+     -o-transition: height .35s ease;
+        transition: height .35s ease;
+}
+
+#check_time{
+  margin-bottom:0px;
+}

@@ -5,9 +5,10 @@
 {% endif %}
 {% block content %}
 <script src="{{ url_for('static', filename='js/renderDirections.js') }}"></script>
-<script src="{{ url_for('static', filename='js/checkValidTimes.js') }}"></script>
+<script src="{{ url_for('static', filename='js/timeHelpers.js') }}"></script>
+<script src="{{ url_for('static', filename='js/initializeMap.js') }}"></script>
 <!-- Left Column Travel Details  -->
-<div class="col-sm-3" id="info">
+<div class="col-md-3 col-sm-5 col-xs-12" id="info">
 
   <div class="panel-group" id="accordion">
 
@@ -18,6 +19,7 @@
             <button id="biking_button" type="button" class="btn btn-secondary btn-lg btn-block">
               <h4 style="display:inline"><strong>&nbsp;Dublin Bikes</strong></h4>
               <p style="display:inline" id="totalBikeTime"></p>
+              <p id="check_time"></p>
             </button>
           </a>
         </h4>
@@ -60,7 +62,7 @@
         <h4 class="panel-title">
           <a data-toggle="collapse" data-parent="#accordion" href="#collapse3">
             <button id="transit_button" type="button" class="btn btn-secondary btn-lg btn-block">
-              <h4 style="display:inline"><strong>&nbsp;Public Transport</strong></h4>
+              <h4 style="display:inline"><strong>&nbsp;Transit</strong></h4>
               <p style="display:inline" id="totalTransitTime"></p>
             </button>
           </a>
@@ -79,14 +81,14 @@
 </div>
 
 <!-- Right Column Map. -->
-<div class="col-sm-9" id="map">
+<div class="col-md-9 col-sm-7 col-xs-12" id="map">
 </div>
 
 <script>
 var start_address = {{ start_address|tojson }};
-console.log(start_address);
+// console.log(start_address);
 var finish_address = {{ finish_address|tojson }};
-console.log(finish_address);
+// console.log(finish_address);
 var start_stations = {{ starting_stations|safe }};
 start_stations.sort(function(a, b) {
   return a.interspace - b.interspace;
@@ -108,6 +110,7 @@ function getNewStartStation(){
   document.getElementById('bikeLeg3').innerHTML = "";
   document.getElementById('walkLeg').innerHTML = "";
   document.getElementById('transitLeg').innerHTML = "";
+  document.getElementById('check_time').innerHTML = "";
   // console.log(start_stations[0]);
   start_stations.shift();
   initMap();
@@ -124,8 +127,6 @@ function getNewFinishStation(){
 }
 function initMap() {
   var map = null;
-  //console.log({{ starting_stations|safe }});
-  //console.log({{ finishing_stations|safe }});
   var start = {lat: {{start_coordinates.lat}}, lng: {{start_coordinates.lng}}};
   var finish = {lat: {{finish_coordinates.lat}}, lng: {{finish_coordinates.lng}}};
   var start_station = start_stations[0];
@@ -376,16 +377,16 @@ function initMap() {
         time3 = results[0].duration.value;
         total_time += time3;
         var outputDiv2 = document.getElementById('totalBikeTime');
-        outputDiv2.innerHTML = '&nbsp;&nbsp;' + Math.ceil(total_time/60) + ' ' + 'minutes';
+        outputDiv2.innerHTML = '&nbsp;&nbsp;' + time_convert(Math.ceil(total_time/60));
       }
     });
   }
   // Call walk to bike station function (which then calls 2 more functions)
   walkToBikeStation(start, start_station_coords);
-  console.log(isValidTime());
+  // console.log(isValidTime());
   if(!isValidTime()){
-    var outputDiv = document.getElementById('biking_button');
-    outputDiv.innerHTML += '<h5><strong>NO PICK UP</strong> between 12:30 and 05:00</h5>'
+    var outputDiv = document.getElementById('check_time');
+    outputDiv.innerHTML += '<strong>NO PICK UP</strong> (12:30 to 05:00)'
   }
   // Output Walking Results
   function onlyWalking(start, finish){
@@ -411,7 +412,7 @@ function initMap() {
                                   '<ul><li><strong>' + finish_add + '</strong></li></ul>';
         time4 = results[0].duration.value;
         var outputDiv2 = document.getElementById('totalWalkTime');
-        outputDiv2.innerHTML = '&nbsp;&nbsp;' + Math.ceil(time4/60) + ' ' + 'minutes';
+        outputDiv2.innerHTML = '&nbsp;&nbsp;' + time_convert(Math.ceil(time4/60));
       }
     });
   }
@@ -432,12 +433,12 @@ function initMap() {
       // Output Total Time of Journey
       time4 = response.routes[0].legs[0].duration.value;
       var outputDiv2 = document.getElementById('totalTransitTime');
-      outputDiv2.innerHTML = '&nbsp;&nbsp;' + Math.ceil(time4/60) + ' ' + 'minutes';
+      outputDiv2.innerHTML = '&nbsp;&nbsp;' + time_convert(Math.ceil(time4/60));
       // Details of Journey
       var outputDiv = document.getElementById('transitLeg');
       if (status == google.maps.DirectionsStatus.OK) {
         // Test directions steps to parse
-        console.log(response.routes[0].legs[0].steps);
+        // console.log(response.routes[0].legs[0].steps);
         stepLen = response.routes[0].legs[0].steps.length;
         // Parse the steps and output
         outputDiv.innerHTML += '<ul><li><strong>'
