@@ -4,8 +4,8 @@
     {% include 'navbar_logged_out.html' %}
 {% endif %}
 {% block content %}
-<script src="{{ url_for('static', filename='renderDirections.js') }}"></script>
-<script src="{{ url_for('static', filename='checkValidTimes.js') }}"></script>
+<script src="{{ url_for('static', filename='js/renderDirections.js') }}"></script>
+<script src="{{ url_for('static', filename='js/checkValidTimes.js') }}"></script>
 <!-- Left Column Travel Details  -->
 <div class="col-sm-3" id="info">
 
@@ -301,7 +301,8 @@ function initMap() {
           var outputDiv = document.getElementById('bikeLeg1');
           var results = response.rows[0].elements;
           // console.log(results);
-          outputDiv.innerHTML += '<strong>&#9899;&nbsp;' + start_add + '<br></strong>' +
+          outputDiv.innerHTML += '<ul><li><strong>'
+                                + start_add + '</strong></li></ul>' +
                                    '<div id="transitWalk">' + 'WALK About ' +
                                      results[0].duration.text + '</div>';
           time1 = results[0].duration.value;
@@ -371,7 +372,7 @@ function initMap() {
         var results = response.rows[0].elements;
         outputDiv.innerHTML +=  '<div id="transitWalk">' + 'WALK About ' +
                                   results[0].duration.text + '</div>' +
-                                  '<strong>&#9899;&nbsp;' + finish_add + '</strong><br>';
+                                  '<ul><li><strong>' + finish_add + '</strong></li></ul>';
         time3 = results[0].duration.value;
         total_time += time3;
         var outputDiv2 = document.getElementById('totalBikeTime');
@@ -403,10 +404,11 @@ function initMap() {
       } else {
         var outputDiv = document.getElementById('walkLeg');
         var results = response.rows[0].elements;
-        outputDiv.innerHTML += '<strong>&#9899;&nbsp;' + start_add + '</strong><br>' +
+        outputDiv.innerHTML += '<ul><li><strong>'
+                              + start_add + '</strong></li></ul>' +
                                   '<div id="transitWalk">' + 'WALK About ' +
                                   results[0].duration.text + '</div>' +
-                                  '<strong>&#9899;&nbsp;' + finish_add + '</strong><br>';
+                                  '<ul><li><strong>' + finish_add + '</strong></li></ul>';
         time4 = results[0].duration.value;
         var outputDiv2 = document.getElementById('totalWalkTime');
         outputDiv2.innerHTML = '&nbsp;&nbsp;' + Math.ceil(time4/60) + ' ' + 'minutes';
@@ -438,7 +440,8 @@ function initMap() {
         console.log(response.routes[0].legs[0].steps);
         stepLen = response.routes[0].legs[0].steps.length;
         // Parse the steps and output
-        outputDiv.innerHTML += '<strong>&#9899;&nbsp;' + start_add + '</strong><br>'
+        outputDiv.innerHTML += '<ul><li><strong>'
+                              + start_add + '</strong></li></ul>';
         for (i = 0; i < stepLen; i++) {
           var distance = response.routes[0].legs[0].steps[i].distance.text;
           var duration = response.routes[0].legs[0].steps[i].duration.text;
@@ -466,7 +469,8 @@ function initMap() {
                                     + response.routes[0].legs[0].steps[i].transit.arrival_stop.name + '</strong></li></ul>';
           }
         }
-        outputDiv.innerHTML += '<strong>&#9899;&nbsp;' + finish_add + '</strong><br>'
+        outputDiv.innerHTML += '<ul><li><strong>'
+                              + finish_add + '</strong></li></ul>';
         // End of Steps Output
       }
     });

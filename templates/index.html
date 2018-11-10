@@ -14,10 +14,7 @@
 
 {% block content %}
 <body style="background-image: url(static/images/new1.v1.jpg);">
-<br>
-<br>
 <div class="container">
-
       <form class="form-signin" method="POST" action="/map">
         {{ form.hidden_tag() }}
         {{ wtf.form_field(form.start, id="search_start", placeholder="Where are you?",
@@ -30,8 +27,7 @@
 
 <script>
 function convertLatLngToAddress(lat, lng){
-  // Convert to address
-  // console.log('step3 - covert and show')
+  // Convert to Coords to Written Address
   var geocoder = new google.maps.Geocoder;
   var latlng = {lat: parseFloat(lat), lng: parseFloat(lng)};
   geocoder.geocode({'location': latlng}, function(results, status) {
@@ -40,17 +36,15 @@ function convertLatLngToAddress(lat, lng){
           var formatted_ad = results[0].formatted_address;
           document.getElementById('search_start').value = formatted_ad;
           start_autocomplete();
-          // console.log(formatted_ad);
         } else {
-          // window.alert('No results found');
+          window.alert('No results found');
         }
       } else {
-        // window.alert('Geocoder failed due to: ' + status);
+        window.alert('Geocoder failed due to: ' + status);
       }
     });
 }
 function getLatLng(position) {
-  //console.log(' start getLatLng');
   var current_lat = position.coords.latitude;
   var current_lng = position.coords.longitude;
   convertLatLngToAddress(current_lat, current_lng);
@@ -58,22 +52,27 @@ function getLatLng(position) {
 function errorHandler(err) {
         if(err.code == 1) {
            start_autocomplete();
-           //ipLookUp();
-           //start_autocomplete();
-           //alert("Error: Access is denied!");
+           // alert("Error: Access is denied!");
         }
         else if( err.code == 2) {
-           //console.log('oops');
-           //ipLookUp();
            start_autocomplete();
            // alert("Error: Position is unavailable!");
+        }
+        else if( err.code == 3) {
+           start_autocomplete();
+           // alert("Error: Access is denied!");
+        }
+        else if( err.code == 4) {
+           start_autocomplete();
+           // alert("Error: Access is denied!");
         }
      }
 function getLocation() {
   //console.log('start geoLoc');
     if (navigator.geolocation) {
-        var options = {timeout:7000,
-                       enableHighAccuracy: true
+        var options = {timeout:5000,
+                       enableHighAccuracy: true,
+                       maximumAge: 75000
                       };
         //console.log('after checking geolocation works');
         navigator.geolocation.getCurrentPosition(getLatLng, errorHandler, options);
@@ -82,14 +81,7 @@ function getLocation() {
         alert("Geolocation is not supported by this browser.");
     }
 }
-function detectmob() {
-  if((typeof window.orientation !== "undefined") || (navigator.userAgent.indexOf('IEMobile') !== -1)) {
-    return true;
-  }
-  else {
-    return false;
-  }
-}
+
 function start_autocomplete(){
   var input_start = document.getElementById('search_start');
   var autocomplete_start = new google.maps.places.Autocomplete(input_start);
@@ -97,30 +89,12 @@ function start_autocomplete(){
           {'country': ['ie']});
 }
 function activatePlacesSearch(){
-  if( detectmob() ) {
-    getLocation();
-	} else {
-    start_autocomplete();
-  }
+  getLocation();
   var input_finish = document.getElementById('search_finish');
   var autocomplete_finish = new google.maps.places.Autocomplete(input_finish);
   autocomplete_finish.setComponentRestrictions(
           {'country': ['ie']});
 }
-// function ipLookUp() {
-//   $.ajax('http://ip-api.com/json').then(
-//       function success(response) {
-//           // console.log('User\'s Location Data is ', response);
-//           // console.log('User\'s Country', response.country);
-//           convertLatLngToAddress(response.lat, response.lon)
-// },
-//
-//       function fail(data, status) {
-//           console.log('Request failed.  Returned status of',
-//                       status);
-//       }
-//   );
-// }
 </script>
 </body>
 </html>
