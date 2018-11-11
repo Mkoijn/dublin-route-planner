@@ -104,7 +104,6 @@ var originalFinishStation = finish_stations[0];
 // console.log(originalFinishStation);
 
 function getNewStartStation(){
-  document.getElementById("collapse1").collapse;
   document.getElementById('bikeLeg1').innerHTML = "";
   document.getElementById('bikeLeg2').innerHTML = "";
   document.getElementById('bikeLeg3').innerHTML = "";
@@ -121,6 +120,7 @@ function getNewFinishStation(){
   document.getElementById('bikeLeg3').innerHTML = "";
   document.getElementById('walkLeg').innerHTML = "";
   document.getElementById('transitLeg').innerHTML = "";
+  document.getElementById('check_time').innerHTML = "";
   // console.log(finish_stations[0]);
   finish_stations.shift();
   initMap();
@@ -342,7 +342,7 @@ function initMap() {
 
         outputDiv.innerHTML += '<ul><li>'
                                 + finish_station.name + '</li></ul>'
-                                  + '<strong>&emsp;&emsp;Available Spaces: ' + start_station.available_bike_stands + '</strong>';
+                                  + '<strong>&emsp;&emsp;Available Spaces: ' + finish_station.available_bike_stands + '</strong>';
         if(finish_station.available_bike_stands < 4) {
               outputDiv.innerHTML += '&nbsp;&nbsp;<button onclick="getNewFinishStation()" type="button" class="btn btn-xs btn-dark">Change Station</button><br>';
         }
