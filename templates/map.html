@@ -103,28 +103,28 @@ var originalStartStation = start_stations[0];
 var originalFinishStation = finish_stations[0];
 // console.log(originalFinishStation);
 
+
 function getNewStartStation(){
   document.getElementById('bikeLeg1').innerHTML = "";
   document.getElementById('bikeLeg2').innerHTML = "";
   document.getElementById('bikeLeg3').innerHTML = "";
-  document.getElementById('walkLeg').innerHTML = "";
-  document.getElementById('transitLeg').innerHTML = "";
   document.getElementById('check_time').innerHTML = "";
-  // console.log(start_stations[0]);
+  // console.log(finish_stations[0]);
   start_stations.shift();
   initMap();
 }
+
 function getNewFinishStation(){
   document.getElementById('bikeLeg1').innerHTML = "";
   document.getElementById('bikeLeg2').innerHTML = "";
   document.getElementById('bikeLeg3').innerHTML = "";
-  document.getElementById('walkLeg').innerHTML = "";
-  document.getElementById('transitLeg').innerHTML = "";
   document.getElementById('check_time').innerHTML = "";
   // console.log(finish_stations[0]);
   finish_stations.shift();
   initMap();
 }
+
+
 function initMap() {
   var map = null;
   var start = {lat: {{start_coordinates.lat}}, lng: {{start_coordinates.lng}}};
@@ -202,55 +202,63 @@ function initMap() {
   markers[2].setVisible(false);
   // Instantiate directions services.
   var directionsService = new google.maps.DirectionsService();
-  // Instantiate 5 directions renderers.
-  var polyBike1 = new google.maps.DirectionsRenderer({suppressMarkers: true,
+  polyBike1 = new google.maps.DirectionsRenderer({suppressMarkers: true,
                                                       suppressBicyclingLayer: true,
                                                       polylineOptions: {
-                                                          strokeColor: '#00B2BC'
+                                                          strokeColor: '#00B2BC',
+                                                          strokeOpacity: 0.4,
+                                                          strokeWeight: 7
                                                         }
                                                       });
-  var polyBike2 = new google.maps.DirectionsRenderer({suppressMarkers: true,
+  polyBike2 = new google.maps.DirectionsRenderer({suppressMarkers: true,
                                                       suppressBicyclingLayer: true,
                                                       polylineOptions: {
-                                                          strokeColor:'#E2790C'
+                                                          strokeColor:'#E2790C',
+                                                          strokeOpacity: 0.4,
+                                                          strokeWeight: 7
                                                         }
                                                       });
-  var polyBike3 = new google.maps.DirectionsRenderer({suppressMarkers: true,
+  polyBike3 = new google.maps.DirectionsRenderer({suppressMarkers: true,
                                                       suppressBicyclingLayer: true,
                                                       polylineOptions: {
-                                                          strokeColor: '#00B2BC'
+                                                          strokeColor: '#00B2BC',
+                                                          strokeOpacity: 0.4,
+                                                          strokeWeight: 7
                                                         }
                                                       });
-  var polyWalk = new google.maps.DirectionsRenderer({suppressMarkers: true,
+  polyWalk = new google.maps.DirectionsRenderer({suppressMarkers: true,
                                                      suppressBicyclingLayer: true,
                                                      polylineOptions: {
-                                                         strokeColor: '#00B2BC'
+                                                         strokeColor: '#00B2BC',
+                                                         strokeOpacity: 0.4,
+                                                         strokeWeight: 7
                                                         }
                                                     });
-  var polyTransit = new google.maps.DirectionsRenderer({suppressMarkers: true,
+  polyTransit = new google.maps.DirectionsRenderer({suppressMarkers: true,
                                                         suppressBicyclingLayer: true,
                                                         polylineOptions: {
-                                                          strokeColor: ' #E2790C'
+                                                          strokeColor: ' #E2790C',
+                                                          strokeOpacity: 0.4,
+                                                          strokeWeight: 7
                                                          }
                                                        });
-  // Draw Bikes on Map after Click
-  document.getElementById("biking_button").addEventListener("click", renderBikes);
-  document.getElementById("walking_button").addEventListener("click", renderWalk);
-  document.getElementById("transit_button").addEventListener("click", renderTransit);
-  if((originalStartStation !== start_station) || (originalFinishStation !== finish_station)){
-    renderBikes();
-  }
+
+
+document.getElementById("biking_button").addEventListener("click", renderBikes);
+document.getElementById("walking_button").addEventListener("click", renderWalk);
+document.getElementById("transit_button").addEventListener("click", renderTransit);
+
   function renderBikes() {
-        document.getElementById("biking_button").removeEventListener("click", renderBikes);
-        document.getElementById("transit_button").addEventListener("click", renderTransit);
-        document.getElementById("walking_button").addEventListener("click", renderWalk);
-        polyWalk.setMap(null);
-        polyTransit.setMap(null);
-        markers[1].setVisible(true);
-        markers[2].setVisible(true);
-        requestDirections(start, start_station_coords, 'WALKING', map, polyBike1 ,directionsService);
-        requestDirections(start_station_coords, finish_station_coords,'BICYCLING', map, polyBike2, directionsService);
-        requestDirections(finish, finish_station_coords, 'WALKING', map, polyBike3, directionsService);
+    document.getElementById("biking_button").removeEventListener("click", renderBikes);
+    document.getElementById("transit_button").addEventListener("click", renderTransit);
+    document.getElementById("walking_button").addEventListener("click", renderWalk);
+    polyWalk.setMap(null);
+    polyTransit.setMap(null);
+    markers[1].setVisible(true);
+    markers[2].setVisible(true);
+    requestDirections(start, start_station_coords, 'WALKING', map, polyBike1 ,directionsService);
+    requestDirections(start_station_coords, finish_station_coords,'BICYCLING', map, polyBike2, directionsService);
+    requestDirections(finish, finish_station_coords, 'WALKING', map, polyBike3, directionsService);
   };
   // Draw Walking on Map after Click
   function renderWalk() {
@@ -278,6 +286,7 @@ function initMap() {
     markers[2].setVisible(false);
     requestDirections(start, finish, 'TRANSIT', map, polyTransit, directionsService);
   }
+
   // Output Results to left column
   // First for Dublin Bikes Widget, then Walking
   var total_time = 0;
@@ -381,15 +390,9 @@ function initMap() {
       }
     });
   }
-  // Call walk to bike station function (which then calls 2 more functions)
-  walkToBikeStation(start, start_station_coords);
-  // console.log(isValidTime());
-  if(!isValidTime()){
-    var outputDiv = document.getElementById('check_time');
-    outputDiv.innerHTML += '<strong>NO PICK UP</strong> (12:30 to 05:00)'
-  }
+
   // Output Walking Results
-  function onlyWalking(start, finish){
+  function calcWalking(start, finish){
     var service = new google.maps.DistanceMatrixService;
     service.getDistanceMatrix({
       origins: [start],
@@ -416,7 +419,6 @@ function initMap() {
       }
     });
   }
-  onlyWalking(start, finish);
 
   // Output Transit to left Column
   function calcTransit(start, finish){
@@ -476,7 +478,31 @@ function initMap() {
       }
     });
   }
-  calcTransit(start, finish);
+
+  // Call walk to bike station function (which then calls 2 more functions)
+  // Only Do if div is empty or start station has been changed.
+  if ( ($('#bikeLeg').children().length == 0) || (originalStartStation !== start_station)
+                                              || (originalFinishStation !== finish_station)) {
+     walkToBikeStation(start, start_station_coords);
+  }
+  // Render the bike route again if Station has been changed
+  if((originalStartStation !== start_station) || (originalFinishStation !== finish_station)){
+     renderBikes();
+  }
+
+
+  // console.log(isValidTime());
+  if(!isValidTime()){
+    var outputDiv = document.getElementById('check_time');
+    outputDiv.innerHTML += '<strong>NO PICK UP</strong> (12:30 to 05:00)'
+  }
+
+  if ( $('#transitLeg').children().length == 0 ) {
+     calcTransit(start, finish);
+  }
+  if ( $('#walkLeg').children().length == 0 ) {
+     calcWalking(start, finish);
+  }
 }
 </script>
 <script async defer
