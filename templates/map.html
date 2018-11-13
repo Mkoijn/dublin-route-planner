@@ -9,7 +9,6 @@
 <script src="{{ url_for('static', filename='js/initializeMap.js') }}"></script>
 <!-- Left Column Travel Details  -->
 <div class="col-md-3 col-sm-5 col-xs-12" id="info">
-
   <div class="panel-group" id="accordion">
 
     <div class="panel panel-default">
@@ -77,18 +76,16 @@
     </div>
 
   </div>
-
 </div>
 
-<!-- Right Column Map. -->
-<div class="col-md-9 col-sm-7 col-xs-12" id="map">
-</div>
+<!-- Right Column Map with Routes -->
+<div class="col-md-9 col-sm-7 col-xs-12" id="map"></div>
 
 <script>
+// Start and Finish Address from User Input
 var start_address = {{ start_address|tojson }};
-// console.log(start_address);
 var finish_address = {{ finish_address|tojson }};
-// console.log(finish_address);
+// Bike stations to start/finish addresses sorted by distance
 var start_stations = {{ starting_stations|safe }};
 start_stations.sort(function(a, b) {
   return a.interspace - b.interspace;
@@ -97,46 +94,42 @@ var finish_stations = {{ finishing_stations|safe }};
 finish_stations.sort(function(c, d) {
   return c.interspace - d.interspace;
 });
-//console.log(finish_stations);
+
+//
 var originalStartStation = start_stations[0];
-// console.log(originalStartStation);
 var originalFinishStation = finish_stations[0];
-// console.log(originalFinishStation);
 
-
+// Functions when user choose to select another station
 function getNewStartStation(){
   document.getElementById('bikeLeg1').innerHTML = "";
   document.getElementById('bikeLeg2').innerHTML = "";
   document.getElementById('bikeLeg3').innerHTML = "";
   document.getElementById('check_time').innerHTML = "";
-  // console.log(finish_stations[0]);
+  // Take original start station out of list
   start_stations.shift();
   initMap();
 }
-
 function getNewFinishStation(){
   document.getElementById('bikeLeg1').innerHTML = "";
   document.getElementById('bikeLeg2').innerHTML = "";
   document.getElementById('bikeLeg3').innerHTML = "";
   document.getElementById('check_time').innerHTML = "";
-  // console.log(finish_stations[0]);
   finish_stations.shift();
   initMap();
 }
 
-
+// Call back function on load using Google JS API requests
 function initMap() {
   var map = null;
+  // Start and Finish Address coords
   var start = {lat: {{start_coordinates.lat}}, lng: {{start_coordinates.lng}}};
   var finish = {lat: {{finish_coordinates.lat}}, lng: {{finish_coordinates.lng}}};
+  // Bike station Objects(with live API details) and start and finish coords
   var start_station = start_stations[0];
-  // console.log(start_station);
   var finish_station = finish_stations[0];
   var start_station_coords = {lat: start_station.lat, lng: start_station.lng};
-  // console.log(start_station_coords);
   var finish_station_coords = {lat: finish_station.lat, lng: finish_station.lng};
-  // console.log(finish_station_coords);
-  // Create a renderer for directions
+
   var directionsDisplay = new google.maps.DirectionsRenderer();
   // Create a map and center it on Start point.
   var mapOptions = {
@@ -145,6 +138,8 @@ function initMap() {
                    };
   map = new google.maps.Map(document.getElementById('map'), mapOptions);
   directionsDisplay.setMap(map);
+
+  // Create markers for start, finish and bike station locations
   var start_marker = new google.maps.Marker({
     position: start,
     map: map,
@@ -198,10 +193,12 @@ function initMap() {
            }
   });
   var markers = [start_marker, bike1_marker, bike2_marker, finish_marker];
+  // Allow start and finish markers to be visible always
   markers[1].setVisible(false);
   markers[2].setVisible(false);
-  // Instantiate directions services.
+  // Instantiate directions services for getting route info.
   var directionsService = new google.maps.DirectionsService();
+  // Polyines - 3 for Bike option, 1 for walking and 1 for Transit
   polyBike1 = new google.maps.DirectionsRenderer({suppressMarkers: true,
                                                       suppressBicyclingLayer: true,
                                                       polylineOptions: {
@@ -242,12 +239,12 @@ function initMap() {
                                                           strokeWeight: 7
                                                          }
                                                        });
+  // Add event listeners to render directions when button is clicked
+  document.getElementById("biking_button").addEventListener("click", renderBikes);
+  document.getElementById("walking_button").addEventListener("click", renderWalk);
+  document.getElementById("transit_button").addEventListener("click", renderTransit);
 
-
-document.getElementById("biking_button").addEventListener("click", renderBikes);
-document.getElementById("walking_button").addEventListener("click", renderWalk);
-document.getElementById("transit_button").addEventListener("click", renderTransit);
-
+  // Functions for rendering the bike, walk, or transit lines on the map
   function renderBikes() {
     document.getElementById("biking_button").removeEventListener("click", renderBikes);
     document.getElementById("transit_button").addEventListener("click", renderTransit);
@@ -260,7 +257,7 @@ document.getElementById("transit_button").addEventListener("click", renderTransi
     requestDirections(start_station_coords, finish_station_coords,'BICYCLING', map, polyBike2, directionsService);
     requestDirections(finish, finish_station_coords, 'WALKING', map, polyBike3, directionsService);
   };
-  // Draw Walking on Map after Click
+
   function renderWalk() {
     document.getElementById("walking_button").removeEventListener("click", renderWalk);
     document.getElementById("biking_button").addEventListener("click", renderBikes);
@@ -273,7 +270,7 @@ document.getElementById("transit_button").addEventListener("click", renderTransi
     markers[2].setVisible(false);
     requestDirections(start, finish, 'WALKING', map, polyWalk, directionsService);
   };
-  // Draw Transit on Map after Click and get DistanceMatrixService
+
   function renderTransit() {
     document.getElementById("transit_button").removeEventListener("click", renderTransit);
     document.getElementById("biking_button").addEventListener("click", renderBikes);
@@ -287,8 +284,7 @@ document.getElementById("transit_button").addEventListener("click", renderTransi
     requestDirections(start, finish, 'TRANSIT', map, polyTransit, directionsService);
   }
 
-  // Output Results to left column
-  // First for Dublin Bikes Widget, then Walking
+  // Three functions for calculating the total time for biking option and outputting
   var total_time = 0;
   // First calculate walk time from start to bike station
   function walkToBikeStation(start, start_station_coords){
@@ -310,14 +306,12 @@ document.getElementById("transit_button").addEventListener("click", renderTransi
         {
           var outputDiv = document.getElementById('bikeLeg1');
           var results = response.rows[0].elements;
-          // console.log(results);
           outputDiv.innerHTML += '<ul><li><strong>'
                                 + start_add + '</strong></li></ul>' +
                                    '<div id="transitWalk">' + 'WALK About ' +
                                      results[0].duration.text + '</div>';
           time1 = results[0].duration.value;
           total_time += time1;
-          // Calculate time on bike
           bikeToBikeStation(start_station_coords, finish_station_coords);
       }
     });
@@ -348,7 +342,6 @@ document.getElementById("transit_button").addEventListener("click", renderTransi
         }
         outputDiv.innerHTML += '<div id="transitJourney">' +
                               'CYCLE About ' + results[0].duration.text + ' (' + results[0].distance.text + ')<br></div>'
-
         outputDiv.innerHTML += '<ul><li>'
                                 + finish_station.name + '</li></ul>'
                                   + '<strong>&emsp;&emsp;Available Spaces: ' + finish_station.available_bike_stands + '</strong>';
@@ -357,12 +350,11 @@ document.getElementById("transit_button").addEventListener("click", renderTransi
         }
         time2 = results[0].duration.value;
         total_time += time2;
-        // Time from bike station to finish
         bikeStationToFinish(finish_station_coords, finish);
       }
     });
   }
-  // Calculate last DB journey walk
+  // Calculate last part (walk) of bike journey
   function bikeStationToFinish(finish_station_coords, finish){
     var time3 = 0;
     var service = new google.maps.DistanceMatrixService;
@@ -391,7 +383,7 @@ document.getElementById("transit_button").addEventListener("click", renderTransi
     });
   }
 
-  // Output Walking Results
+  // Output Walking Results and Time
   function calcWalking(start, finish){
     var service = new google.maps.DistanceMatrixService;
     service.getDistanceMatrix({
@@ -420,17 +412,15 @@ document.getElementById("transit_button").addEventListener("click", renderTransi
     });
   }
 
-  // Output Transit to left Column
+  // Output Transit to left Column with details of journey and times
   function calcTransit(start, finish){
     var request = {
       origin: start,
       destination: finish,
       travelMode: google.maps.DirectionsTravelMode.TRANSIT,
     };
-
     start_add = start_address.split(',').slice(0,2).join(',');
     finish_add = finish_address.split(',').slice(0,2).join(',');
-
     directionsService.route(request, function(response, status) {
       // Output Total Time of Journey
       time4 = response.routes[0].legs[0].duration.value;
@@ -460,16 +450,14 @@ document.getElementById("transit_button").addEventListener("click", renderTransi
             } else {
               var trans_name = response.routes[0].legs[0].steps[i].transit.line.name;
             }
-
             outputDiv.innerHTML += '<strong><ul><li>'
-                                  + response.routes[0].legs[0].steps[i].transit.departure_stop.name + '</strong></li></ul>'
-                                    + '<div id="transitJourney"><strong>' + response.routes[0].legs[0].steps[i].transit.departure_time.text
-                                    + '&nbsp;</strong>' + response.routes[0].legs[0].steps[i].transit.line.agencies[0].name
-                                    +  '&nbsp;' + duration + ' (' + response.routes[0].legs[0].steps[i].transit.num_stops + ' stops)'
-                                    + '<br><strong>' + trans_name + '</strong> towards ' + response.routes[0].legs[0].steps[i].transit.headsign + '</div>';
-
-              outputDiv.innerHTML += '<ul><li><strong>'
-                                    + response.routes[0].legs[0].steps[i].transit.arrival_stop.name + '</strong></li></ul>';
+                                + response.routes[0].legs[0].steps[i].transit.departure_stop.name + '</strong></li></ul>'
+                                + '<div id="transitJourney"><strong>' + response.routes[0].legs[0].steps[i].transit.departure_time.text
+                                + '&nbsp;</strong>' + response.routes[0].legs[0].steps[i].transit.line.agencies[0].name
+                                +  '&nbsp;' + duration + ' (' + response.routes[0].legs[0].steps[i].transit.num_stops + ' stops)'
+                                + '<br><strong>' + trans_name + '</strong> towards ' + response.routes[0].legs[0].steps[i].transit.headsign + '</div>';
+            outputDiv.innerHTML += '<ul><li><strong>'
+                                + response.routes[0].legs[0].steps[i].transit.arrival_stop.name + '</strong></li></ul>';
           }
         }
         outputDiv.innerHTML += '<ul><li><strong>'
@@ -480,7 +468,7 @@ document.getElementById("transit_button").addEventListener("click", renderTransi
   }
 
   // Call walk to bike station function (which then calls 2 more functions)
-  // Only Do if div is empty or start station has been changed.
+  // Only Do if div is empty or start/finish station has been changed
   if ( ($('#bikeLeg').children().length == 0) || (originalStartStation !== start_station)
                                               || (originalFinishStation !== finish_station)) {
      walkToBikeStation(start, start_station_coords);
@@ -489,17 +477,16 @@ document.getElementById("transit_button").addEventListener("click", renderTransi
   if((originalStartStation !== start_station) || (originalFinishStation !== finish_station)){
      renderBikes();
   }
-
-
-  // console.log(isValidTime());
+  // Warning for Dublin Bikes Closed for bike pick up at night
   if(!isValidTime()){
     var outputDiv = document.getElementById('check_time');
     outputDiv.innerHTML += '<strong>NO PICK UP</strong> (12:30 to 05:00)'
   }
-
+  // If left widget for transit/walk is empty, then call functions to output
   if ( $('#transitLeg').children().length == 0 ) {
      calcTransit(start, finish);
   }
+
   if ( $('#walkLeg').children().length == 0 ) {
      calcWalking(start, finish);
   }
