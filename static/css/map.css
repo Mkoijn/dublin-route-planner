@@ -1,9 +1,8 @@
 html, body {
     height: 100%;
-
 }
 #info {
-  padding-top: 50px;
+  padding-top: 30px;
   padding-bottom: 0px;
   padding-left: 0px;
   padding-right: 0px;
@@ -12,6 +11,16 @@ html, body {
 #map {
   height: 100%;
   margin-top: -20px;
+  overflow: hidden;
+}
+@media screen and (min-width: 700px) {
+  #map {
+    overflow: hidden;
+  }
+  #info {
+    max-height: 630px;
+    overflow-y: scroll;
+  }
 }
 #walkLeg, #transitLeg, #bikeLegs {
     border-radius: 25px;

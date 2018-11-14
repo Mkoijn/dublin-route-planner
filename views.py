@@ -30,6 +30,7 @@ def index():
 @app.route('/map', methods=['GET', 'POST'])
 def map():
     # Bike data URL API
+    form = AddressForm()
     url = 'https://api.jcdecaux.com/vls/v1/stations?contract=Dublin&apiKey=7453c07d7cf230540911a81515a937d8963cbdfe'
     req = Request(url, None, {'User-agent': 'Mozilla/5.0 (Windows; U; Windows\
                             NT 5.1; de; rv:1.9.1.5) Gecko/20091102 Firefox/3.5.5'})
@@ -59,9 +60,10 @@ def map():
                                            starting_stations=start_stations,
                                            finishing_stations=finish_stations,
                                            start_address=start_address,
-                                           finish_address=finish_address)
+                                           finish_address=finish_address,
+                                           form=form)
 
-    return render_template('index.html')
+    return return redirect(url_for('index'))
 
 
 @app.route('/login', methods=['GET', 'POST'])
