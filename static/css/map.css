@@ -7,11 +7,16 @@ html, body {
   padding-left: 0px;
   padding-right: 0px;
 }
+#index {
+  padding-top: 30px;
+  padding-bottom: 20px;
+  padding-left: 0px;
+  padding-right: 0px;
+}
 
 #map {
   height: 100%;
   margin-top: -20px;
-  overflow: hidden;
 }
 @media screen and (min-width: 700px) {
   #map {
