@@ -1,19 +1,24 @@
 html, body {
     height: 100%;
 }
-#info {
-  padding-top: 30px;
-  padding-bottom: 0px;
-  padding-left: 0px;
-  padding-right: 0px;
+#search_start{
+  margin-bottom: -20px;
 }
-#index {
-  padding-top: 30px;
+#info {
+  padding-top: 35px;
   padding-bottom: 20px;
   padding-left: 0px;
   padding-right: 0px;
 }
-
+#index {
+  padding-top: 35px;
+  padding-bottom: 20px;
+  padding-left: 0px;
+  padding-right: 0px;
+}
+#accordion{
+  margin-top: 35px;
+}
 #map {
   height: 100%;
   margin-top: -20px;
@@ -26,6 +31,28 @@ html, body {
     max-height: 630px;
     overflow-y: scroll;
   }
+}
+@media (max-width: 700px)
+{
+    .navbar-fixed-top
+    {
+    position: relative;
+    top: auto;
+    }
+    #index {
+      padding-top: 10px;
+      padding-bottom: 40px;
+      padding-left: 0px;
+      padding-right: 0px;
+      margin-top:-40px;
+    }
+    #info {
+      padding-top: 10px;
+      padding-bottom: 0px;
+      padding-left: 0px;
+      padding-right: 0px;
+      margin-top:-40px;
+    }
 }
 #walkLeg, #transitLeg, #bikeLegs {
     border-radius: 25px;
@@ -45,9 +72,12 @@ html, body {
 }
 .btn{
  border:1px solid transparent;
- border-radius:10px;
+ border-radius:5px;
  border-color: black;
 
+}
+.btn-warning {
+    color: black;
 }
 .btn:focus,.btn:active {
    outline: none !important;
