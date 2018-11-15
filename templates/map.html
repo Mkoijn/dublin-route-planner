@@ -1,14 +1,24 @@
+{% import "bootstrap/wtf.html" as wtf %}
+{% extends "bootstrap/base.html" %}
+
+{% block styles %}
+{{super()}}
+<link rel="stylesheet" href="{{url_for('static', filename='css/map.css')}}">
+<link rel="stylesheet" href="{{url_for('static', filename='css/signin.css')}}">
+<script src="{{ url_for('static', filename='js/renderDirections.js') }}"></script>
+<script src="{{ url_for('static', filename='js/timeHelpers.js') }}"></script>
+{% endblock %}
+
+{% block content %}
 {% if current_user.is_authenticated %}
     {% include 'navbar_logged_in.html' %}
   {% else %}
     {% include 'navbar_logged_out.html' %}
 {% endif %}
-{% block content %}
-<script src="{{ url_for('static', filename='js/renderDirections.js') }}"></script>
-<script src="{{ url_for('static', filename='js/timeHelpers.js') }}"></script>
-<script src="{{ url_for('static', filename='js/initializeMap.js') }}"></script>
+
 <!-- Left Column Travel Details  -->
 <div class="col-md-3 col-sm-5 col-xs-12" id="info">
+  {% include 'addresses.html' %}
   <div class="panel-group" id="accordion">
 
     <div class="panel panel-default">
@@ -23,7 +33,7 @@
           </a>
         </h4>
       </div>
-      <div id="collapse1" class="panel-collapse collapse biking">
+      <div id="collapse1" class="panel-collapse collapse">
         <div class="panel-body">
           <div id="bikeLegs">
             <div id="bikeLeg1">
@@ -61,7 +71,7 @@
         <h4 class="panel-title">
           <a data-toggle="collapse" data-parent="#accordion" href="#collapse3">
             <button id="transit_button" type="button" class="btn btn-secondary btn-lg btn-block">
-              <h4 style="display:inline"><strong>&nbsp;Transit</strong></h4>
+              <h4 style="display:inline"><strong>&nbsp;Transport</strong></h4>
               <p style="display:inline" id="totalTransitTime"></p>
             </button>
           </a>
@@ -82,6 +92,7 @@
 <div class="col-md-9 col-sm-7 col-xs-12" id="map"></div>
 
 <script>
+
 // Start and Finish Address from User Input
 var start_address = {{ start_address|tojson }};
 var finish_address = {{ finish_address|tojson }};
@@ -94,11 +105,9 @@ var finish_stations = {{ finishing_stations|safe }};
 finish_stations.sort(function(c, d) {
   return c.interspace - d.interspace;
 });
-
 //
 var originalStartStation = start_stations[0];
 var originalFinishStation = finish_stations[0];
-
 // Functions when user choose to select another station
 function getNewStartStation(){
   document.getElementById('bikeLeg1').innerHTML = "";
@@ -118,8 +127,20 @@ function getNewFinishStation(){
   initMap();
 }
 
+function activatePlacesSearch(){
+  var input_start = document.getElementById('search_start');
+  var autocomplete_start = new google.maps.places.Autocomplete(input_start);
+  autocomplete_start.setComponentRestrictions(
+          {'country': ['ie']});
+
+  var input_finish = document.getElementById('search_finish');
+  var autocomplete_finish = new google.maps.places.Autocomplete(input_finish);
+  autocomplete_finish.setComponentRestrictions(
+          {'country': ['ie']});
+}
 // Call back function on load using Google JS API requests
 function initMap() {
+  activatePlacesSearch();
   var map = null;
   // Start and Finish Address coords
   var start = {lat: {{start_coordinates.lat}}, lng: {{start_coordinates.lng}}};
@@ -129,16 +150,14 @@ function initMap() {
   var finish_station = finish_stations[0];
   var start_station_coords = {lat: start_station.lat, lng: start_station.lng};
   var finish_station_coords = {lat: finish_station.lat, lng: finish_station.lng};
-
   var directionsDisplay = new google.maps.DirectionsRenderer();
   // Create a map and center it on Start point.
   var mapOptions = {
-                    zoom: 14,
+                    zoom: 13,
                     center: start
                    };
   map = new google.maps.Map(document.getElementById('map'), mapOptions);
   directionsDisplay.setMap(map);
-
   // Create markers for start, finish and bike station locations
   var start_marker = new google.maps.Marker({
     position: start,
@@ -243,7 +262,6 @@ function initMap() {
   document.getElementById("biking_button").addEventListener("click", renderBikes);
   document.getElementById("walking_button").addEventListener("click", renderWalk);
   document.getElementById("transit_button").addEventListener("click", renderTransit);
-
   // Functions for rendering the bike, walk, or transit lines on the map
   function renderBikes() {
     document.getElementById("biking_button").removeEventListener("click", renderBikes);
@@ -257,7 +275,6 @@ function initMap() {
     requestDirections(start_station_coords, finish_station_coords,'BICYCLING', map, polyBike2, directionsService);
     requestDirections(finish, finish_station_coords, 'WALKING', map, polyBike3, directionsService);
   };
-
   function renderWalk() {
     document.getElementById("walking_button").removeEventListener("click", renderWalk);
     document.getElementById("biking_button").addEventListener("click", renderBikes);
@@ -270,7 +287,6 @@ function initMap() {
     markers[2].setVisible(false);
     requestDirections(start, finish, 'WALKING', map, polyWalk, directionsService);
   };
-
   function renderTransit() {
     document.getElementById("transit_button").removeEventListener("click", renderTransit);
     document.getElementById("biking_button").addEventListener("click", renderBikes);
@@ -283,7 +299,6 @@ function initMap() {
     markers[2].setVisible(false);
     requestDirections(start, finish, 'TRANSIT', map, polyTransit, directionsService);
   }
-
   // Three functions for calculating the total time for biking option and outputting
   var total_time = 0;
   // First calculate walk time from start to bike station
@@ -382,7 +397,6 @@ function initMap() {
       }
     });
   }
-
   // Output Walking Results and Time
   function calcWalking(start, finish){
     var service = new google.maps.DistanceMatrixService;
@@ -411,7 +425,6 @@ function initMap() {
       }
     });
   }
-
   // Output Transit to left Column with details of journey and times
   function calcTransit(start, finish){
     var request = {
@@ -466,7 +479,6 @@ function initMap() {
       }
     });
   }
-
   // Call walk to bike station function (which then calls 2 more functions)
   // Only Do if div is empty or start/finish station has been changed
   if ( ($('#bikeLeg').children().length == 0) || (originalStartStation !== start_station)
@@ -486,13 +498,14 @@ function initMap() {
   if ( $('#transitLeg').children().length == 0 ) {
      calcTransit(start, finish);
   }
-
   if ( $('#walkLeg').children().length == 0 ) {
      calcWalking(start, finish);
   }
 }
 </script>
 <script async defer
-src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCbLnsQQH5RbYWL1mn1co79q5ov7TRjjU0&callback=initMap">
+src="https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyCbLnsQQH5RbYWL1mn1co79q5ov7TRjjU0&callback=initMap">>
 </script>
 {% endblock %}
+</body>
+</html>

@@ -1,9 +1,6 @@
-body {
-  padding-top: 70px;
-  padding-bottom: 40px;
-  background-color: #eee;
+#login, #signup {
+  margin-top: 50px;
 }
-
 .form-signin {
   max-width: 330px;
   padding: 15px;

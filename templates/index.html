@@ -1,31 +1,33 @@
-{% extends "bootstrap/base.html" %}
 {% import "bootstrap/wtf.html" as wtf %}
+{% extends "bootstrap/base.html" %}
 
 {% block styles %}
 {{super()}}
-<link rel="stylesheet" href="{{url_for('.static', filename='css/signin.css')}}">
+<link rel="stylesheet" href="{{url_for('static', filename='css/map.css')}}">
+<link rel="stylesheet" href="{{url_for('static', filename='css/signin.css')}}">
 {% endblock %}
-
+{% block content %}
 {% if current_user.is_authenticated %}
     {% include 'navbar_logged_in.html' %}
   {% else %}
     {% include 'navbar_logged_out.html' %}
 {% endif %}
-
-{% block content %}
-<body style="background-image: url(static/images/new1.v1.jpg);">
-<div class="container">
-      <form class="form-signin" method="POST" action="/map">
-        {{ form.hidden_tag() }}
-        {{ wtf.form_field(form.start, id="search_start", placeholder="Where are you?",
-                          onClick="this.setSelectionRange(0, this.value.length);") }}
-        {{ wtf.form_field(form.finish, id="search_finish", placeholder="Where are you going?",
-                          onClick="this.setSelectionRange(0, this.value.length);") }}
-        <button class="btn btn-md btn-primary" type="submit">Let's Go</button>
-      </form>
+<div class="col-md-3 col-sm-5 col-xs-12" id="index">
+{% include 'addresses.html' %}
 </div>
-
+<!-- Right Column Map with Routes -->
+<div class="col-md-9 col-sm-7 col-xs-12" id="map"></div>
 <script>
+  function initMap() {;
+    var directionsDisplay = new google.maps.DirectionsRenderer();
+    // Create a map and center it on Start point.
+    var mapOptions = {
+                      zoom: 13,
+                      center: {lat: 53.3457175, lng: -6.2630049},
+                     };
+    map = new google.maps.Map(document.getElementById('map'), mapOptions);
+    directionsDisplay.setMap(map);
+}
 function convertLatLngToAddress(lat, lng){
   // Convert Coords to String Address
   var geocoder = new google.maps.Geocoder;
@@ -81,7 +83,6 @@ function getLocation() {
         alert("Geolocation is not supported by this browser.");
     }
 }
-
 function start_autocomplete(){
   var input_start = document.getElementById('search_start');
   var autocomplete_start = new google.maps.places.Autocomplete(input_start);
@@ -89,17 +90,22 @@ function start_autocomplete(){
           {'country': ['ie']});
 }
 function activatePlacesSearch(){
+  initMap();
   getLocation();
   var input_finish = document.getElementById('search_finish');
   var autocomplete_finish = new google.maps.places.Autocomplete(input_finish);
   autocomplete_finish.setComponentRestrictions(
           {'country': ['ie']});
 }
+
+
 </script>
-</body>
-</html>
-<script src="https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyCbLnsQQH5RbYWL1mn1co79q5ov7TRjjU0&callback=activatePlacesSearch"></script>
+<script async defer
+src="https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyCbLnsQQH5RbYWL1mn1co79q5ov7TRjjU0&callback=activatePlacesSearch">>
+</script>
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 {% endblock %}
+</body>
+</html>

@@ -1,20 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
-{% extends "bootstrap/base.html" %}
-
-{% block title %}
-{{ current_user.username }}'s Dublin Route Planner
-{% endblock %}
-
-{% block styles %}
-{{super()}}
-<link rel="stylesheet" href="{{url_for('static', filename='css/map.css')}}">
-{% endblock %}
-
-{% block content %}
-
     <nav class="navbar navbar-inverse navbar-fixed-top">
-      <div class="container">
+      <div class="container-fluid">
         <div class="navbar-header">
           <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
             <span class="sr-only">Toggle navigation</span>
@@ -27,11 +12,9 @@
 
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
-            <li><a href="{{ url_for('dashboard') }}">{{ current_user.username }}'s Settings</a></li>
+            <li><a href="{{ url_for('dashboard') }}">Hello {{ current_user.username }}</a></li>
             <li><a href="{{ url_for('logout') }}">Log Out</a></li>
           </ul>
         </div>
       </div>
     </nav>
-
-{% endblock %}
