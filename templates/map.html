@@ -259,7 +259,11 @@ function initMap() {
                                                          }
                                                        });
   // Add event listeners to render directions when button is clicked
-  document.getElementById("biking_button").addEventListener("click", renderBikes);
+  if(isValidTime()){
+    document.getElementById("biking_button").addEventListener("click", renderBikes);
+  } else {
+    document.getElementById("biking_button").addEventListener("click", renderNightBikes);
+  }
   document.getElementById("walking_button").addEventListener("click", renderWalk);
   document.getElementById("transit_button").addEventListener("click", renderTransit);
   // Functions for rendering the bike, walk, or transit lines on the map
@@ -275,6 +279,16 @@ function initMap() {
     requestDirections(start_station_coords, finish_station_coords,'BICYCLING', map, polyBike2, directionsService);
     requestDirections(finish, finish_station_coords, 'WALKING', map, polyBike3, directionsService);
   };
+  function renderNightBikes(){
+    document.getElementById("biking_button").removeEventListener("click", renderBikes);
+    document.getElementById("transit_button").addEventListener("click", renderTransit);
+    document.getElementById("walking_button").addEventListener("click", renderWalk);
+    polyWalk.setMap(null);
+    polyTransit.setMap(null);
+    markers[2].setVisible(true);
+    requestDirections(start, finish_station_coords,'BICYCLING', map, polyBike2, directionsService);
+    requestDirections(finish, finish_station_coords, 'WALKING', map, polyBike3, directionsService);
+  }
   function renderWalk() {
     document.getElementById("walking_button").removeEventListener("click", renderWalk);
     document.getElementById("biking_button").addEventListener("click", renderBikes);
@@ -397,6 +411,43 @@ function initMap() {
       }
     });
   }
+
+  // Function for Cycling from Start to finish station at night.
+  function nightBikes(start, finish_station_coords){
+    var timeNight = 0;
+    var service = new google.maps.DistanceMatrixService;
+    service.getDistanceMatrix({
+      origins: [start],
+      destinations: [finish_station_coords],
+      travelMode: 'BICYCLING',
+      unitSystem: google.maps.UnitSystem.METRIC,
+      avoidHighways: false,
+      avoidTolls: false
+    },
+    function(response, status) {
+      if (status !== 'OK') {
+        alert('Error was: ' + status);
+      } else {
+        var outputDiv = document.getElementById('bikeLeg2');
+        var results = response.rows[0].elements;
+        outputDiv.innerHTML += '<ul><li><strong>'
+                              + start_add + '</strong></li></ul>'
+
+        outputDiv.innerHTML += '<div id="transitJourney">' +
+                              'CYCLE About ' + results[0].duration.text + ' (' + results[0].distance.text + ')<br></div>'
+        outputDiv.innerHTML += '<ul><li>'
+                                + finish_station.name + '</li></ul>'
+                                  + '<strong>&emsp;&emsp;Available Spaces: ' + finish_station.available_bike_stands + '</strong>';
+        if(finish_station.available_bike_stands < 4) {
+              outputDiv.innerHTML += '&nbsp;&nbsp;<button onclick="getNewFinishStation()" type="button" class="btn btn-xs btn-dark">Change Station</button><br>';
+        }
+        timeNight = results[0].duration.value;
+        total_time += timeNight;
+        bikeStationToFinish(finish_station_coords, finish);
+      }
+    });
+  }
+
   // Output Walking Results and Time
   function calcWalking(start, finish){
     var service = new google.maps.DistanceMatrixService;
@@ -481,18 +532,26 @@ function initMap() {
   }
   // Call walk to bike station function (which then calls 2 more functions)
   // Only Do if div is empty or start/finish station has been changed
-  if ( ($('#bikeLeg').children().length == 0) || (originalStartStation !== start_station)
-                                              || (originalFinishStation !== finish_station)) {
+  // and time is valid
+  if ( (isValidTime()) && (($('#bikeLeg').children().length == 0)
+                        || (originalStartStation !== start_station)
+                          || (originalFinishStation !== finish_station)) ) {
      walkToBikeStation(start, start_station_coords);
   }
+
   // Render the bike route again if Station has been changed
-  if((originalStartStation !== start_station) || (originalFinishStation !== finish_station)){
+  if( (isValidTime()) && ((originalStartStation !== start_station)
+                       || (originalFinishStation !== finish_station)) ) {
      renderBikes();
+  } else if ( (!isValidTime()) && ((originalStartStation !== start_station)
+                       || (originalFinishStation !== finish_station))) {
+    renderNightBikes();
   }
   // Warning for Dublin Bikes Closed for bike pick up at night
   if(!isValidTime()){
     var outputDiv = document.getElementById('check_time');
     outputDiv.innerHTML += '<strong>NO PICK UP</strong> (12:30 to 05:00)'
+    nightBikes(start, finish_station_coords);
   }
   // If left widget for transit/walk is empty, then call functions to output
   if ( $('#transitLeg').children().length == 0 ) {
