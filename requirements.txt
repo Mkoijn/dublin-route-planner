@@ -9,3 +9,4 @@ uwsgi
 flask_wtf
 wtforms
 setuptools
+pyleapcard

@@ -8,6 +8,7 @@ from models import User
 from forms import AddressForm, LoginForm, RegisterForm
 from flask import render_template, redirect, url_for, request
 from helpers.bike_locations import closest_stations, get_coordinates
+from helpers.leap import get_leap_balance
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, login_required, logout_user, current_user
 from models import db
@@ -24,6 +25,12 @@ def load_user(user_id):
 @app.route('/', methods=['GET', 'POST'])
 def index():
     form = AddressForm()
+    if current_user.is_authenticated:
+        if get_leap_balance(current_user.leap_user, current_user.leap_pass):
+            leap_balance = get_leap_balance(current_user.leap_user, current_user.leap_pass)
+            return render_template('index.html', form=form,
+                                                 leap_balance=leap_balance)
+        return render_template('index.html', form=form)
     return render_template('index.html', form=form)
 
 
@@ -54,6 +61,17 @@ def map():
         # Check for the stations closest to User's inputs
         start_stations = json.dumps(closest_stations(start_address, bike_data))
         finish_stations = json.dumps(closest_stations(finish_address, bike_data))
+        if current_user.is_authenticated:
+            if get_leap_balance(current_user.leap_user, current_user.leap_pass):
+                leap_balance = get_leap_balance(current_user.leap_user, current_user.leap_pass)
+                return render_template('map.html', start_coordinates=start_coordinates,
+                                                   finish_coordinates=finish_coordinates,
+                                                   starting_stations=start_stations,
+                                                   finishing_stations=finish_stations,
+                                                   start_address=start_address,
+                                                   finish_address=finish_address,
+                                                   form=form,
+                                                   leap_balance=leap_balance)
         return render_template('map.html', start_coordinates=start_coordinates,
                                            finish_coordinates=finish_coordinates,
                                            starting_stations=start_stations,
@@ -88,17 +106,11 @@ def signup():
     if form.validate_on_submit():
         # return '<h1>' + form.username.data + ' ' + form.email.data + ' ' + form.password.data + '</h1>'
         hashed_password = generate_password_hash(form.password.data, method='sha256')
-        new_user = User(username=form.username.data, email=form.email.data, password=hashed_password)
+        new_user = User(username=form.username.data, email=form.email.data, password=hashed_password, leap_user=form.leap_user.data, leap_pass=form.leap_pass.data)
         db.session.add(new_user)
         db.session.commit()
-        return redirect(url_for('dashboard'))
+        return redirect(url_for('login'))
     return render_template('signup.html', form=form)
-
-
-@app.route('/dashboard')
-@login_required
-def dashboard():
-    return render_template('dashboard.html', name=current_user.username)
 
 
 @app.route('/logout')
