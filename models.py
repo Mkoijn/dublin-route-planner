@@ -14,3 +14,4 @@ class User(UserMixin, db.Model):
     password = db.Column(db.String(80))
     leap_user = db.Column(db.String(15), unique=True)
     leap_pass = db.Column(db.String(15), unique=True)
+    leap_balance = db.Column(db.Float)
