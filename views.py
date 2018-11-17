@@ -8,8 +8,9 @@ from models import User
 from forms import AddressForm, LoginForm, RegisterForm
 from flask import render_template, redirect, url_for, request
 from helpers.bike_locations import closest_stations, get_coordinates
+from helpers.leap import get_leap_balance
 from werkzeug.security import generate_password_hash, check_password_hash
-from flask_login import login_user, login_required, logout_user, current_user
+from flask_login import login_user, login_required, logout_user
 from models import db
 from urllib.request import Request, urlopen
 from json import loads
@@ -74,6 +75,11 @@ def login():
         if user:
             if check_password_hash(user.password, form.password.data):
                 login_user(user, remember=form.remember.data)
+                if get_leap_balance(user.leap_user, user.leap_pass):
+                    leap_balance = get_leap_balance(user.leap_user, user.leap_pass)
+                    user.leap_balance = leap_balance
+                    db.session.commit()
+                    return redirect(url_for('index'))
                 return redirect(url_for('index'))
 
         return '<h1>Invalid username or password</h1>'
@@ -88,17 +94,11 @@ def signup():
     if form.validate_on_submit():
         # return '<h1>' + form.username.data + ' ' + form.email.data + ' ' + form.password.data + '</h1>'
         hashed_password = generate_password_hash(form.password.data, method='sha256')
-        new_user = User(username=form.username.data, email=form.email.data, password=hashed_password)
+        new_user = User(username=form.username.data, email=form.email.data, password=hashed_password, leap_pass=form.leap_pass.data, leap_user=form.leap_user.data)
         db.session.add(new_user)
         db.session.commit()
-        return redirect(url_for('dashboard'))
+        return redirect(url_for('login'))
     return render_template('signup.html', form=form)
-
-
-@app.route('/dashboard')
-@login_required
-def dashboard():
-    return render_template('dashboard.html', name=current_user.username)
 
 
 @app.route('/logout')
