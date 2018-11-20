@@ -18,7 +18,15 @@
 
 <!-- Left Column Travel Details  -->
 <div class="col-md-3 col-sm-5 col-xs-12" id="info">
-  {% include 'addresses.html' %}
+{% include 'addresses.html' %}
+  {% with messages = get_flashed_messages() %}
+    {% if messages %}
+      <p class="flashes text-center">
+      {% for message in messages %}
+        <strong>{{ message }}<strong><br>
+      {% endfor %}
+    {% endif %}
+  {% endwith %}
   <div class="panel-group" id="accordion">
 
     <div class="panel panel-default">
@@ -550,7 +558,7 @@ function initMap() {
   // Warning for Dublin Bikes Closed for bike pick up at night
   if(!isValidTime()){
     var outputDiv = document.getElementById('check_time');
-    outputDiv.innerHTML += '<strong>NO PICK UP</strong> (12:30 to 05:00)'
+    outputDiv.innerHTML += '<strong>No Pick Up</strong> (12:30 to 05:00)'
     nightBikes(start, finish_station_coords);
   }
   // If left widget for transit/walk is empty, then call functions to output

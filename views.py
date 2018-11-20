@@ -4,17 +4,18 @@ Author: Paul Durack
 """
 
 from app import app, login_manager
-from models import User
+from models import User, Route
 from forms import AddressForm, LoginForm, RegisterForm
-from flask import render_template, redirect, url_for, request
+from flask import render_template, redirect, url_for, request, flash
 from helpers.bike_locations import closest_stations, get_coordinates
 from helpers.leap import get_leap_balance
 from werkzeug.security import generate_password_hash, check_password_hash
-from flask_login import login_user, login_required, logout_user
+from flask_login import login_user, login_required, logout_user, current_user
 from models import db
 from urllib.request import Request, urlopen
 from json import loads
 import json
+from sqlalchemy import exc
 
 
 @login_manager.user_loader
@@ -55,6 +56,14 @@ def map():
         # Check for the stations closest to User's inputs
         start_stations = json.dumps(closest_stations(start_address, bike_data))
         finish_stations = json.dumps(closest_stations(finish_address, bike_data))
+        try:
+            if request.form['action'] == 'Save & Go':
+                new_route = Route(origin=start_address, destination=finish_address, user_id=current_user.id)
+                db.session.add(new_route)
+                db.session.commit()
+        except exc.IntegrityError:
+            db.session().rollback()
+            flash('This route is already saved.')
         return render_template('map.html', start_coordinates=start_coordinates,
                                            finish_coordinates=finish_coordinates,
                                            starting_stations=start_stations,
@@ -80,9 +89,11 @@ def login():
                     user.leap_balance = leap_balance
                     db.session.commit()
                     return redirect(url_for('index'))
-                return redirect(url_for('index'))
 
-        return '<h1>Invalid username or password</h1>'
+                return redirect(url_for('index'))
+        else:
+            flash('Invalid username or password')
+            return redirect(url_for('login'))
 
     return render_template('login.html', form=form)
 
@@ -95,8 +106,13 @@ def signup():
         # return '<h1>' + form.username.data + ' ' + form.email.data + ' ' + form.password.data + '</h1>'
         hashed_password = generate_password_hash(form.password.data, method='sha256')
         new_user = User(username=form.username.data, email=form.email.data, password=hashed_password, leap_pass=form.leap_pass.data, leap_user=form.leap_user.data)
-        db.session.add(new_user)
-        db.session.commit()
+        try:
+            db.session.add(new_user)
+            db.session.commit()
+        except exc.IntegrityError:
+            db.session().rollback()
+            flash('Username already taken.')
+            return redirect(url_for('signup'))
         return redirect(url_for('login'))
     return render_template('signup.html', form=form)
 

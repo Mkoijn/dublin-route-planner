@@ -16,6 +16,14 @@ Dublin Route Planner
   <form class="form-signin" method="POST" action="/signup">
     <h2 class="form-signin-heading">Sign Up</h2>
     {{ form.hidden_tag() }}
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <p class="flashes text-center">
+        {% for message in messages %}
+          <strong>{{ message }}<strong><br>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
     {{ wtf.form_field(form.username) }}
     {{ wtf.form_field(form.email) }}
     {{ wtf.form_field(form.password) }}
