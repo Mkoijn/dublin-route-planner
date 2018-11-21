@@ -71,13 +71,15 @@ html, body {
  border-color: black;
 
 }
-.btn-warning {
+.btn-success {
     color: black;
 }
-.btn-warning:hover{
+
+.btn-success:hover{
   color: black;
+  border:1px solid;
 }
-.btn-warning:hover{
+.btn-danger:hover{
   border:1px solid;
 }
 .btn:focus,.btn:active {

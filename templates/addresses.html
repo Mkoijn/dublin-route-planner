@@ -6,9 +6,9 @@
                           onClick="this.setSelectionRange(0, this.value.length);") }}
     {% if current_user.is_authenticated %}
 
-    <button class="btn btn-md btn-warning pull-left" type="submit"
+    <button class="btn btn-md btn-success pull-left" type="submit"
                         name="action" value="Go">Go</button>&nbsp;
-    <button class="btn btn-md btn-warning" id="save" type="submit"
+    <button class="btn btn-md btn-success" id="save" type="submit"
                        name="action" value="Save & Go">Save & Go</button>
     <button class="btn btn-secondary pull-right" id="tableButton" type="button">Favourites&nbsp;<span class="caret"></span></button>
 
@@ -24,8 +24,10 @@
             <tr>
                 <td>{{ item.origin }}</td>
                 <td>{{ item.destination }}</td>
-                <td><button class="btn btn-md btn-warning" type="submit"
-                                    name="action" value="Go">Go</button></td>
+                <td><button class="btn btn-md btn-success" type="submit"
+                                    name="action" value="Go">Go</button><br><br>
+                    <!-- <button class="btn btn-xs btn-danger" type="submit"
+                                    name="action" value="{{ item.id }}">Delete</button></td> -->
             </tr>
           {% endfor %}
           </tbody>
