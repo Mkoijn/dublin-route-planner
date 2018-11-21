@@ -12,9 +12,16 @@ Dublin Route Planner
 {% include 'navbar_logged_out.html' %}
 {% block content %}
     <div class="container" id="login">
-
       <form class="form-signin", method="POST" action="/login">
         <h2 class="form-signin-heading">Log In</h2>
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            <p class="flashes text-center">
+            {% for message in messages %}
+              <strong>{{ message }}<strong><br>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
         {{ form.hidden_tag() }}
         {{ wtf.form_field(form.username) }}
         {{ wtf.form_field(form.password) }}

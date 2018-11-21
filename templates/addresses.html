@@ -1,8 +1,63 @@
-      <form class="form-signin" method="POST" action="/map">
-        {{ form.hidden_tag() }}
-        {{ wtf.form_field(form.start, id="search_start", placeholder="Where are you?",
+<form class="form-signin" id="form-id" method="POST" action="/map">
+    {{ form.hidden_tag() }}
+    {{ wtf.form_field(form.start, id="search_start", placeholder="Where are you?",
                           onClick="this.setSelectionRange(0, this.value.length);") }}
-        {{ wtf.form_field(form.finish, id="search_finish", placeholder="Where are you going?",
+    {{ wtf.form_field(form.finish, id="search_finish", placeholder="Where are you going?",
                           onClick="this.setSelectionRange(0, this.value.length);") }}
-        <button class="btn btn-md btn-warning pull-right" type="submit">Get Directions</button>
-      </form>
+    {% if current_user.is_authenticated %}
+  <div class="dropdown" id="my_buttons">
+    <button class="btn btn-md btn-warning pull-left" type="submit"
+                        name="action" value="Go!">Let's Go</button>&nbsp;
+    <button class="btn btn-md btn-warning" id="save" type="submit"
+                       name="action" value="Save & Go">Save & Go</button>
+    <button class="btn btn-secondary dropdown-toggle pull-right" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Favourites</button>
+
+      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+        <table class="table" id="tableID">
+          <thead class="thead-dark">
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Start</th>
+              <th scope="col">Finish</th>
+            </tr>
+          </thead>
+          <tbody>
+          {% for item in current_user.routes %}
+            <tr>
+              <th scope="row">{{loop.index}}</th>
+                <td>{{ item.origin }}</td>
+                <td>{{ item.destination }}</td>
+            </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+    {% else %}
+    <div id="my_button">
+    <button class="btn btn-md btn-warning pull-right" type="submit"
+                        name="action" value="Get Directions">Get Directions</button>
+    </div>
+    {% endif %}
+</form>
+<script>
+  function onRowClick(tableId, callback) {
+      var table = document.getElementById(tableId),
+          rows = table.getElementsByTagName("tr"),
+          i;
+      for (i = 0; i < rows.length; i++) {
+          table.rows[i].onclick = function (row) {
+              return function () {
+                  callback(row);
+              };
+          }(table.rows[i]);
+      }
+  };
+
+  onRowClick("tableID", function (row){
+      var value = row.getElementsByTagName("td")[0].innerHTML;
+      var value2 = row.getElementsByTagName("td")[1].innerHTML;
+      document.getElementById("search_start").value = value;
+      document.getElementById("search_finish").value = value2;
+  });
+</script>
