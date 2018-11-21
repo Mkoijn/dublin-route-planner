@@ -172,11 +172,11 @@ function initMap() {
   // Create markers for start, finish and bike station locations
   var icon_start = {
     url: "static/img/start.png", // url
-    scaledSize: new google.maps.Size(35, 35), // scaled size
+    scaledSize: new google.maps.Size(30, 30), // scaled size
   };
   var icon_finish = {
     url: "static/img/finish.png", // url
-    scaledSize: new google.maps.Size(35, 35), // scaled size
+    scaledSize: new google.maps.Size(30, 30), // scaled size
   };
   var start_marker = new google.maps.Marker({
     position: start,
@@ -411,7 +411,7 @@ function initMap() {
         time3 = results[0].duration.value;
         total_time += time3;
         var outputDiv2 = document.getElementById('totalBikeTime');
-        outputDiv2.innerHTML = '&nbsp;&nbsp;' + time_convert(Math.ceil(total_time/60));
+        outputDiv2.innerHTML = '&nbsp;' + time_convert(Math.ceil(total_time/60));
       }
     });
   }
@@ -476,7 +476,7 @@ function initMap() {
                                   '<ul><li><strong>' + finish_add + '</strong></li></ul>';
         time4 = results[0].duration.value;
         var outputDiv2 = document.getElementById('totalWalkTime');
-        outputDiv2.innerHTML = '&nbsp;&nbsp;' + time_convert(Math.ceil(time4/60));
+        outputDiv2.innerHTML = '&nbsp;' + time_convert(Math.ceil(time4/60));
       }
     });
   }
@@ -493,7 +493,7 @@ function initMap() {
       // Output Total Time of Journey
       time4 = response.routes[0].legs[0].duration.value;
       var outputDiv2 = document.getElementById('totalTransitTime');
-      outputDiv2.innerHTML = '&nbsp;&nbsp;' + time_convert(Math.ceil(time4/60));
+      outputDiv2.innerHTML = '&nbsp;' + time_convert(Math.ceil(time4/60));
       // Details of Journey
       var outputDiv = document.getElementById('transitLeg');
       if (status == google.maps.DirectionsStatus.OK) {
