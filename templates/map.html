@@ -160,7 +160,12 @@ function initMap() {
   var finish_station_coords = {lat: finish_station.lat, lng: finish_station.lng};
   var directionsDisplay = new google.maps.DirectionsRenderer();
   // Create a map and center it on Start point.
-  var bounds = new google.maps.LatLngBounds(start,finish);
+  if(start.lng < finish.lng){
+      var bounds = new google.maps.LatLngBounds(start,finish);
+  } else {
+    var bounds = new google.maps.LatLngBounds(finish,start);
+  }
+
   map = new google.maps.Map(document.getElementById('map'));
   map.fitBounds(bounds);
 
