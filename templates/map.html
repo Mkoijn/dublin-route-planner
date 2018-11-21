@@ -160,26 +160,24 @@ function initMap() {
   var finish_station_coords = {lat: finish_station.lat, lng: finish_station.lng};
   var directionsDisplay = new google.maps.DirectionsRenderer();
   // Create a map and center it on Start point.
-  var mapOptions = {
-                    zoom: 13,
-                    center: start
-                   };
-  map = new google.maps.Map(document.getElementById('map'), mapOptions);
-  directionsDisplay.setMap(map);
+  var bounds = new google.maps.LatLngBounds(start,finish);
+  map = new google.maps.Map(document.getElementById('map'));
+  map.fitBounds(bounds);
+
   // Create markers for start, finish and bike station locations
+  var icon_start = {
+    url: "static/img/start.png", // url
+    scaledSize: new google.maps.Size(35, 35), // scaled size
+  };
+  var icon_finish = {
+    url: "static/img/finish.png", // url
+    scaledSize: new google.maps.Size(35, 35), // scaled size
+  };
   var start_marker = new google.maps.Marker({
     position: start,
     map: map,
-    icon: {
-           path: google.maps.SymbolPath.CIRCLE,
-           scale: 5,
-           labelOrigin: new google.maps.Point(-6,0)
-          },
-    label: {
-            text: 'Start',
-            fontSize: "16px",
-            fontWeight: "bold"
-           }
+    title: 'Start',
+  	icon: icon_start
   });
   var bike1_marker = new google.maps.Marker({
     position: start_station_coords,
@@ -208,18 +206,11 @@ function initMap() {
   var finish_marker = new google.maps.Marker({
     position: finish,
     map: map,
-    icon: {
-           path: google.maps.SymbolPath.CIRCLE,
-           scale: 5,
-           labelOrigin: new google.maps.Point(7,0)
-          },
-    label: {
-            text: 'Finish',
-            fontSize: "16px",
-            fontWeight: "bold"
-           }
+    title: 'Finish',
+  	icon: icon_finish
   });
   var markers = [start_marker, bike1_marker, bike2_marker, finish_marker];
+
   // Allow start and finish markers to be visible always
   markers[1].setVisible(false);
   markers[2].setVisible(false);
@@ -527,7 +518,7 @@ function initMap() {
                                 + '<div id="transitJourney"><strong>' + response.routes[0].legs[0].steps[i].transit.departure_time.text
                                 + '&nbsp;</strong>' + response.routes[0].legs[0].steps[i].transit.line.agencies[0].name
                                 +  '&nbsp;' + duration + ' (' + response.routes[0].legs[0].steps[i].transit.num_stops + ' stops)'
-                                + '<br><strong>' + trans_name + '</strong> towards ' + response.routes[0].legs[0].steps[i].transit.headsign + '</div>';
+                                + '<br>Take the <strong>' + trans_name + '</strong> towards ' + response.routes[0].legs[0].steps[i].transit.headsign + '</div>';
             outputDiv.innerHTML += '<ul><li><strong>'
                                 + response.routes[0].legs[0].steps[i].transit.arrival_stop.name + '</strong></li></ul>';
           }

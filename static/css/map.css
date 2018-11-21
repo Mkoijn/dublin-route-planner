@@ -32,6 +32,7 @@ html, body {
     overflow-y: scroll;
   }
 }
+
 @media (max-width: 700px)
 {
     .navbar-fixed-top
@@ -72,6 +73,12 @@ html, body {
 }
 .btn-warning {
     color: black;
+}
+.btn-warning:hover{
+  color: black;
+}
+.btn-warning:hover{
+  border:1px solid;
 }
 .btn:focus,.btn:active {
    outline: none !important;
