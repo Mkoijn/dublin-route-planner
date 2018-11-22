@@ -68,22 +68,29 @@ html, body {
 .btn{
  border:1px solid transparent;
  border-radius:5px;
- border-color: black;
+ border-color: #00394d;
 
 }
-.btn-success {
+.btn-info {
     color: black;
+    border-color: #00394d;
 }
 .btn-danger {
     color: white;
+    border-color: black;
 }
-.btn-success:hover{
+.btn-info:hover{
   color: black;
   border:1px solid;
 }
-.btn-danger:hover{
+.btn-info:focus{
+  color: black;
+  border:1px solid;
+}
+.btn-danger:hover,{
   color: white;
   border:1px solid;
+  border-color: black;
 }
 .btn:focus,.btn:active {
    outline: none !important;
@@ -147,5 +154,5 @@ overflow: hidden;
   margin-bottom:0px;
 }
 .table{
-  margin-bottom: 0px;
+  margin-top: 10px;
 }
