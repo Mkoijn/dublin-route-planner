@@ -64,6 +64,17 @@ def map():
         except exc.IntegrityError:
             db.session().rollback()
             flash('This route is already saved.')
+
+        try:
+            route_id = request.form['action']
+            delete_route_id = int(route_id)
+            route = Route.query.filter_by(id=delete_route_id).first()
+            db.session.delete(route)
+            db.session.commit()
+            return redirect(url_for('index'))
+        except ValueError:
+            db.session().rollback()
+
         return render_template('map.html', start_coordinates=start_coordinates,
                                            finish_coordinates=finish_coordinates,
                                            starting_stations=start_stations,
@@ -73,6 +84,7 @@ def map():
                                            form=form)
 
     return redirect(url_for('index'))
+
 
 
 @app.route('/login', methods=['GET', 'POST'])
