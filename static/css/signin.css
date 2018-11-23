@@ -35,18 +35,33 @@
   border-top-left-radius: 0;
   border-top-right-radius: 0;
 }
-#myProgress {
-  width: 100%;
-  background-color: #ddd;
-  margin-bottom: 10px;
+
+#bar{
   display:none;
 }
+.progress-bar {
+  width: 0;
+  animation: progress 10s ease-in-out forwards;
 
-#myBar {
-  width: 10%;
-  height: 30px;
-  background-color: #4CAF50;
-  text-align: center;
-  line-height: 30px;
-  color: white;
+  .title {
+    opacity: 0;
+    animation: show 0.35s forwards ease-in-out 0.5s;
+  }
+}
+
+@keyframes progress {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+@keyframes show  {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
