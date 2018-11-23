@@ -14,6 +14,9 @@ Dublin Route Planner
     <div class="container" id="login">
       <form class="form-signin", method="POST" action="/login">
         <h2 class="form-signin-heading">Log In</h2>
+        <div id="myProgress">
+          <div id="myBar"></div>
+        </div>
         {% with messages = get_flashed_messages() %}
           {% if messages %}
             <p class="flashes text-center">
@@ -26,8 +29,25 @@ Dublin Route Planner
         {{ wtf.form_field(form.username) }}
         {{ wtf.form_field(form.password) }}
         {{ wtf.form_field(form.remember) }}
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Log In</button>
+        <button onclick="displayProgress()" class="btn btn-lg btn-primary btn-block" type="submit">Log In</button>
       </form>
-
     </div>
+    <script>
+function displayProgress() {
+  var div2 = document.getElementById('myProgress');
+  div2.style.display= 'block';
+  var elem = document.getElementById("myBar");
+  var width = 1;
+  var id = setInterval(frame, 60);
+  function frame() {
+    if (width >= 100) {
+      clearInterval(id);
+    } else {
+      width++;
+      elem.style.width = width + '%';
+      elem.innerHTML = width * 1  + '%';
+    }
+  }
+}
+</script>
 {% endblock %}
