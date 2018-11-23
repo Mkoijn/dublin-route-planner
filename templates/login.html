@@ -8,15 +8,17 @@ Dublin Route Planner
 {% block styles %}
 {{super()}}
 <link rel="stylesheet" href="{{url_for('.static', filename='css/signin.css')}}">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 {% endblock %}
 {% include 'navbar_logged_out.html' %}
 {% block content %}
     <div class="container" id="login">
       <form class="form-signin", method="POST" action="/login">
         <h2 class="form-signin-heading">Log In</h2>
-        <div id="myProgress">
-          <div id="myBar"></div>
-        </div>
+        <div class="w3-light-grey">
+    <div id="myBar" class="w3-green" style="height:24px;width:0;display:none"></div>
+  </div>
+  <br>
         {% with messages = get_flashed_messages() %}
           {% if messages %}
             <p class="flashes text-center">
@@ -29,24 +31,23 @@ Dublin Route Planner
         {{ wtf.form_field(form.username) }}
         {{ wtf.form_field(form.password) }}
         {{ wtf.form_field(form.remember) }}
-        <button onclick="displayProgress()" class="btn btn-lg btn-primary btn-block" type="submit">Log In</button>
+        <button onclick="move()" class="btn btn-lg btn-primary btn-block" type="submit">Log In</button>
       </form>
     </div>
     <script>
-function displayProgress() {
-  var div2 = document.getElementById('myProgress');
-  div2.style.display= 'block';
-  var elem = document.getElementById("myBar");
-  var width = 1;
-  var id = setInterval(frame, 60);
-  function frame() {
-    if (width >= 100) {
-      clearInterval(id);
-    } else {
-      width++;
-      elem.style.width = width + '%';
-    }
-  }
-}
+      function move() {
+        var elem = document.getElementById("myBar");
+        elem.style.display = "block";
+        var width = 1;
+        var id = setInterval(frame, 60);
+        function frame() {
+          if (width >= 100) {
+            clearInterval(id);
+          } else {
+            width++;
+            elem.style.width = width + '%';
+          }
+        }
+      }
 </script>
 {% endblock %}
