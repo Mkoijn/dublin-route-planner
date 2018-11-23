@@ -39,6 +39,10 @@
 #bar{
   display:none;
 }
+.progress {
+  position: relative;
+  display:flex;
+}
 .progress-bar {
   width: 0;
   animation: progress 10s ease-in-out forwards;
