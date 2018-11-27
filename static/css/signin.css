@@ -39,7 +39,7 @@
     animation-name: animateBar;
     animation-iteration-count: 1;
     animation-timing-function: ease-in;
-    animation-duration: 7.5s;
+    animation-duration: 8s;
 }
 @keyframes animateBar {
     0% {transform: translateX(-100%);}
