@@ -35,9 +35,13 @@
   border-top-left-radius: 0;
   border-top-right-radius: 0;
 }
-#progressbarCont{
-  margin-top: 100px;
-  margin-left: auto;
-  margin-right: auto;
-  display: none;
+.progress .progress-bar {
+    animation-name: animateBar;
+    animation-iteration-count: 1;
+    animation-timing-function: ease-in;
+    animation-duration: 7.5s;
+}
+@keyframes animateBar {
+    0% {transform: translateX(-100%);}
+    100% {transform: translateX(0);}
 }
