@@ -10,7 +10,3 @@ flask_wtf
 wtforms
 setuptools
 pyleapcard
-alembic
-Flask-Migrate
-Flask-Script
-psycopg2
