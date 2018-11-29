@@ -20,9 +20,9 @@ Dublin Route Planner
         <h2 class="form-signin-heading">Log In</h2>
         {% with messages = get_flashed_messages() %}
           {% if messages %}
-            <p class="flashes text-center">
+            <p class="flashes">
             {% for message in messages %}
-              <strong>{{ message }}<strong><br>
+              <h3 style="color:red;">{{ message }}</h3><br>
             {% endfor %}
           {% endif %}
         {% endwith %}

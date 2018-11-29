@@ -20,6 +20,8 @@ login_manager.init_app(app)
 login_manager.login_view = 'login'
 
 from views import *
+from errors.handlers import errors
+app.register_blueprint(errors)
 
 if __name__ == '__main__':
     app.run()

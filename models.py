@@ -3,8 +3,8 @@ Dublin Route Planner Prototype
 Author: Paul Durack
 """
 
-from app import db
 from flask_login import UserMixin
+from manage import db
 
 
 class User(UserMixin, db.Model):

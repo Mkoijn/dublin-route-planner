@@ -34,7 +34,7 @@
         <h4 class="panel-title">
           <a data-toggle="collapse" data-parent="#accordion" href="#collapse1">
             <button id="biking_button" type="button" class="btn btn-secondary btn-lg btn-block">
-              <h4 style="display:inline"><strong>&nbsp;Dublin Bikes</strong></h4>
+              <h4 style="display:inline;"><strong>&nbsp;Dublin Bikes</strong></h4>
               <p style="display:inline" id="totalBikeTime"></p>
               <p id="check_time"></p>
             </button>
@@ -498,7 +498,7 @@ function initMap() {
       var outputDiv = document.getElementById('transitLeg');
       if (status == google.maps.DirectionsStatus.OK) {
         // Test directions steps to parse
-        // console.log(response.routes[0].legs[0].steps);
+        console.log(response.routes[0].legs[0].steps);
         stepLen = response.routes[0].legs[0].steps.length;
         // Parse the steps and output
         outputDiv.innerHTML += '<ul><li><strong>'

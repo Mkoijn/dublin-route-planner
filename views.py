@@ -102,8 +102,10 @@ def login():
                     return redirect(url_for('index'))
 
                 return redirect(url_for('index'))
+            flash('Invalid Password')
+            return redirect(url_for('login'))
         else:
-            flash('Invalid username or password')
+            flash('Invalid Username')
             return redirect(url_for('login'))
 
     return render_template('login.html', form=form)
