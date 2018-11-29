@@ -1,4 +1,3 @@
-dbflask
 base
 requests
 flask_bootstrap
