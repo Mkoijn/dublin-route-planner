@@ -1,4 +1,4 @@
-flask
+dbflask
 base
 requests
 flask_bootstrap
@@ -10,3 +10,5 @@ flask_wtf
 wtforms
 setuptools
 pyleapcard
+gunicorn
+Flask-Heroku
