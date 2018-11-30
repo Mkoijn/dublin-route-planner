@@ -59,43 +59,92 @@ html, body {
     padding-right: 5px;
     padding-left: 12px;
     padding-bottom: 9px;
+    max-width: 320px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .panel-body{
   padding-top: 5px;
   padding-bottom: 10px;
 }
-.btn{
- border:1px solid transparent;
- border-radius:5px;
- border-color:#005580;
 
+.btn{
+ border:2px solid transparent;
+ border-radius:5px;
+ border-color:black;
+ font-weight: 500;
 }
+
+.btn:active {
+  outline: none !important;
+  box-shadow: none;
+}
+
+.btn:focus {
+  outline: none !important;
+  box-shadow: none;
+}
+
 .btn-info {
+    background-color: white;
     color: black;
-    border-color: #00394d;
+    border-color: black;
+    border:2px solid;
+    font-weight: 600;
 }
+.btn-info:hover {
+  border: 2px solid;
+  background-color: #9fdfbf !important;
+  color: black;
+  border-color: black;
+  font-weight: 600;
+}
+.btn-info:active {
+  border:2px solid;
+  background-color: #9fdfbf !important;
+  color: black;
+  border-color: black !important;
+  font-weight: 600;
+  border-radius:5px;
+  outline: none !important;
+  box-shadow: none;
+}
+
+.btn-info:focus{
+  border:2px solid;
+  background-color: white !important;
+  color: black;
+  border-color: black ! important;
+  font-weight: 600;
+  outline: none !important;
+  box-shadow: none;
+}
+
 .btn-danger {
     color: white;
-    border-color: black;
+    background-color: #404040;
+    border-color: white;
+    border:2px;
+    font-weight: 600;
 }
-.btn-info:hover{
-  color: black;
-  border:1px solid;
-}
-.btn-info:focus{
-  color: black;
-  border:1px solid;
-}
-.btn-danger:hover,{
-  color: white;
+.btn-danger:hover{
   border:1px solid;
   border-color: black;
+  background-color: red !important;
 }
-.btn:focus,.btn:active {
-   outline: none !important;
-   box-shadow: none;
+.btn-secondary{
+  background-color: #e0ebeb !important;
 }
+.btn-secondary:hover{
+  border:1px solid;
+  color: black;
+  background-color: #94b8b8 !important;
+  border-color: black ! important;
+  outline: none !important;
+  box-shadow: none;
+}
+
 a:link {
     text-decoration: none;
 }
@@ -155,4 +204,19 @@ overflow: hidden;
 }
 .table{
   margin-top: 10px;
+}
+.panel-heading{
+  max-width: 300px;
+  margin-left: auto;
+  margin-right: auto;
+  background-color: white !important;
+  border-color: green;
+}
+.panel-title{
+  background-color: white !important;
+  border-color: white !important;
+}
+.panel-default{
+  background-color: white !important;
+  border-color: white !important;
 }
