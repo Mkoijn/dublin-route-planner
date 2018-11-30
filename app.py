@@ -7,12 +7,14 @@ from flask import Flask
 from flask_bootstrap import Bootstrap
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
+from flask_heroku import Heroku
 
 app = Flask(__name__)
 
 app.config.from_pyfile('config.py')
 
 Bootstrap(app)
+heroku = Heroku(app)
 db = SQLAlchemy(app)
 
 login_manager = LoginManager()
