@@ -5,7 +5,7 @@ Author: Paul Durack
 
 from app import app, login_manager
 from models import User, Route
-from forms import AddressForm, LoginForm, RegisterForm
+from forms import AddressForm, LoginForm, RegisterForm, ResetPasswordForm, RequestResetForm
 from flask import render_template, redirect, url_for, request, flash
 from helpers.bike_locations import closest_stations, get_coordinates
 from helpers.leap import get_leap_balance
@@ -135,6 +135,14 @@ def signup():
 def logout():
     logout_user()
     return redirect(url_for('index'))
+
+
+@app.route('/reset_password', methods=['GET', 'POST'])
+def reset_request():
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+    form = RequestResetForm()
+    return render_template('reset_request.html', title='Reset Password', form=form)
 
 
 @app.after_request

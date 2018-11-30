@@ -5,7 +5,8 @@ Author: Paul Durack
 
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField
-from wtforms.validators import InputRequired, Email, Length
+from wtforms.validators import InputRequired, Email, Length, DataRequired, EqualTo, ValidationError
+from models import User
 
 
 class AddressForm(FlaskForm):
@@ -25,3 +26,17 @@ class RegisterForm(FlaskForm):
     password = PasswordField('Password', validators=[InputRequired(), Length(min=8, max=80)])
     leap_user = StringField('Leap Username')
     leap_pass = StringField('Leap Password')
+
+
+class RequestResetForm(FlaskForm):
+    email = StringField('Email', validators=[InputRequired(), Email()])
+
+    def validate_email(self, email):
+        user = User.query.filter_by(email=email.data).first()
+        if user is None:
+            raise ValidationError('No account with that email.')
+
+
+class ResetPasswordForm(FlaskForm):
+    password = password = PasswordField('Password', validators=[InputRequired()])
+    confirm_password = PasswordField('Confirm Password', validators=[DataRequired(), EqualTo('password')])
