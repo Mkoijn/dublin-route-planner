@@ -5,6 +5,8 @@
 {{super()}}
 <link rel="stylesheet" href="{{url_for('static', filename='css/map.css')}}">
 <link rel="stylesheet" href="{{url_for('static', filename='css/signin.css')}}">
+<link rel="stylesheet" href="{{url_for('static', filename='css/accordian.css')}}">
+<link rel="stylesheet" href="{{url_for('static', filename='css/buttons.css')}}">
 {% endblock %}
 {% block content %}
 {% if current_user.is_authenticated %}

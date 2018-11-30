@@ -1,0 +1,45 @@
+#accordion{
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+
+#my_button{
+  padding-bottom: 35px;
+}
+
+.panel-body{
+  padding-top: 5px;
+  padding-bottom: 10px;
+  background-color: white !important;
+}
+.collapsing {
+position: relative;
+height: 0;
+overflow: hidden;
+-webkit-transition: height .35s ease;
+     -o-transition: height .35s ease;
+        transition: height .35s ease;
+}
+
+#check_time{
+  margin-bottom:0px;
+}
+
+.panel-heading{
+  max-width: 325px;
+  margin-left: auto;
+  margin-right: auto;
+  background-color: white !important;
+}
+.panel-title{
+  background-color: white;
+  border-color: white;
+}
+.panel-default{
+  background-color: white !important;
+  border-color: white !important;
+}
+.panel-group{
+  background-color: white;
+  border-color: white;
+}
