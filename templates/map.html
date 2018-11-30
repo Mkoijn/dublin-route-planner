@@ -5,6 +5,8 @@
 {{super()}}
 <link rel="stylesheet" href="{{url_for('static', filename='css/map.css')}}">
 <link rel="stylesheet" href="{{url_for('static', filename='css/signin.css')}}">
+<link rel="stylesheet" href="{{url_for('static', filename='css/accordian.css')}}">
+<link rel="stylesheet" href="{{url_for('static', filename='css/buttons.css')}}">
 <script src="{{ url_for('static', filename='js/renderDirections.js') }}"></script>
 <script src="{{ url_for('static', filename='js/timeHelpers.js') }}"></script>
 {% endblock %}
@@ -33,7 +35,7 @@
       <div class="panel-heading">
         <h4 class="panel-title">
           <a data-toggle="collapse" data-parent="#accordion" href="#collapse1">
-            <button id="biking_button" type="button" class="btn btn-secondary btn-lg btn-block">
+            <button id="biking_button" type="button" class="btn btn-lg btn-block">
               <h4 style="display:inline;"><strong>&nbsp;Dublin Bikes</strong></h4>
               <p style="display:inline" id="totalBikeTime"></p>
               <p id="check_time"></p>
@@ -59,7 +61,7 @@
       <div class="panel-heading">
         <h4 class="panel-title">
           <a data-toggle="collapse" data-parent="#accordion" href="#collapse2">
-            <button id="walking_button" type="button" class="btn btn-secondary btn-lg btn-block">
+            <button id="walking_button" type="button" class="btn btn-lg btn-block">
               <h4 style="display:inline"><strong>&nbsp;Walking</strong></h4>
               <p style="display:inline" id="totalWalkTime"></p>
             </button>
@@ -78,7 +80,7 @@
       <div class="panel-heading">
         <h4 class="panel-title">
           <a data-toggle="collapse" data-parent="#accordion" href="#collapse3">
-            <button id="transit_button" type="button" class="btn btn-secondary btn-lg btn-block">
+            <button id="transit_button" type="button" class="btn btn-lg btn-block">
               <h4 style="display:inline"><strong>&nbsp;Transport</strong></h4>
               <p style="display:inline" id="totalTransitTime"></p>
             </button>

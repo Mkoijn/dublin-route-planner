@@ -12,3 +12,4 @@ pyleapcard
 gunicorn
 Flask-Heroku
 psycopg2
+flask_mail

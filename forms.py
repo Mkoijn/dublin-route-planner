@@ -24,12 +24,13 @@ class RegisterForm(FlaskForm):
     username = StringField('Username', validators=[InputRequired(), Length(min=4, max=15)])
     email = StringField('Email', validators=[InputRequired(), Email(message='Invalid email'), Length(max=50)])
     password = PasswordField('Password', validators=[InputRequired(), Length(min=8, max=80)])
+    confirm_password = PasswordField('Confirm Password', validators=[DataRequired(), EqualTo('password')])
     leap_user = StringField('Leap Username')
     leap_pass = StringField('Leap Password')
 
 
 class RequestResetForm(FlaskForm):
-    email = StringField('Email', validators=[InputRequired(), Email()])
+    email = StringField('Email', validators=[InputRequired(), Email(message='Invalid email'), Length(max=50)])
 
     def validate_email(self, email):
         user = User.query.filter_by(email=email.data).first()
@@ -38,5 +39,5 @@ class RequestResetForm(FlaskForm):
 
 
 class ResetPasswordForm(FlaskForm):
-    password = password = PasswordField('Password', validators=[InputRequired()])
+    password = PasswordField('Password', validators=[InputRequired()])
     confirm_password = PasswordField('Confirm Password', validators=[DataRequired(), EqualTo('password')])

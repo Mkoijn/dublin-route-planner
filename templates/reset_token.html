@@ -12,10 +12,11 @@ Dublin Route Planner
 {% include 'navbar_logged_out.html' %}
 {% block content %}
     <div class="container" id="login">
-      <form class="form-signin" method="POST" action="">
+      <form onsubmit="move()" class="form-signin" method="POST" action="">
         <h2 class="form-signin-heading">Reset Password</h2>
         {{ form.hidden_tag() }}
-        {{ wtf.form_field(form.email) }}
+        {{ wtf.form_field(form.password) }}
+        {{ wtf.form_field(form.confirm_password) }}
         <button class="btn btn-lg btn-primary btn-block" type="submit">Reset</button>
       </form>
     </div>

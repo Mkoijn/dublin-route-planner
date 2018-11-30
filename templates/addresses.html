@@ -6,11 +6,11 @@
                           onClick="this.setSelectionRange(0, this.value.length);") }}
     {% if current_user.is_authenticated %}
 
-    <button class="btn btn-md btn-info pull-left" type="submit"
-                        name="action" value="Go" style="margin-left:1px">Go</button>&nbsp;
-    <button class="btn btn-md btn-info" id="save" type="submit"
-                       name="action" value="Save & Go">Save & Go</button>
-    <button class="btn btn-info pull-right" id="tableButton" type="button" style="margin-right:1px">Favourites&nbsp;<span class="caret"></span></button>
+    <button id="my_butts" class="btn btn-md pull-left" type="submit"
+                        name="action" value="Go" style="margin-left:1px"><strong>Go</strong></button>&nbsp;
+    <button id="my_butts" class="btn btn-md" id="save" type="submit"
+                       name="action" value="Save & Go"><strong>Save & Go</strong></button>
+    <button class="btn pull-right" id="tableButton" type="button" style="margin-right:1px"><strong>Favourites&nbsp;</strong><span class="caret"></span></button>
 
         <table class="table table-striped" id="tableID" style="display: none;">
           <thead class="thead-light">
@@ -25,8 +25,8 @@
             <tr>
                 <td>{{ item.origin }}</td>
                 <td>{{ item.destination }}</td>
-                <td><button class="btn btn-md btn-info" type="submit"
-                                    name="action" value="Go">Go</button><br><br>
+                <td><button id="my_butts" class="btn btn-md" type="submit"
+                                    name="action" value="Go"><strong>Go</strong></button><br><br>
                 <button class="btn btn-sm btn-danger" type="submit"
                                     name="action" value="{{ item.id }}">Delete</button></td>
             </tr>
@@ -35,8 +35,8 @@
         </table>
     {% else %}
     <div id="my_button">
-    <button class="btn btn-md btn-info pull-right" type="submit"
-                        name="action" value="Let's Go" style="margin-right:1px">Let's Go</button>
+    <button id="my_butts" class="btn btn-md pull-right" type="submit"
+                        name="action" value="Let's Go" style="margin-right:1px"><strong>Let's Go</strong></button>
     </div>
     {% endif %}
 </form>

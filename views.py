@@ -3,7 +3,7 @@ Dublin Route Planner Prototype
 Author: Paul Durack
 """
 
-from app import app, login_manager
+from app import app, login_manager, mail
 from models import User, Route
 from forms import AddressForm, LoginForm, RegisterForm, ResetPasswordForm, RequestResetForm
 from flask import render_template, redirect, url_for, request, flash
@@ -16,6 +16,7 @@ from urllib.request import Request, urlopen
 from json import loads
 import json
 from sqlalchemy import exc
+from flask_mail import Message
 
 
 @login_manager.user_loader
@@ -119,13 +120,10 @@ def signup():
         # return '<h1>' + form.username.data + ' ' + form.email.data + ' ' + form.password.data + '</h1>'
         hashed_password = generate_password_hash(form.password.data, method='sha256')
         new_user = User(username=form.username.data, email=form.email.data, password=hashed_password, leap_pass=form.leap_pass.data, leap_user=form.leap_user.data)
-        try:
-            db.session.add(new_user)
-            db.session.commit()
-        except exc.IntegrityError:
-            db.session().rollback()
-            flash('Username already taken.')
-            return redirect(url_for('signup'))
+
+        db.session.add(new_user)
+        db.session.commit()
+
         return redirect(url_for('login'))
     return render_template('signup.html', form=form)
 
@@ -137,18 +135,40 @@ def logout():
     return redirect(url_for('index'))
 
 
+def send_reset_email(user):
+    token = user.get_reset_token()
+    msg = Message('Password Reset Request', sender='pdurack@gmail.com', recipients=[user.email])
+    msg.body = f'''To reset your password visit the following link:
+{url_for('reset_token', token=token, _external=True)}
+'''
+    mail.send(msg)
+
+
 @app.route('/reset_password', methods=['GET', 'POST'])
 def reset_request():
     if current_user.is_authenticated:
         return redirect(url_for('index'))
     form = RequestResetForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(email=form.email.data).first()
+        send_reset_email(user)
+        flash('An email has been sent with instructions to reset your password.', 'info')
+        return redirect(url_for('login'))
     return render_template('reset_request.html', title='Reset Password', form=form)
 
 
-@app.after_request
-def set_response_headers(response):
-    response.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate'
-    response.headers['Pragma'] = 'no-cache'
-    response.headers['Expires'] = '0'
-    response.headers.add('Access-Control-Allow-Origin', '*')
-    return response
+@app.route('/reset_password/<token>', methods=['GET', 'POST'])
+def reset_token(token):
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+    user = User.verify_reset_token(token)
+    if user is None:
+        flash('Invalid or expired token', 'warning')
+        return redirect(url_for('reset_request'))
+    form = ResetPasswordForm()
+    if form.validate_on_submit():
+        hashed_password = generate_password_hash(form.password.data, method='sha256')
+        user.password = hashed_password
+        db.session.commit()
+        return redirect(url_for('login'))
+    return render_template('reset_token.html', title='Reset Password', form=form)

@@ -1,0 +1,44 @@
+.btn, .btn:focus, .btn:active, .btn:checked {
+ border:1px solid;
+ border-radius:5px;
+ border-color:black;
+ color: #404040;
+ border-color: black;
+ outline: none !important;
+ box-shadow: none;
+ background-color: white;
+}
+.btn:focus{
+  background-color: #ffbf00 !important;
+}
+.btn:hover{
+  border: 1px solid;
+  outline: none !important;
+  box-shadow: none;
+  background-color: #ffbf00 !important;
+  color: black;
+  border-color: black;
+  outline: none !important;
+  box-shadow: none;
+}
+#my_butts, #tableButton{
+  background-color: #ffbf00;
+}
+.btn-danger {
+    color: white;
+    background-color: #404040;
+    border-color: white;
+    border:0px;
+    font-weight: 600;
+}
+.btn-danger:hover{
+  border:0px;
+  background-color:#b30000 !important;
+  color: white;
+  outline: none !important;
+  box-shadow: none;
+}
+
+.table{
+  margin-top: 10px;
+}
