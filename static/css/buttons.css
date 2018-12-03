@@ -39,10 +39,19 @@ td {
   background-color:white;
   font-family: "Helvetica";
   color: black;
+  max-width: 90%;
+  margin-left: auto;
+  margin-right: auto;;
 }
-.btn-warning:focus, .btn-warning:active, .btn-warning:checked, .btn-warning:hover, .btn-warning:active {
+.btn-warning:focus, .btn-warning:checked, .btn-warning:hover, .btn-warning:active {
   outline: none !important;
   box-shadow: none;
   background-color: white !important;
-  color:black;
+  color: black !important;
+  max-width: 90%;
+  margin-left: auto;
+  margin-right: auto;;
+}
+.btn-warning:focus, .btn-warning:hover {
+  background-color: #e2d9d0 !important;
 }

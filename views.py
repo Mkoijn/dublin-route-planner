@@ -114,7 +114,7 @@ def login():
                             user.leap_user, user.leap_pass)
                         user.leap_balance = leap_balance
                         db.session.commit()
-                        print(user.leap_balance)
+                        # print(user.leap_balance)
 
                 t1 = threading.Thread(target=leap_thread, args=[])
                 t1.start()
