@@ -56,9 +56,7 @@ def map():
         finish_address = request.form['finish']
         display_finish_address = finish_address.replace(', ', '\n')
         display_finish_address = display_finish_address.split('\n')[:-1]
-        print(display_finish_address)
         display_finish_address = ('\n').join(display_finish_address)
-        print(display_finish_address)
         finish_coordinates = get_coordinates(finish_address)
 
         # Check that User entered a valid address
@@ -66,10 +64,12 @@ def map():
             return redirect(url_for('index'))
         # Check for the stations closest to User's inputs
         start_stations = json.dumps(closest_stations(start_address, bike_data))
-        finish_stations = json.dumps(closest_stations(finish_address, bike_data))
+        finish_stations = json.dumps(
+            closest_stations(finish_address, bike_data))
         try:
             if request.form['action'] == 'Save & Go':
-                new_route = Route(origin=display_start_address, destination=display_finish_address, user_id=current_user.id)
+                new_route = Route(origin=display_start_address,
+                                  destination=display_finish_address, user_id=current_user.id)
                 db.session.add(new_route)
                 db.session.commit()
         except exc.IntegrityError:
@@ -86,12 +86,12 @@ def map():
             db.session().rollback()
 
         return render_template('map.html', start_coordinates=start_coordinates,
-                                           finish_coordinates=finish_coordinates,
-                                           starting_stations=start_stations,
-                                           finishing_stations=finish_stations,
-                                           start_address=start_address,
-                                           finish_address=finish_address,
-                                           form=form)
+                               finish_coordinates=finish_coordinates,
+                               starting_stations=start_stations,
+                               finishing_stations=finish_stations,
+                               start_address=start_address,
+                               finish_address=finish_address,
+                               form=form)
 
     return redirect(url_for('index'))
 
@@ -106,15 +106,17 @@ def login():
             if check_password_hash(user.password, form.password.data):
                 login_user(user, remember=form.remember.data)
 
-                def MyThread1():
-                    user = User.query.filter_by(username=form.username.data).first()
+                def leap_thread():
+                    user = User.query.filter_by(
+                        username=form.username.data).first()
                     if get_leap_balance(user.leap_user, user.leap_pass):
-                        leap_balance = get_leap_balance(user.leap_user, user.leap_pass)
+                        leap_balance = get_leap_balance(
+                            user.leap_user, user.leap_pass)
                         user.leap_balance = leap_balance
                         db.session.commit()
                         print(user.leap_balance)
 
-                t1 = threading.Thread(target=MyThread1, args=[])
+                t1 = threading.Thread(target=leap_thread, args=[])
                 t1.start()
                 return redirect(url_for('index'))
             flash('Invalid Password')
@@ -132,8 +134,10 @@ def signup():
 
     if form.validate_on_submit():
         # return '<h1>' + form.username.data + ' ' + form.email.data + ' ' + form.password.data + '</h1>'
-        hashed_password = generate_password_hash(form.password.data, method='sha256')
-        new_user = User(username=form.username.data, email=form.email.data, password=hashed_password, leap_pass=form.leap_pass.data, leap_user=form.leap_user.data)
+        hashed_password = generate_password_hash(
+            form.password.data, method='sha256')
+        new_user = User(username=form.username.data, email=form.email.data,
+                        password=hashed_password, leap_pass=form.leap_pass.data, leap_user=form.leap_user.data)
 
         db.session.add(new_user)
         db.session.commit()
@@ -151,7 +155,8 @@ def logout():
 
 def send_reset_email(user):
     token = user.get_reset_token()
-    msg = Message('Password Reset Request', sender='pdurack@gmail.com', recipients=[user.email])
+    msg = Message('Password Reset Request',
+                  sender='pdurack@gmail.com', recipients=[user.email])
     msg.body = f'''To reset your password visit the following link:
 {url_for('reset_token', token=token, _external=True)}
 '''
@@ -181,7 +186,8 @@ def reset_token(token):
         return redirect(url_for('reset_request'))
     form = ResetPasswordForm()
     if form.validate_on_submit():
-        hashed_password = generate_password_hash(form.password.data, method='sha256')
+        hashed_password = generate_password_hash(
+            form.password.data, method='sha256')
         user.password = hashed_password
         db.session.commit()
         return redirect(url_for('login'))

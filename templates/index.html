@@ -12,12 +12,12 @@
 {% endblock %}
 {% block content %}
 {% if current_user.is_authenticated %}
-    {% include 'navbar_logged_in.html' %}
-  {% else %}
-    {% include 'navbar_logged_out.html' %}
+{% include 'navbar_logged_in.html' %}
+{% else %}
+{% include 'navbar_logged_out.html' %}
 {% endif %}
 <div class="col-md-3 col-sm-5 col-xs-12" id="info">
-{% include 'addresses.html' %}
+  {% include 'addresses.html' %}
 </div>
 <!-- Right Column Map with Routes -->
 <div class="col-md-9 col-sm-7 col-xs-12" id="map"></div>
@@ -26,17 +26,26 @@
     var directionsDisplay = new google.maps.DirectionsRenderer();
     // Create a map and center it on Start point.
     var mapOptions = {
-                      zoom: 13,
-                      center: {lat: 53.3457175, lng: -6.2630049},
-                     };
+      zoom: 13,
+      center: {
+        lat: 53.3457175,
+        lng: -6.2630049
+      },
+    };
     map = new google.maps.Map(document.getElementById('map'), mapOptions);
     directionsDisplay.setMap(map);
-}
-function convertLatLngToAddress(lat, lng){
-  // Convert Coords to String Address
-  var geocoder = new google.maps.Geocoder;
-  var latlng = {lat: parseFloat(lat), lng: parseFloat(lng)};
-  geocoder.geocode({'location': latlng}, function(results, status) {
+  }
+
+  function convertLatLngToAddress(lat, lng) {
+    // Convert Coords to String Address
+    var geocoder = new google.maps.Geocoder;
+    var latlng = {
+      lat: parseFloat(lat),
+      lng: parseFloat(lng)
+    };
+    geocoder.geocode({
+      'location': latlng
+    }, function(results, status) {
       if (status === 'OK') {
         if (results[0]) {
           var formatted_ad = results[0].formatted_address;
@@ -49,67 +58,69 @@ function convertLatLngToAddress(lat, lng){
         window.alert('Geocoder failed due to: ' + status);
       }
     });
-}
-function getLatLng(position) {
-  var current_lat = position.coords.latitude;
-  var current_lng = position.coords.longitude;
-  convertLatLngToAddress(current_lat, current_lng);
-}
-function errorHandler(err) {
-        if(err.code == 1) {
-           start_autocomplete();
-           // alert("Error: Access is denied!");
-        }
-        else if( err.code == 2) {
-           start_autocomplete();
-           // alert("Error: Position is unavailable!");
-        }
-        else if( err.code == 3) {
-           start_autocomplete();
-           // alert("Error: Access is denied!");
-        }
-        else if( err.code == 4) {
-           start_autocomplete();
-           // alert("Error: Access is denied!");
-        }
-     }
-function getLocation() {
-  //console.log('start geoLoc');
-    if (navigator.geolocation) {
-        var options = {timeout:5000,
-                       enableHighAccuracy: true,
-                       maximumAge: 75000
-                      };
-        //console.log('after checking geolocation works');
-        navigator.geolocation.getCurrentPosition(getLatLng, errorHandler, options);
-        //console.log('after calling getCurrentPosition');
-    } else {
-        alert("Geolocation is not supported by this browser.");
+  }
+
+  function getLatLng(position) {
+    var current_lat = position.coords.latitude;
+    var current_lng = position.coords.longitude;
+    convertLatLngToAddress(current_lat, current_lng);
+  }
+
+  function errorHandler(err) {
+    if (err.code == 1) {
+      start_autocomplete();
+      // alert("Error: Access is denied!");
+    } else if (err.code == 2) {
+      start_autocomplete();
+      // alert("Error: Position is unavailable!");
+    } else if (err.code == 3) {
+      start_autocomplete();
+      // alert("Error: Access is denied!");
+    } else if (err.code == 4) {
+      start_autocomplete();
+      // alert("Error: Access is denied!");
     }
-}
-function start_autocomplete(){
-  var input_start = document.getElementById('search_start');
-  var autocomplete_start = new google.maps.places.Autocomplete(input_start);
-  autocomplete_start.setComponentRestrictions(
-          {'country': ['ie']});
-}
-function activatePlacesSearch(){
-  initMap();
-  getLocation();
-  var input_finish = document.getElementById('search_finish');
-  var autocomplete_finish = new google.maps.places.Autocomplete(input_finish);
-  autocomplete_finish.setComponentRestrictions(
-          {'country': ['ie']});
-}
+  }
 
+  function getLocation() {
+    //console.log('start geoLoc');
+    if (navigator.geolocation) {
+      var options = {
+        timeout: 5000,
+        enableHighAccuracy: true,
+        maximumAge: 75000
+      };
+      //console.log('after checking geolocation works');
+      navigator.geolocation.getCurrentPosition(getLatLng, errorHandler, options);
+      //console.log('after calling getCurrentPosition');
+    } else {
+      alert("Geolocation is not supported by this browser.");
+    }
+  }
 
+  function start_autocomplete() {
+    var input_start = document.getElementById('search_start');
+    var autocomplete_start = new google.maps.places.Autocomplete(input_start);
+    autocomplete_start.setComponentRestrictions({
+      'country': ['ie']
+    });
+  }
+
+  function activatePlacesSearch() {
+    initMap();
+    getLocation();
+    var input_finish = document.getElementById('search_finish');
+    var autocomplete_finish = new google.maps.places.Autocomplete(input_finish);
+    autocomplete_finish.setComponentRestrictions({
+      'country': ['ie']
+    });
+  }
 </script>
-<script async defer
-src="https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyCbLnsQQH5RbYWL1mn1co79q5ov7TRjjU0&callback=activatePlacesSearch">>
-</script>
+<script async defer src="https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyCbLnsQQH5RbYWL1mn1co79q5ov7TRjjU0&callback=activatePlacesSearch"></script>
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 {% endblock %}
 </body>
+
 </html>

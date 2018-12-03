@@ -18,6 +18,7 @@ html, body {
 @media screen and (min-width: 700px) {
   #map {
     overflow: hidden;
+    margin-top: 0px;
   }
   #info {
     max-height: 630px;

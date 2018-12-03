@@ -12,9 +12,9 @@
 
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
-            <li><a href=#>Hello {{ current_user.username }}</a></li>
+            <li><a href="{{ url_for('index') }}">Hello {{ current_user.username }}</a></li>
             {% if current_user.leap_balance != None %}
-              <li><a href=#>LEAP €{{ current_user.leap_balance }}</a></li>
+              <li><a href="https://www.leapcard.ie/Home/index.html" target="_blank">LEAP €{{ current_user.leap_balance }}</a></li>
             {% endif %}
             <li><a href="{{ url_for('logout') }}">Log Out</a></li>
           </ul>
