@@ -17,6 +17,7 @@ from json import loads
 import json
 from sqlalchemy import exc
 from flask_mail import Message
+import threading
 
 
 @login_manager.user_loader
@@ -47,8 +48,17 @@ def map():
             item.pop('position', None)  # extract lat and lng
         # User Inputs
         start_address = request.form['start']
+        display_start_address = start_address.replace(', ', '\n')
+        display_start_address = display_start_address.split('\n')[:-1]
+        display_start_address = ('\n').join(display_start_address)
         start_coordinates = get_coordinates(start_address)
+
         finish_address = request.form['finish']
+        display_finish_address = finish_address.replace(', ', '\n')
+        display_finish_address = display_finish_address.split('\n')[:-1]
+        print(display_finish_address)
+        display_finish_address = ('\n').join(display_finish_address)
+        print(display_finish_address)
         finish_coordinates = get_coordinates(finish_address)
 
         # Check that User entered a valid address
@@ -59,12 +69,11 @@ def map():
         finish_stations = json.dumps(closest_stations(finish_address, bike_data))
         try:
             if request.form['action'] == 'Save & Go':
-                new_route = Route(origin=start_address, destination=finish_address, user_id=current_user.id)
+                new_route = Route(origin=display_start_address, destination=display_finish_address, user_id=current_user.id)
                 db.session.add(new_route)
                 db.session.commit()
         except exc.IntegrityError:
             db.session().rollback()
-            flash('This route is already saved.')
 
         try:
             route_id = request.form['action']
@@ -96,12 +105,17 @@ def login():
         if user:
             if check_password_hash(user.password, form.password.data):
                 login_user(user, remember=form.remember.data)
-                if get_leap_balance(user.leap_user, user.leap_pass):
-                    leap_balance = get_leap_balance(user.leap_user, user.leap_pass)
-                    user.leap_balance = leap_balance
-                    db.session.commit()
-                    return redirect(url_for('index'))
 
+                def MyThread1():
+                    user = User.query.filter_by(username=form.username.data).first()
+                    if get_leap_balance(user.leap_user, user.leap_pass):
+                        leap_balance = get_leap_balance(user.leap_user, user.leap_pass)
+                        user.leap_balance = leap_balance
+                        db.session.commit()
+                        print(user.leap_balance)
+
+                t1 = threading.Thread(target=MyThread1, args=[])
+                t1.start()
                 return redirect(url_for('index'))
             flash('Invalid Password')
             return redirect(url_for('login'))

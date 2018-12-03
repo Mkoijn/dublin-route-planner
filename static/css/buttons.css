@@ -1,44 +1,48 @@
-.btn, .btn:focus, .btn:active, .btn:checked {
- border:1px solid;
- border-radius:5px;
- border-color:black;
- color: #404040;
- border-color: black;
- outline: none !important;
- box-shadow: none;
- background-color: white;
-}
-.btn:focus{
-  background-color: #ffbf00 !important;
-}
-.btn:hover{
-  border: 1px solid;
-  outline: none !important;
-  box-shadow: none;
-  background-color: #ffbf00 !important;
-  color: black;
-  border-color: black;
-  outline: none !important;
-  box-shadow: none;
-}
-#my_butts, #tableButton{
-  background-color: #ffbf00;
-}
-.btn-danger {
-    color: white;
-    background-color: #404040;
-    border-color: white;
-    border:0px;
-    font-weight: 600;
-}
-.btn-danger:hover{
-  border:0px;
-  background-color:#b30000 !important;
-  color: white;
-  outline: none !important;
-  box-shadow: none;
-}
-
 .table{
-  margin-top: 10px;
+  margin-top: 20px;
+}
+td {
+  font-size: 85%;
+}
+.btn-success{
+  color:black !important;
+  background-color: white;
+  font-weight: 500 !important;
+}
+.btn-success:focus, .btn-success:active, .btn-success:checked, .btn-success:hover {
+  outline: none !important;
+  box-shadow: none;
+  background-color: white;
+}
+.btn-info{
+  color:black !important;
+  background-color: white;
+  font-weight: 500 !important;
+}
+.btn-info:focus, .btn-info:active, .btn-info:checked, .btn-info:hover {
+  outline: none !important;
+  box-shadow: none;
+  background-color: white;
+}
+.btn-primary{
+  background-color: white !important;
+  color:black !important;
+  border-color: white;
+}
+.btn-danger{
+  margin-top: 0px;
+  background-color: white !important;
+  color:black !important;
+  border-color: white;
+}
+.btn-warning{
+  background-color:white;
+  font-family: "Helvetica";
+  color: black;
+}
+.btn-warning:focus, .btn-warning:active, .btn-warning:checked, .btn-warning:hover, .btn-warning:active {
+  outline: none !important;
+  box-shadow: none;
+  background-color: white !important;
+  color:black;
 }

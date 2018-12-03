@@ -37,4 +37,4 @@ class Route(db.Model):
     origin = db.Column(db.String(150), nullable=False)
     destination = db.Column(db.String(150), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    __table_args__ = (db.UniqueConstraint('origin', 'destination'),)
+    __table_args__ = (db.UniqueConstraint('origin', 'destination', 'user_id'),)
