@@ -1,3 +1,4 @@
+<link rel="stylesheet" href="{{url_for('static', filename='css/navbar.css')}}">
     <nav class="navbar navbar-inverse navbar-fixed-top">
       <div class="container-fluid">
         <div class="navbar-header">
@@ -12,7 +13,7 @@
 
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
-            <li><a href="{{ url_for('index') }}">Hello {{ current_user.username }}</a></li>
+            <li><a href="{{ url_for('index') }}">{{ current_user.username }}</a></li>
             {% if current_user.leap_balance != None %}
               <li><a href="https://www.leapcard.ie/Home/index.html" target="_blank">LEAP €{{ current_user.leap_balance }}</a></li>
             {% endif %}

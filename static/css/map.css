@@ -1,8 +1,15 @@
 html, body {
     height: 100%;
+    font-family: "Helvetica"
 }
 #search_start{
   margin-bottom: -20px;
+  font-size: 95% !important;
+  font-family: "Helvetica";
+}
+#search_finish{
+  font-size: 95% !important;
+  font-family: "Helvetica";
 }
 #info {
   padding-top: 35px;
@@ -14,6 +21,9 @@ html, body {
 #map {
   height: 100%;
   margin-top: 40px;
+}
+#check_time{
+  color:red;
 }
 @media screen and (min-width: 700px) {
   #map {
@@ -43,7 +53,7 @@ html, body {
     }
 }
 #walkLeg, #transitLeg, #bikeLegs {
-    border-radius: 25px;
+    border-radius: 7px;
     margin-top: 5px;
     border-style: solid;
     border-color: #222629;
@@ -52,9 +62,10 @@ html, body {
     padding-right: 5px;
     padding-left: 12px;
     padding-bottom: 9px;
-    max-width: 320px;
+    max-width: 296px;
     margin-left: auto;
     margin-right: auto;
+    font-size: 90% !important;
 }
 
 a:link {

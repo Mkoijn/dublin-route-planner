@@ -7,6 +7,8 @@
 
 #my_button{
   padding-bottom: 35px;
+  font-size: 95% !important;
+  font-family: "Helvetica";
 }
 
 .panel-body{

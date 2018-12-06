@@ -11,6 +11,7 @@
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
 <script src="{{ url_for('static', filename='js/renderDirections.js') }}"></script>
 <script src="{{ url_for('static', filename='js/timeHelpers.js') }}"></script>
+<script src="{{ url_for('static', filename='js/fares.js') }}"></script>
 {% endblock %}
 
 {% block content %}
@@ -32,19 +33,18 @@
         {% endif %}
         {% endwith %}
         <div class="panel-group" id="accordion">
-
           <div class="panel panel-default">
             <div class="panel-heading">
               <h4 class="panel-title">
                 <a data-toggle="collapse" data-parent="#accordion" href="#collapse1">
                   <button id="biking_button" type="button" class="btn btn-warning btn-lg btn-block">
-                    <p class="pull-left" style="display:inline; padding-left:3px;">Dublinbikes</p>
+                    <p class="pull-left" style="display:inline; padding-left:3px;">Dublin Bikes</p>
                     <p class="pull-right" style="display:inline" id="totalBikeTime"></p>
-                    <p id="check_time"></p>
                   </button>
                 </a>
               </h4>
             </div>
+            <div class="text-center" id="check_time"></div>
             <div id="collapse1" class="panel-collapse collapse">
               <div class="panel-body">
                 <div id="bikeLegs">
@@ -83,7 +83,7 @@
               <h4 class="panel-title">
                 <a data-toggle="collapse" data-parent="#accordion" href="#collapse3">
                   <button id="transit_button" type="button" class="btn btn-warning btn-lg btn-block">
-                    <p class="pull-left" style="display:inline">&nbsp;Transport</p>
+                    <p class="pull-left" style="display:inline">&nbsp;Bus - Luas - Dart</p>
                     <p class="pull-right" style="display:inline" id="totalTransitTime"></p>
                   </button>
                 </a>
@@ -529,6 +529,11 @@
           // Parse the steps and output
           outputDiv.innerHTML += '<ul><li><strong>' +
             start_add + '</strong></li></ul>';
+
+          var leapDiscount = false;
+          var secondTram = false;
+          var arrivalStop;
+          var departStop;
           for (i = 0; i < stepLen; i++) {
             var distance = response.routes[0].legs[0].steps[i].distance.text;
             var duration = response.routes[0].legs[0].steps[i].duration.text;
@@ -538,22 +543,45 @@
               outputDiv.innerHTML += '<div id="transitWalk">' + 'WALK About ' + duration + '</div>';
             }
             if (response.routes[0].legs[0].steps[i].transit) {
+              // Leap and Cash Calculations
+              var agencyName = response.routes[0].legs[0].steps[i].transit.line.agencies[0].name;
+
+              if(agencyName == "Dublin Bus" && !leapDiscount) {
+                getBusFares(response.routes[0].legs[0].steps[i].transit.num_stops);
+                leapDiscount = true;
+              } else if (agencyName == "Dublin Bus" && leapDiscount){
+                getDiscountBusFares(response.routes[0].legs[0].steps[i].transit.num_stops);
+              }
+
+              if(agencyName == "Luas" && !secondTram) {
+                departStop = response.routes[0].legs[0].steps[i].transit.departure_stop.name.trim();
+                arrivalStop = response.routes[0].legs[0].steps[i].transit.arrival_stop.name.trim();
+                secondTram = true;
+              }
+              if(agencyName == "Luas" && secondTram) {
+                arrivalStop = response.routes[0].legs[0].steps[i].transit.arrival_stop.name.trim();
+              }
+
               var depart_check = response.routes[0].legs[0].steps[i].transit.departure_stop.name;
               if (response.routes[0].legs[0].steps[i].transit.line.short_name) {
                 var trans_name = response.routes[0].legs[0].steps[i].transit.line.short_name;
               } else {
                 var trans_name = response.routes[0].legs[0].steps[i].transit.line.name;
               }
+
+
               outputDiv.innerHTML += '<strong><ul><li>' +
                 response.routes[0].legs[0].steps[i].transit.departure_stop.name + '</strong></li></ul>' +
                 '<div id="transitJourney"><strong>' + response.routes[0].legs[0].steps[i].transit.departure_time.text +
                 '&nbsp;</strong>' + response.routes[0].legs[0].steps[i].transit.line.agencies[0].name +
                 '&nbsp;' + duration + ' (' + response.routes[0].legs[0].steps[i].transit.num_stops + ' stops)' +
-                '<br>Take the <strong>' + trans_name + '</strong> towards ' + response.routes[0].legs[0].steps[i].transit.headsign + '</div>';
+                '<br><br>Take the <strong style="border-color:black;border:1px solid;padding:2px">' + trans_name + '</strong> towards ' + response.routes[0].legs[0].steps[i].transit.headsign
+                + '<br><div id="leapFares"></div>' + cashFare + leapFare +  '</div>';
               outputDiv.innerHTML += '<ul><li><strong>' +
                 response.routes[0].legs[0].steps[i].transit.arrival_stop.name + '</strong></li></ul>';
             }
           }
+          getLuasFares(departStop, arrivalStop);
           outputDiv.innerHTML += '<ul><li><strong>' +
             finish_add + '</strong></li></ul>';
           // End of Steps Output
@@ -580,7 +608,7 @@
     // Warning for Dublin Bikes Closed for bike pick up at night
     if (!isValidTime()) {
       var outputDiv = document.getElementById('check_time');
-      outputDiv.innerHTML += '<strong>No Pick Up</strong> (12:30 to 05:00)'
+      outputDiv.innerHTML += 'No Bike Pick Up until 5 a.m.'
       nightBikes(start, finish_station_coords);
     }
     // If left widget for transit/walk is empty, then call functions to output

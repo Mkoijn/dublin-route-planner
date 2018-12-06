@@ -7,60 +7,74 @@ td {
 .btn-success{
   color:black !important;
   background-color: white;
-  font-weight: 500 !important;
+  font-size: 95% !important;
+  font-family: "Helvetica";
 }
 .btn-success:focus, .btn-success:active, .btn-success:checked, .btn-success:hover {
   outline: none !important;
   box-shadow: none;
   background-color: white;
+  font-size: 95% !important;
 }
 .btn-info{
   color:black !important;
   background-color: white;
   font-weight: 500 !important;
+  font-size: 95% !important;
 }
 .btn-info:focus, .btn-info:active, .btn-info:checked, .btn-info:hover {
   outline: none !important;
   box-shadow: none;
   background-color: white;
+  font-size: 95% !important;
 }
 .btn-primary{
   background-color: white !important;
   color:black !important;
   border-color: white;
+  font-size: 95% !important;
 }
 .btn-danger{
   margin-top: 0px;
   background-color: white !important;
   color:black !important;
   border-color: white;
+  font-size: 95% !important;
 }
 .btn-warning{
   background-color:white;
   font-family: "Helvetica";
   color: black;
-  max-width: 90%;
   margin-left: auto;
   margin-right: auto;
   padding-bottom: 0px !important;
   padding-right:10px;
   padding-left:10px;
+  font-size: 95% !important;
 }
 .btn-warning:focus, .btn-warning:checked, .btn-warning:hover, .btn-warning:active {
   outline: none !important;
   box-shadow: none;
   background-color: white !important;
   color: black !important;
-  max-width: 90%;
   margin-left: auto;
   margin-right: auto;
   padding-bottom: 0px !important;
   padding-right:10px;
   padding-left:10px;
+  font-size: 95% !important;
 }
-.btn-warning:focus, .btn-warning:hover {
+.btn-warning:hover {
   background-color: #e2d9d0 !important;
   padding-bottom: 0px !important;
   padding-right:10px;
   padding-left:10px;
+  font-size: 95% !important;
+}
+.btn-warning:focus {
+  background-color: white !important;
+  padding-bottom: 0px !important;
+  padding-right:10px;
+  padding-left:10px;
+  font-size: 95% !important;
 }
