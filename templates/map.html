@@ -547,9 +547,11 @@
               var agencyName = response.routes[0].legs[0].steps[i].transit.line.agencies[0].name;
 
               if(agencyName == "Dublin Bus" && !leapDiscount) {
+                console.log(leapDiscount);
                 getBusFares(response.routes[0].legs[0].steps[i].transit.num_stops);
                 leapDiscount = true;
               } else if (agencyName == "Dublin Bus" && leapDiscount){
+                console.log(leapDiscount);
                 getDiscountBusFares(response.routes[0].legs[0].steps[i].transit.num_stops);
               }
 
@@ -569,14 +571,32 @@
                 var trans_name = response.routes[0].legs[0].steps[i].transit.line.name;
               }
 
+              if(agencyName == "Dublin Bus") {
+                outputDiv.innerHTML += '<strong><ul><li>' +
+                  response.routes[0].legs[0].steps[i].transit.departure_stop.name + '</strong></li></ul>' +
+                  '<div id="transitJourney"><strong>' + response.routes[0].legs[0].steps[i].transit.departure_time.text +
+                  '&nbsp;</strong>' + response.routes[0].legs[0].steps[i].transit.line.agencies[0].name +
+                  '&nbsp;' + duration + ' (' + response.routes[0].legs[0].steps[i].transit.num_stops + ' stops)' +
+                  '<br><br>Take the <strong style="border-color:black;border:1px solid;padding:2px;padding-right:3px;">' + trans_name + '</strong> towards ' + response.routes[0].legs[0].steps[i].transit.headsign
+                  + '<br><br>Cash €' + cashFare + '<span style="background-color: #00AC70;padding-left:1px;padding-top:3px;padding-bottom:3px;padding-right:4px;border-radius:2px;color:white;margin-left: 10px;">&nbsp;Leap €'  + leapFare +  '</span></div>';
+              } else if(agencyName == "Luas") {
+                outputDiv.innerHTML += '<strong><ul><li>' +
+                  response.routes[0].legs[0].steps[i].transit.departure_stop.name + '</strong></li></ul>' +
+                  '<div id="transitJourney"><strong>' + response.routes[0].legs[0].steps[i].transit.departure_time.text +
+                  '&nbsp;</strong>' + response.routes[0].legs[0].steps[i].transit.line.agencies[0].name +
+                  '&nbsp;' + duration + ' (' + response.routes[0].legs[0].steps[i].transit.num_stops + ' stops)' +
+                  '<br><br>Take the <strong style="border-color:black;border:1px solid;padding:2px;padding-right:3px;">' + trans_name + '</strong> towards ' + response.routes[0].legs[0].steps[i].transit.headsign
+                  + '<br><div id="leapFares"></div></div>';
+              } else {
+                outputDiv.innerHTML += '<strong><ul><li>' +
+                  response.routes[0].legs[0].steps[i].transit.departure_stop.name + '</strong></li></ul>' +
+                  '<div id="transitJourney"><strong>' + response.routes[0].legs[0].steps[i].transit.departure_time.text +
+                  '&nbsp;</strong>' + response.routes[0].legs[0].steps[i].transit.line.agencies[0].name +
+                  '&nbsp;' + duration + ' (' + response.routes[0].legs[0].steps[i].transit.num_stops + ' stops)' +
+                  '<br><br>Take the <strong style="border-color:black;border:1px solid;padding:2px;padding-right:3px;">' + trans_name + '</strong> towards ' + response.routes[0].legs[0].steps[i].transit.headsign
+                  + '</div>';
+              }
 
-              outputDiv.innerHTML += '<strong><ul><li>' +
-                response.routes[0].legs[0].steps[i].transit.departure_stop.name + '</strong></li></ul>' +
-                '<div id="transitJourney"><strong>' + response.routes[0].legs[0].steps[i].transit.departure_time.text +
-                '&nbsp;</strong>' + response.routes[0].legs[0].steps[i].transit.line.agencies[0].name +
-                '&nbsp;' + duration + ' (' + response.routes[0].legs[0].steps[i].transit.num_stops + ' stops)' +
-                '<br><br>Take the <strong style="border-color:black;border:1px solid;padding:2px">' + trans_name + '</strong> towards ' + response.routes[0].legs[0].steps[i].transit.headsign
-                + '<br><div id="leapFares"></div>' + cashFare + leapFare +  '</div>';
               outputDiv.innerHTML += '<ul><li><strong>' +
                 response.routes[0].legs[0].steps[i].transit.arrival_stop.name + '</strong></li></ul>';
             }

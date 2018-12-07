@@ -2,26 +2,26 @@ var leapFare = "";
 var cashFare = "";
 function getBusFares(noStops){
     if(noStops < 10){
-      leapFare = "<span style='background-color: #00AC70;padding-left:1px;padding-top:3px;padding-bottom:3px;padding-right:5px;border-radius:2px;color:white;margin-left: 10px;'>&nbsp;Leap €1.55</span>";
-      cashFare = "<br>Cash €2.15";
-    } else if (10 < noStops < 31) {
-      leapFare = "<span style='background-color: #00AC70;padding-left:1px;padding-top:3px;padding-bottom:3px;padding-right:5px;border-radius:2px;color:white;margin-left: 10px;'>&nbsp;Leap €2.25</span>";
-      cashFare = "<br>Cash €3.00";
+      leapFare = "1.55";
+      cashFare = "2.15";
+    } else if (noStops < 31) {
+      leapFare = "2.25";
+      cashFare = "3.00";
     } else {
-      leapFare = "<span style='background-color: #00AC70;padding-left:1px;padding-top:3px;padding-bottom:3px;padding-right:5px;border-radius:2px;color:white;margin-left: 10px;'>&nbsp;Leap €2.50</span>";
-      cashFare = "<br>Cash €3.30";
+      leapFare = "2.50";
+      cashFare = "3.30";
     }
 }
 function getDiscountBusFares(noStops){
   if(noStops < 10){
-    leapFare = "<span style='background-color: #00AC70;padding-left:1px;padding-top:3px;padding-bottom:3px;padding-right:5px;border-radius:2px;color:white;margin-left: 10px;'>&nbsp;Leap €1.05</span>";
-    cashFare = "<br>Cash €2.15";
+    leapFare = "0.55";
+    cashFare = "2.15";
   } else if (10 < noStops < 31) {
-    leapFare = "<span style='background-color: #00AC70;padding-left:1px;padding-top:3px;padding-bottom:3px;padding-right:5px;border-radius:2px;color:white;margin-left: 10px;'>&nbsp;Leap €1.05</span>";
-    cashFare = "<br>Cash €3.00";
+    leapFare = "1.25";
+    cashFare = "3.00";
   } else {
-    leapFare = "<span style='background-color: #00AC70;padding-left:1px;padding-top:3px;padding-bottom:3px;padding-right:5px;border-radius:2px;color:white;margin-left: 10px;'>&nbsp;Leap €1.50</span>";
-    cashFare = "<br>Cash €3.30";
+    leapFare = "1.50";
+    cashFare = "3.30";
   }
 }
 function getLuasZone(stop){
@@ -146,10 +146,18 @@ function cleanLuasZone(startZone,finishZone){
   {
     startZone = 6;
     finishZone = 9;
+  } else if(startZone == "R1" && finishZone == "R1")
+  {
+    startZone = 6;
+    finishZone = 6;
   } else if(startZone == "G1C" && finishZone == "G1")
   {
     startZone = 6;
     finishZone = 5;
+  } else if(startZone == "G1" && finishZone == "G1")
+  {
+    startZone = 6;
+    finishZone = 6;
   } else if(startZone == "G1" && finishZone == "G1C")
   {
     startZone = 5;
@@ -165,6 +173,10 @@ function cleanLuasZone(startZone,finishZone){
   } else if(startZone == "R1C" && finishZone == "R1")
   {
     startZone = 5;
+    finishZone = 6;
+  } else if(startZone == "R1C" && finishZone == "R1C")
+  {
+    startZone = 6;
     finishZone = 6;
   } else if(startZone == "R1C" && finishZone == "G1C")
   {
@@ -222,13 +234,15 @@ function cleanLuasZone(startZone,finishZone){
   return {startZone, finishZone};
 }
 function getLuasFares(start, finish){
+  leapFare = "";
+  cashFare = "";
   var startZone = getLuasZone(start);
   var finishZone = getLuasZone(finish);
 
   var zones = cleanLuasZone(startZone, finishZone);
-  // console.log(zones);
+  console.log(zones);
   var difference = Math.abs(zones.startZone - zones.finishZone);
-  // console.log("diff: " + difference);
+  console.log("diff: " + difference);
   if(isNaN(difference)){
     return;
   }
@@ -264,4 +278,5 @@ function getLuasFares(start, finish){
   }
   var x = document.getElementById("leapFares");
   x.innerHTML = cashFare  + leapFare;
+  console.log(x);
 }
