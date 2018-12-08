@@ -524,7 +524,7 @@
         var outputDiv = document.getElementById('transitLeg');
         if (status == google.maps.DirectionsStatus.OK) {
           // Test directions steps to parse
-          console.log(response.routes[0].legs[0].steps);
+          // console.log(response.routes[0].legs[0].steps);
           stepLen = response.routes[0].legs[0].steps.length;
           // Parse the steps and output
           outputDiv.innerHTML += '<ul><li><strong>' +
@@ -534,6 +534,8 @@
           var secondTram = false;
           var arrivalStop;
           var departStop;
+          var dartStart;
+          var dartFinish
           for (i = 0; i < stepLen; i++) {
             var distance = response.routes[0].legs[0].steps[i].distance.text;
             var duration = response.routes[0].legs[0].steps[i].duration.text;
@@ -547,11 +549,9 @@
               var agencyName = response.routes[0].legs[0].steps[i].transit.line.agencies[0].name;
 
               if(agencyName == "Dublin Bus" && !leapDiscount) {
-                console.log(leapDiscount);
                 getBusFares(response.routes[0].legs[0].steps[i].transit.num_stops);
                 leapDiscount = true;
               } else if (agencyName == "Dublin Bus" && leapDiscount){
-                console.log(leapDiscount);
                 getDiscountBusFares(response.routes[0].legs[0].steps[i].transit.num_stops);
               }
 
@@ -562,6 +562,11 @@
               }
               if(agencyName == "Luas" && secondTram) {
                 arrivalStop = response.routes[0].legs[0].steps[i].transit.arrival_stop.name.trim();
+              }
+
+              if(response.routes[0].legs[0].steps[i].transit.line.name == "Dart") {
+                dartStart = response.routes[0].legs[0].steps[i].transit.departure_stop.name;
+                dartFinish = response.routes[0].legs[0].steps[i].transit.arrival_stop.name;
               }
 
               var depart_check = response.routes[0].legs[0].steps[i].transit.departure_stop.name;
@@ -587,6 +592,22 @@
                   '&nbsp;' + duration + ' (' + response.routes[0].legs[0].steps[i].transit.num_stops + ' stops)' +
                   '<br><br>Take the <strong style="border-color:black;border:1px solid;padding:2px;padding-right:3px;">' + trans_name + '</strong> towards ' + response.routes[0].legs[0].steps[i].transit.headsign
                   + '<br><div id="leapFares"></div></div>';
+              } else if(response.routes[0].legs[0].steps[i].transit.line.name == "Dart") {
+                outputDiv.innerHTML += '<strong><ul><li>' +
+                  response.routes[0].legs[0].steps[i].transit.departure_stop.name + '</strong></li></ul>' +
+                  '<div id="transitJourney"><strong>' + response.routes[0].legs[0].steps[i].transit.departure_time.text +
+                  '&nbsp;</strong>' + response.routes[0].legs[0].steps[i].transit.line.agencies[0].name +
+                  '&nbsp;' + duration + ' (' + response.routes[0].legs[0].steps[i].transit.num_stops + ' stops)' +
+                  '<br><br>Take the <strong style="border-color:black;border:1px solid;padding:2px;padding-right:3px;">' + trans_name + '</strong> towards ' + response.routes[0].legs[0].steps[i].transit.headsign
+                  + '<br><div id="dartFares"></div></div>';
+              } else if(agencyName == "Nitelink, Dublin Bus") {
+                outputDiv.innerHTML += '<strong><ul><li>' +
+                  response.routes[0].legs[0].steps[i].transit.departure_stop.name + '</strong></li></ul>' +
+                  '<div id="transitJourney"><strong>' + response.routes[0].legs[0].steps[i].transit.departure_time.text +
+                  '&nbsp;</strong>' + response.routes[0].legs[0].steps[i].transit.line.agencies[0].name +
+                  '&nbsp;' + duration + ' (' + response.routes[0].legs[0].steps[i].transit.num_stops + ' stops)' +
+                  '<br><br>Take the <strong style="border-color:black;border:1px solid;padding:2px;padding-right:3px;">' + trans_name + '</strong> towards ' + response.routes[0].legs[0].steps[i].transit.headsign
+                  + '<br><div id="nitelinkFares"></div></div>';
               } else {
                 outputDiv.innerHTML += '<strong><ul><li>' +
                   response.routes[0].legs[0].steps[i].transit.departure_stop.name + '</strong></li></ul>' +
@@ -596,12 +617,25 @@
                   '<br><br>Take the <strong style="border-color:black;border:1px solid;padding:2px;padding-right:3px;">' + trans_name + '</strong> towards ' + response.routes[0].legs[0].steps[i].transit.headsign
                   + '</div>';
               }
+              if(agencyName == "Nitelink, Dublin Bus") {
+                getNitelinkFares();
+              }
 
               outputDiv.innerHTML += '<ul><li><strong>' +
                 response.routes[0].legs[0].steps[i].transit.arrival_stop.name + '</strong></li></ul>';
             }
           }
+          console.log(dartStart);
+          console.log(dartFinish);
+          try {
+          getDartFares(dartStart, dartFinish);
           getLuasFares(departStop, arrivalStop);
+          }
+          catch(error) {
+  console.error(error);
+  // expected output: SyntaxError: unterminated string literal
+  // Note - error messages will vary depending on browser
+}
           outputDiv.innerHTML += '<ul><li><strong>' +
             finish_add + '</strong></li></ul>';
           // End of Steps Output
