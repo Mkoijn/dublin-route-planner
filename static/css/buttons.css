@@ -1,5 +1,7 @@
 .table{
   margin-top: 20px;
+  font-size: 95% !important;
+  font-family: "Helvetica";
 }
 td {
   font-size: 85%;
@@ -15,24 +17,28 @@ td {
   box-shadow: none;
   background-color: white;
   font-size: 95% !important;
+  font-family: "Helvetica";
 }
 .btn-info{
   color:black !important;
   background-color: white;
   font-weight: 500 !important;
   font-size: 95% !important;
+  font-family: "Helvetica";
 }
 .btn-info:focus, .btn-info:active, .btn-info:checked, .btn-info:hover {
   outline: none !important;
   box-shadow: none;
   background-color: white;
   font-size: 95% !important;
+  font-family: "Helvetica";
 }
 .btn-primary{
   background-color: white !important;
   color:black !important;
   border-color: white;
   font-size: 95% !important;
+  font-family: "Helvetica";
 }
 .btn-danger{
   margin-top: 0px;
@@ -51,6 +57,7 @@ td {
   padding-right:10px;
   padding-left:10px;
   font-size: 95% !important;
+  font-family: "Helvetica";
 }
 .btn-warning:focus, .btn-warning:checked, .btn-warning:hover, .btn-warning:active {
   outline: none !important;
@@ -63,6 +70,7 @@ td {
   padding-right:10px;
   padding-left:10px;
   font-size: 95% !important;
+  font-family: "Helvetica";
 }
 .btn-warning:hover {
   background-color: #e2d9d0 !important;
@@ -70,6 +78,7 @@ td {
   padding-right:10px;
   padding-left:10px;
   font-size: 95% !important;
+  font-family: "Helvetica";
 }
 .btn-warning:focus {
   background-color: white !important;
@@ -77,4 +86,5 @@ td {
   padding-right:10px;
   padding-left:10px;
   font-size: 95% !important;
+  font-family: "Helvetica";
 }
