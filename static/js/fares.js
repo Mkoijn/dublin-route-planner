@@ -38,13 +38,12 @@ function getLuasZone(stop){
       break;
     case "Dominick Luas Stop":
     case "Parnell Luas Stop":
-    case "O'Connell Upper Luas Stop":
+    case "O'Connell, Upper Luas Stop":
     case "GPO Luas Stop":
     case "Westmoreland Luas Stop":
-    case "Dawson Luas Stop":
+    case "Dawson Street Luas Stop":
     case "St.Stephen's Green Luas Stop":
     case "Harcourt Luas Stop":
-    case "Trinity Luas Stop":
     case "Trinity Luas Stop":
     case "Marlborough Luas Stop":
     case "Abbey Street Luas Stop":
