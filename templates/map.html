@@ -524,7 +524,7 @@
         var outputDiv = document.getElementById('transitLeg');
         if (status == google.maps.DirectionsStatus.OK) {
           // Test directions steps to parse
-          // console.log(response.routes[0].legs[0].steps);
+          console.log(response.routes[0].legs[0].steps);
           stepLen = response.routes[0].legs[0].steps.length;
           // Parse the steps and output
           outputDiv.innerHTML += '<ul><li><strong>' +
