@@ -535,7 +535,9 @@
           var arrivalStop;
           var departStop;
           var dartStart;
-          var dartFinish
+          var dartFinish;
+          var luasTrip = false;
+          var dartTrip = false;
           for (i = 0; i < stepLen; i++) {
             var distance = response.routes[0].legs[0].steps[i].distance.text;
             var duration = response.routes[0].legs[0].steps[i].duration.text;
@@ -559,14 +561,17 @@
                 departStop = response.routes[0].legs[0].steps[i].transit.departure_stop.name.trim();
                 arrivalStop = response.routes[0].legs[0].steps[i].transit.arrival_stop.name.trim();
                 secondTram = true;
+                luasTrip = true;
               }
               if(agencyName == "Luas" && secondTram) {
                 arrivalStop = response.routes[0].legs[0].steps[i].transit.arrival_stop.name.trim();
+                luasTrip = true;
               }
 
               if(response.routes[0].legs[0].steps[i].transit.line.name == "Dart") {
                 dartStart = response.routes[0].legs[0].steps[i].transit.departure_stop.name;
                 dartFinish = response.routes[0].legs[0].steps[i].transit.arrival_stop.name;
+                dartTrip = true;
               }
 
               var depart_check = response.routes[0].legs[0].steps[i].transit.departure_stop.name;
@@ -625,17 +630,13 @@
                 response.routes[0].legs[0].steps[i].transit.arrival_stop.name + '</strong></li></ul>';
             }
           }
-          console.log(dartStart);
-          console.log(dartFinish);
-          try {
-          getDartFares(dartStart, dartFinish);
-          getLuasFares(departStop, arrivalStop);
+          if(luasTrip){
+            getLuasFares(departStop, arrivalStop);
           }
-          catch(error) {
-  console.error(error);
-  // expected output: SyntaxError: unterminated string literal
-  // Note - error messages will vary depending on browser
-}
+          if(dartTrip){
+            getDartFares(dartStart, dartFinish);
+          }
+
           outputDiv.innerHTML += '<ul><li><strong>' +
             finish_add + '</strong></li></ul>';
           // End of Steps Output

@@ -37,6 +37,7 @@
   {% endif %}
 </form>
 <script>
+      try{
   function onRowClick(tableId, callback) {
     var table = document.getElementById(tableId),
       rows = table.getElementsByTagName("tr"),
@@ -66,5 +67,8 @@
     } else {
       div.style.display = 'block';
     }
-  };
+  }
+} catch(e){
+  console.log('No table');
+};
 </script>

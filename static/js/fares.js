@@ -238,9 +238,7 @@ function getLuasFares(start, finish){
   cashFare = "";
   var startZone = getLuasZone(start);
   var finishZone = getLuasZone(finish);
-
   var zones = cleanLuasZone(startZone, finishZone);
-  // console.log(zones);
   var difference = Math.abs(zones.startZone - zones.finishZone);
   if(isNaN(difference)){
     return;
