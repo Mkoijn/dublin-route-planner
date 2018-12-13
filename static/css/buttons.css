@@ -7,18 +7,26 @@ td {
   font-size: 85%;
 }
 .btn-info{
-  color:black !important;
-  background-color: white;
+  background-color: #ebf0fa !important;
+  color: #0d260d !important;
+  border-color: #3d5c5c !important;
   font-weight: 500 !important;
   font-size: 95% !important;
   font-family: "Helvetica";
 }
-.btn-info:focus, .btn-info:active, .btn-info:checked, .btn-info:hover {
+.btn-info:focus, .btn-info:active, .btn-info:checked  {
   outline: none !important;
   box-shadow: none;
-  background-color: white;
+  background-color: #DCDCDC !important;
+  color: black !important;
+  border-color: #3d5c5c !important;
   font-size: 95% !important;
   font-family: "Helvetica";
+}
+.btn-info:hover {
+  background-color:  #3d5c5c !important;
+  color: #DCDCDC !important;
+  border-color: #DCDCDC !important;
 }
 .btn-primary{
   background-color: white !important;
@@ -35,9 +43,10 @@ td {
   font-size: 95% !important;
 }
 .btn-warning{
-  background-color:white;
   font-family: "Helvetica";
-  color: black;
+  background-color: #ebf0fa !important;
+  color: black !important;
+  border-color: #3d5c5c !important;
   margin-left: auto;
   margin-right: auto;
   padding-bottom: 0px !important;
@@ -46,11 +55,13 @@ td {
   font-size: 95% !important;
   font-family: "Helvetica";
 }
-.btn-warning:focus, .btn-warning:checked, .btn-warning:hover, .btn-warning:active {
+.btn-warning:focus, .btn-warning:checked, .btn-warning:active {
   outline: none !important;
   box-shadow: none;
-  background-color: white !important;
+  font-family: "Helvetica";
+  background-color: #ebf0fa !important;
   color: black !important;
+  border-color: #3d5c5c !important;
   margin-left: auto;
   margin-right: auto;
   padding-bottom: 0px !important;
@@ -60,15 +71,14 @@ td {
   font-family: "Helvetica";
 }
 .btn-warning:hover {
-  background-color: #e2d9d0 !important;
-  padding-bottom: 0px !important;
-  padding-right:10px;
-  padding-left:10px;
-  font-size: 95% !important;
+  outline: none !important;
+  box-shadow: none;
   font-family: "Helvetica";
-}
-.btn-warning:focus {
-  background-color: white !important;
+  background-color:  #3d5c5c !important;
+  color: #DCDCDC !important;
+  border-color: #DCDCDC !important;
+  margin-left: auto;
+  margin-right: auto;
   padding-bottom: 0px !important;
   padding-right:10px;
   padding-left:10px;
