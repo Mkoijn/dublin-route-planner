@@ -5,6 +5,7 @@
   {% else %}
     {% include 'navbar_logged_out.html' %}
 {% endif %}
+<link rel="stylesheet" href="{{url_for('static', filename='css/navbar.css')}}">
 {% block content %}
   <div class="text-center" style="margin-top:100px;">
     <h1>Permission denied</h1>

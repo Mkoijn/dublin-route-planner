@@ -1,11 +1,10 @@
 .navbar-inverse{
   font-family: "Helvetica";
-  color: #FBFCFC !important;
-  background-color: #666600;
+  background-color: #3d5c5c !important;
 }
 .navbar-inverse .navbar-brand {
-    color: white;
+    color: #DCDCDC;
 }
 .navbar-inverse .navbar-nav > li > a {
-    color: white;
+    color: #DCDCDC;
 }

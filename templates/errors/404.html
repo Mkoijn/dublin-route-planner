@@ -6,8 +6,9 @@
     {% include 'navbar_logged_out.html' %}
 {% endif %}
 {% block content %}
+<link rel="stylesheet" href="{{url_for('static', filename='css/navbar.css')}}">
   <div class="text-center" style="margin-top:100px;">
-    <h1>Check that the correct address was entered</h1>
-    <p>That page does not exist (404)<p>
+    <h1>Page does not exist</h1>
+    <p>Check the address (404)<p>
   </div>
 {% endblock content %}

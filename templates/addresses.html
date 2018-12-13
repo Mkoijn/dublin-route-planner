@@ -6,7 +6,7 @@
                           onClick="this.setSelectionRange(0, this.value.length);") }}
   {% if current_user.is_authenticated %}
 
-  <button id="my_butts" class="btn btn-md btn-success pull-left" id="save" type="submit" name="action" value="Save & Go" style="margin-left:1px">Go</button>
+  <button id="my_butts" class="btn btn-md btn-info pull-left" id="save" type="submit" name="action" value="Save & Go" style="margin-left:1px">Go</button>
   <button class="btn btn-md btn-info pull-right" id="tableButton" type="button" style="margin-right:1px">History&nbsp;&nbsp;<span class="caret"></span></button>
   <br>
   <div id="tableDiv" style="display:none">
@@ -32,7 +32,7 @@
   </div>
   {% else %}
   <div id="my_button">
-    <button class="btn btn-md btn-success pull-right" type="submit" name="action" value="Let's Go" style="margin-right:1px">Let's Go</button>
+    <button class="btn btn-md btn-info pull-right" type="submit" name="action" value="Let's Go" style="margin-right:1px">Let's Go</button>
   </div>
   {% endif %}
 </form>

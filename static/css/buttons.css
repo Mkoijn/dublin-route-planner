@@ -6,19 +6,6 @@
 td {
   font-size: 85%;
 }
-.btn-success{
-  color:black !important;
-  background-color: white;
-  font-size: 95% !important;
-  font-family: "Helvetica";
-}
-.btn-success:focus, .btn-success:active, .btn-success:checked, .btn-success:hover {
-  outline: none !important;
-  box-shadow: none;
-  background-color: white;
-  font-size: 95% !important;
-  font-family: "Helvetica";
-}
 .btn-info{
   color:black !important;
   background-color: white;
