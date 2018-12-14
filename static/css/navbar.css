@@ -4,7 +4,9 @@
 }
 .navbar-inverse .navbar-brand {
     color: #c2d6d6;
+    font-size: 18px;
 }
 .navbar-inverse .navbar-nav > li > a {
     color: #c2d6d6;
+    font-size: 15px;
 }

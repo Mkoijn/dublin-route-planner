@@ -7,7 +7,7 @@ td {
   font-size: 85%;
 }
 .btn-info{
-  background-color: #ffdf80 !important;
+  background-color: #c2d6d6 !important;
   color: #2B303C !important;
   border-color: #2B303C !important;
   font-weight: 500 !important;
@@ -17,16 +17,14 @@ td {
 .btn-info:focus, .btn-info:active, .btn-info:checked  {
   outline: none !important;
   box-shadow: none;
-  background-color: #ffdf80 !important;
+  background-color: #c2d6d6 !important;
   color: #2B303C !important;
   border-color: #2B303C !important;
   font-size: 95% !important;
   font-family: "Helvetica";
 }
 .btn-info:hover {
-  background-color:  #2B303C !important;
-  color: #ffdf80 !important;
-  border-color: #ffdf80 !important;
+  color: black !important;
 }
 .btn-primary{
   background-color: white !important;
@@ -71,17 +69,5 @@ td {
   font-family: "Helvetica";
 }
 .btn-warning:hover {
-  outline: none !important;
-  box-shadow: none;
-  font-family: "Helvetica";
-  background-color:  #3d5c5c !important;
-  color: #DCDCDC !important;
-  border-color: #DCDCDC !important;
-  margin-left: auto;
-  margin-right: auto;
-  padding-bottom: 0px !important;
-  padding-right:10px;
-  padding-left:10px;
-  font-size: 95% !important;
-  font-family: "Helvetica";
+  background-color:  #c2d6d6 !important;
 }
