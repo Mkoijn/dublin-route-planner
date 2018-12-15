@@ -19,7 +19,7 @@
       </tr>
     </thead>
     <tbody>
-      {% for item in current_user.routes %}
+      {% for item in current_user.routes | reverse %}
       <tr>
         <td>{{ item.origin }}</td>
         <td>{{ item.destination }}</td>

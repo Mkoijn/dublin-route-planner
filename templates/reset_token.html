@@ -16,7 +16,7 @@ Dublin Route Planner
 {% block content %}
     <div class="container" id="login">
       <form onsubmit="move()" class="form-signin" method="POST" action="">
-        <h2 class="form-signin-heading">Reset Password</h2>
+        <h3 class="form-signin-heading">Reset Password</h3>
         {{ form.hidden_tag() }}
         {{ wtf.form_field(form.password) }}
         {{ wtf.form_field(form.confirm_password) }}

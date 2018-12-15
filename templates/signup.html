@@ -17,7 +17,7 @@ Dublin Route Planner
 <div class="container" id="signup">
 
   <form class="form-signin" method="POST" action="/signup">
-    <h2 class="form-signin-heading">Sign Up</h2>
+    <h3 class="form-signin-heading">Sign Up</h3>
     {{ form.hidden_tag() }}
     {% with messages = get_flashed_messages() %}
       {% if messages %}
@@ -32,7 +32,7 @@ Dublin Route Planner
     {{ wtf.form_field(form.password) }}
     {{ wtf.form_field(form.confirm_password) }}
     <button class="btn btn-md btn-block" style="background-color:#c2d6d6 !important; color:black; border-color:black;" type="submit">Sign Up</button>
-    <br><h4 class="form-signin-heading">For LEAP Balance (optional)</h4>
+    <br><h5 class="form-signin-heading">Leap Card (optional)</h5>
     {{ wtf.form_field(form.leap_user) }}
     {{ wtf.form_field(form.leap_pass) }}
   </form>
