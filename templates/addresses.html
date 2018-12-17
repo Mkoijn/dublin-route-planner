@@ -19,7 +19,7 @@
       </tr>
     </thead>
     <tbody>
-      {% for item in current_user.routes | reverse %}
+      {% for item in current_user.routes|sort(attribute='id', reverse = True) %}
       <tr>
         <td>{{ item.origin }}</td>
         <td>{{ item.destination }}</td>
