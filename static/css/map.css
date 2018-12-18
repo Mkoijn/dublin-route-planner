@@ -1,6 +1,7 @@
 html, body {
     height: 100%;
-    font-family: "Helvetica"
+    font-family: "Helvetica";
+    padding-top: 20px;
 }
 #search_start{
   margin-bottom: -20px;
@@ -12,7 +13,7 @@ html, body {
   font-family: "Helvetica";
 }
 #info {
-  padding-top: 35px;
+  padding-top: 0px;
   padding-left: 0px;
   padding-right: 0px;
   padding-bottom: 0px;
@@ -43,9 +44,11 @@ html, body {
     position: relative;
     top: auto;
     }
-
+    html, body {
+      padding-top: 0px;
+    }
     #info {
-      padding-top: 10px;
+      padding-top: 5px;
       padding-bottom: 0px;
       padding-left: 0px;
       padding-right: 0px;
