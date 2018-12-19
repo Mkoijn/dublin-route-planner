@@ -40,6 +40,12 @@ td {
   border-color: white;
   font-size: 95% !important;
 }
+.btn-success{
+  padding-top: 2px;
+  background-color: white !important;
+  color:black !important;
+  border-color: red;
+}
 .btn-warning{
   font-family: "Helvetica";
   background-color: white !important;
