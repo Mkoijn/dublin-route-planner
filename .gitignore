@@ -6,3 +6,4 @@ __pycache__/
 *.sql
 *.sqlite
 .DS_Store
+.coverage

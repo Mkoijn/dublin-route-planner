@@ -60,6 +60,10 @@
     });
   }
 
+  function isMobileDevice() {
+    return (typeof window.orientation !== "undefined") || (navigator.userAgent.indexOf('IEMobile') !== -1);
+  }
+
   function getLatLng(position) {
     var current_lat = position.coords.latitude;
     var current_lng = position.coords.longitude;
@@ -84,17 +88,19 @@
 
   function getLocation() {
     //console.log('start geoLoc');
-    if (navigator.geolocation) {
-      var options = {
-        timeout: 5000,
-        enableHighAccuracy: true,
-        maximumAge: 75000
-      };
-      //console.log('after checking geolocation works');
-      navigator.geolocation.getCurrentPosition(getLatLng, errorHandler, options);
-      //console.log('after calling getCurrentPosition');
-    } else {
-      alert("Geolocation is not supported by this browser.");
+    if (isMobileDevice()){
+      if (navigator.geolocation) {
+        var options = {
+          timeout: 5000,
+          enableHighAccuracy: true,
+          maximumAge: 75000
+        };
+        //console.log('after checking geolocation works');
+        navigator.geolocation.getCurrentPosition(getLatLng, errorHandler, options);
+        //console.log('after calling getCurrentPosition');
+      } else {
+        alert("Geolocation is not supported by this browser.");
+      }
     }
   }
 
