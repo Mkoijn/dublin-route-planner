@@ -466,7 +466,7 @@
               finish_station.name + '</li></ul>' +
               '<strong>&emsp;&emsp;Available Spaces: ' + finish_station.available_bike_stands + '</strong>';
             if (finish_station.available_bike_stands < 4) {
-              outputDiv.innerHTML += '&nbsp;&nbsp;<button onclick="getNewFinishStation()" type="button" class="btn btn-info btn-xs">Change Station</button><br>';
+              outputDiv.innerHTML += '&nbsp;&nbsp;<button onclick="getNewFinishStation()" type="button" class="btn btn-success btn-xs">Change Station</button><br>';
             }
             timeNight = results[0].duration.value;
             total_time += timeNight;
