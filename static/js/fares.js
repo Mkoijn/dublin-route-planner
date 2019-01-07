@@ -46,7 +46,7 @@ function getLuasZone(stop){
     case "Harcourt Luas Stop":
     case "Trinity Luas Stop":
     case "Marlborough Luas Stop":
-    case "Abbey Street Luas Stop":
+    case "Abbey Street":
     case "Jervis Luas Stop":
     case "Four Courts Luas Stop":
     case "Smithfield Luas Stop":
@@ -60,7 +60,7 @@ function getLuasZone(stop){
       break;
     case "Mayor Square - NCI Luas Stop":
     case "Spencer Dock Luas Stop":
-    case "The Point Luas Stop":
+    case "The Point":
       zone = "R1";
       break
     case "Heuston Luas Stop":
@@ -106,7 +106,7 @@ function getLuasZone(stop){
     case "Windy Arbour Luas Stop":
       zone = 9;
       break;
-    case "Dundrum Luas Stop":
+    case "Dundrum":
       zone = 10;
       break;
     case "Balally Luas Stop":
