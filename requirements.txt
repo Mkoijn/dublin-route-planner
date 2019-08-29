@@ -11,6 +11,6 @@ setuptools
 pyleapcard
 gunicorn
 Flask-Heroku
-psycopg2
 flask_mail
 coverage
+psycopg2-binary
