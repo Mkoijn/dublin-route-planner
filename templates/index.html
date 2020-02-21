@@ -1,5 +1,11 @@
 {% import "bootstrap/wtf.html" as wtf %}
 {% extends "bootstrap/base.html" %}
+{% block title %}Dublin Route Planner{% endblock %}
+{%- block metas %}
+<meta name='description' content='Plan your Dublin Journey with live Dublinbikes and public transport information.'>
+<meta name='keywords' content='Dublin, Travel, Dublinbikes, Cycling, Dublin Bus, LUAS, Dart, Planner, Trip, Journey'>
+<meta name='author' content='Mkoijn'>
+{%- endblock metas %}
 
 {% block styles %}
 {{super()}}
