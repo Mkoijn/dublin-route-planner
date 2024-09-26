@@ -14,7 +14,7 @@ app = Flask(__name__)
 
 app.config.from_pyfile('config.py')
 
-app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql:///prroject.db
+app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql:///prroject.db"
 
 Bootstrap(app)
 heroku = Heroku(app)
