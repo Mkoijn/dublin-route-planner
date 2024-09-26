@@ -14,6 +14,8 @@ app = Flask(__name__)
 
 app.config.from_pyfile('config.py')
 
+app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql:///prroject.db
+
 Bootstrap(app)
 heroku = Heroku(app)
 db = SQLAlchemy(app)
@@ -31,7 +33,7 @@ mail = Mail(app)
 
 from views import *
 from errors.handlers import errors
-app.register_blueprint(errors)
+# app.register_blueprint(errors)
 
 
 if __name__ == '__main__':
